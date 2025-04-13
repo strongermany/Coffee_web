@@ -52,7 +52,7 @@
 
                     
 
-                    <li class="nav-item"><a class="nav-link" href="#">Đặt hàng </a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL?>cartController">Đặt hàng </a></li>
 
                     <li class="nav-item"><a class="nav-link" href="#">Cửa hàng</a></li>
 
