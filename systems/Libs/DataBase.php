@@ -44,11 +44,13 @@
             return $statement->execute();
 
         }
-        public function delete($table,$cond,$limit = 1){
+        public function delete($table,$cond,$data = array(),$limit = 1){
             $sql = "Delete from $table Where $cond Limit $limit";
             $statement = $this->prepare($sql);
+            foreach($data as $key => $value){
+                $statement->bindValue($key,$value);
+            }
             return $statement->execute();
-
         }
         public function affectedRows($sql,$username,$password){// check fit with data basse or not;
             $statement = $this->prepare($sql);

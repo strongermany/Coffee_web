@@ -1,11 +1,12 @@
 <?php
 class index extends BaseController
 {
-
+    private $sliderModel;
 
     public function __construct()
     {
         parent::__construct();
+        $this->sliderModel = $this->load->model('SliderModel');
     }
     public function index()
     {
@@ -14,9 +15,9 @@ class index extends BaseController
     }
     public function homePage()
     {
-
+        $data['sliders'] = $this->sliderModel->getActiveSliders();
         $this->load->view('header');
-        $this->load->view('slider');
+        $this->load->view('slider', $data);
         $this->load->view('HomeView');
         $this->load->view('footer');
     }

@@ -14,6 +14,15 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Slider
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="<?php echo Base_URL ?>SliderController/add">Add Slider</a></li>
+                        <li><a class="dropdown-item" href="<?php echo Base_URL ?>SliderController">List Slider</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Category Blogs
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -66,7 +75,6 @@
                     </ul>
                 </li>  
 
-
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Orders
@@ -80,4 +88,7 @@
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>
                 </li>
-                </nav>
+            </ul>
+        </div>
+    </div>
+</nav>
