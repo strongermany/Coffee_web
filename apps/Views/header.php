@@ -59,6 +59,27 @@
 
                 </ul>
 
+                <!-- Thêm phần icon đăng nhập và giỏ hàng -->
+                <div class="d-flex align-items-center">
+                    <a href="<?php echo Base_URL ?>login" class="nav-link me-3">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <a href="<?php echo Base_URL ?>cart" class="nav-link position-relative me-3">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill cart-count">
+                            0
+                        </span>
+                    </a>
+                    <!-- Thêm ô tìm kiếm -->
+                    <form class="d-flex search-form" action="<?php echo Base_URL ?>search" method="GET">
+                        <div class="input-group">
+                            <input type="text" class="form-control search-input" placeholder="Tìm kiếm..." name="keyword">
+                            <button class="btn search-btn" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
 
             </div>
         </div>
