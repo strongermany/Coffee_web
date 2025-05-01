@@ -8,7 +8,7 @@
             <a href="" class="btn">Đọc thêm</a>
       </div>
     </div>
-    <div class="card">
+    <!-- <div class="card">
       <img src="<?php echo Base_URL ?>public/images/b2.jpg">
       <div class="card-content">
         <h3>THỨ 4 VUI VẺ - GIẢM GIÁ 30%<h3>
@@ -21,7 +21,7 @@
         <h3>QUY TRÌNH SẢN XUẤT<h3>
             <a href="<?php echo Base_URL?>index/detailsProduct" class="btn">Đọc thêm</a>
       </div>
-    </div>
+    </div> -->
   </div>
   <p class="text-b"><i>Hãy xem chúng tôi có gì !</i></p>
   <p class="text-c">GIAN HÀNG SẢN PHẨM VỀ CAFE</p>

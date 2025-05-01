@@ -1,4 +1,4 @@
-
+<link rel="stylesheet" href="public/css/footer.css">
 <script
     src="https://kit.fontawesome.com/a076d05399.js"
     crossorigin="anonymous"></script>
@@ -16,15 +16,15 @@
 
     <div class="footer-center">
         <div>
-            <i class="fa fa-map-marker"></i>
+            <i class="fa fa-map-marker cafe-icon"></i>
             <p><span>Địa chỉ:</span>NGUYỄN HỮU THỌ, TÂN PHONG, Q7, TPHCM</p>
         </div>
         <div>
-            <i class="fa fa-phone"></i>
+            <i class="fa fa-phone cafe-icon"></i>
             <p>+84 363747301</p>
         </div>
         <div>
-            <i class="fa fa-envelope"></i>
+            <i class="fa fa-envelope cafe-icon"></i>
             <p><a href="mailto:contact@hippocoffee.com">contact@hippocoffee.com</a></p>
         </div>
     </div>
@@ -35,9 +35,9 @@
             HippoCoffee cam kết mang đến cho bạn những sản phẩm cà phê chất lượng nhất.
         </p>
         <div class="footer-icons">
-            <a href="#"><i class="fa-brands fa-facebook"></i></a>
-            <a href="#"><i class="fa-brands fa-instagram"></i></a>
-            <a href="#"><i class="fa-brands fa-youtube"></i></a>
+            <a href="#"><i class="fa-brands fa-facebook social-cafe"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram social-cafe"></i></a>
+            <a href="#"><i class="fa-brands fa-youtube social-cafe"></i></a>
 
         </div>
     </div>

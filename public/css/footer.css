@@ -1,0 +1,133 @@
+footer {
+    background-color: #2e2121;
+    color: white;
+    text-align: left;
+    font: bold 16px sans-serif;
+    padding: 50px 60px;
+    margin-top: auto; /* Keeps footer at bottom */
+  }
+  
+  .footer-distributed {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .footer-distributed .footer-left,
+  .footer-distributed .footer-center,
+  .footer-distributed .footer-right {
+    flex: 1;
+    min-width: 250px;
+    margin-bottom: 20px;
+  }
+  
+  .footer-distributed h3 {
+    font: normal 36px "Cookie", cursive;
+    color: #fff;
+    margin: 0;
+  }
+  
+  .footer-distributed h3 span {
+    color: #e1bc01;
+  }
+  
+  .footer-links {
+    margin: 20px 0 12px;
+  }
+  
+  .footer-links a {
+    color: #ffffff;
+    text-decoration: none;
+    margin-right: 10px;
+  }
+  
+  .footer-company-name {
+    color: #8f9296;
+    font-size: 14px;
+    font-weight: normal;
+  }
+  
+  .footer-center div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .footer-center i {
+    background-color: #33383b;
+    color: #fff;
+    font-size: 18px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 38px;
+    margin-right: 10px;
+  }
+  
+  .footer-right .footer-company-about {
+    font-size: 13px;
+  }
+  
+  .footer-icons a {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    background-color: #33383b;
+    border-radius: 50%;
+    font-size: 20px;
+    color: #fff;
+    text-align: center;
+    line-height: 35px;
+    margin-right: 5px;
+  }
+  
+  .footer-icons a:hover {
+    background-color: #007bff;
+  }
+  
+  /* RESPONSIVE DESIGN */
+  @media (max-width: 880px) {
+    .footer-distributed {
+      flex-direction: column;
+      text-align: center;
+      align-items: center;
+    }
+  
+    .footer-distributed .footer-left,
+    .footer-distributed .footer-center,
+    .footer-distributed .footer-right {
+      width: 100%;
+      text-align: center;
+    }
+  
+    .footer-center div {
+      justify-content: center;
+    }
+  }
+
+
+    /* Icon thông tin liên hệ (map, phone, envelope) màu trắng/xám nhạt */
+    .cafe-icon {
+        color: #fff !important;
+        opacity: 0.85;
+      }
+      
+      /* Facebook: xanh */
+      .social-cafe.fa-facebook {
+        color: #1877f3 !important;
+      }
+      /* Instagram: gradient (dùng màu tím hồng gần giống) */
+      .social-cafe.fa-instagram {
+        color: #e4405f !important;
+      }
+      /* Youtube: đỏ */
+      .social-cafe.fa-youtube {
+        color: #ff0000 !important;
+      }
+      
+      .social-cafe:hover {
+        filter: brightness(1.2) drop-shadow(0 0 2px #fff);
+        transform: scale(1.1);
+      }
+  

@@ -1,183 +1,271 @@
-
-<link rel="stylesheet" href="<?php echo Base_URL ?>public/css/bag.css" />
+<link rel="stylesheet" href="<?php echo Base_URL ?>/public/css/cart.css" />
+<script>var Base_URL = "<?php echo Base_URL; ?>";</script>
 <section>
-      <div class="bg_in">
-         <div class="content_page cart_page">
-            <div class="breadcrumbs">
-               <ol itemscope itemtype="http://schema.org/BreadcrumbList">
-                  <li itemprop="itemListElement" itemscope
-                     itemtype="http://schema.org/ListItem">
-                     <a itemprop="item" href=".">
-                        <span itemprop="name">Trang chủ</span></a>
-                     <meta itemprop="position" content="1" />
-                  </li>
-                  <li itemprop="itemListElement" itemscope
-                     itemtype="http://schema.org/ListItem">
-                     <span itemprop="item">
-                        <strong itemprop="name">
-                           Giỏ hàng
-                        </strong>
-                     </span>
-                     <meta itemprop="position" content="2" />
-                  </li>
-               </ol>
+  <div class="cart-page-body">
+    <div class="bg_in">
+      <div class="content_page cart_page">
+         <div class="breadcrumbs">
+            <ol>
+               <li><a href="<?php echo Base_URL; ?>">Trang chủ</a></li>
+               <li><strong>Thanh toán</strong></li>
+            </ol>
+         </div>
+         <div class="box-title">
+            <div class="title-bar">
+               <h1>Thanh toán đơn hàng</h1>
             </div>
-            <div class="box-title">
-               <div class="title-bar">
-                  <h1>Giỏ hàng của bạn</h1>
-               </div>
-            </div>
-            <div class="content_text">
-               <div class="container_table">
-                  <table class="table table-hover table-condensed">
-                     <thead>
-                        <tr class="tr tr_first">
-                           <th>Hình ảnh</th>
-                           <th>Tên sản phẩm</th>
-                           <th>Mã sản phẩm</th>
-                           <th>Giá</th>
-                           <th style="width:100px;">Số lượng</th>
-                           <th>Thành tiền</th>
-                           <th style="width:50px; text-align:center;"></th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        <form action='./gio-hang/' method="post">
-                           <tr class="tr">
-                              <td data-th="Hình ảnh">
-                                 <div class="col_table_image col_table_hidden-xs"><img src="image/iphone1.jpg" alt="Máy in laser Canon LBP251DW" class="img-responsive" /></div>
-                              </td>
-                              <td data-th="Sản phẩm">
-                                 <div class="col_table_name">
-                                    <h4 class="nomargin">Iphone 1</h4>
-                                 </div>
-                              </td>
-                              <td data-th="Mã sản phẩm">
-                                 <div class="col_table_name">
-                                    <h4 class="nomargin">Iphone 1</h4>
-                                 </div>
-                              </td>
-                              <td data-th="Giá"><span class="color_red font_money">0</span></td>
-                              <td data-th="Số lượng">
-                                 <div class="clear margintop5">
-                                    <div class="floatleft"><input type="number" class="inputsoluong" name="qty[576]" value="1"></div>
-                                    <input type="hidden" name="check" value="999">
-                                    <div class="floatleft width50">
-                                       <button class="btn_df btn_table_td_rf_del btn-sm">
-                                          <i class="fa fa-refresh"></i></button>
-                                    </div>
-                                 </div>
-                                 <div class="clear"></div>
-                              </td>
-                              <td data-th="Thành tiền" class="text_center"><span class="color_red font_money">0 đ</span></td>
-                              <td class="actions aligncenter" data-th="">
-                                 <a onclick="return del(576,'Máy in laser Canon LBP251DW');" class="btn_df btn_table_td_rf_del btn-sm"><i class="fa fa-trash-o"></i> <span class="display_mobile">Xóa sản phẩm</span></a>
-                              </td>
-                           </tr>
-                        </form>
+         </div>
+         <div class="content_text">
+            <div class="container_table">
+               <table class="table">
+                  <thead>
+                     <tr>
+                        <th>Hình ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Đơn giá</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền</th>
+                        <th></th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                  <?php if (!empty($cartItems)): ?>
+                      <?php foreach ($cartItems as $item): ?>
                         <tr>
-                           <td colspan="7" class="textright_text">
-                              <div class="sum_price_all">
-                                 <span class="text_price">Tổng tiền thành toán</span>:
-                                 <span class="text_price color_red">0 đ</span>
-                              </div>
+                           <td>
+                              <img src="<?php echo Base_URL; ?>public/uploads/product/<?php echo $item['product']['Images_product']; ?>" alt="<?php echo $item['product']['Title_product']; ?>" class="img-responsive" style="width:60px;height:60px;object-fit:cover;" />
+                           </td>
+                           <td><?php echo $item['product']['Title_product']; ?></td>
+                           <td><span class="color_red font_money"><?php echo number_format($item['product']['Price_product'], 0, ',', '.'); ?> đ</span></td>
+                           <td>
+                              <input type="number" class="inputsoluong" name="qty[<?php echo $item['product']['Id_product']; ?>]" value="<?php echo $item['quantity']; ?>" min="1" data-price="<?php echo $item['product']['Price_product']; ?>">
+                           </td>
+                           <td class="text_center"><span class="color_red font_money item-total"><?php echo number_format($item['subtotal'], 0, ',', '.'); ?> đ</span></td>
+                           <td class="actions">
+                              <button class="btn_df btn-sm remove-from-cart" data-product-id="<?php echo $item['product']['Id_product']; ?>">Xóa</button>
                            </td>
                         </tr>
-                     </tbody>
-                     <tfoot>
-                        <tr class="tr_last">
-                           <td colspan="7">
-                              <a href="." class="btn_df btn_table floatleft"><i class="fa fa-long-arrow-left"></i> Tiếp tục mua hàng</a>
-                              <div class="clear"></div>
-                           </td>
-                        </tr>
-                     </tfoot>
-                  </table>
-               </div>
-               <div class="contact_form">
-                  <div class="contact_left">
-                     <div class="ch-contacts-details">
-                        <ul class="contact-list">
-                           <li class="addr">
-                              <strong class="title">Địa chỉ của chúng tôi</strong>
-                              <p><em><strong>3tmobile</strong></em><br />
-                              <p>Trung Tâm Bán Hàng:</p>
-                              <p>CN1: 333B Minh Phụng, Phường 2, Quận 11, HCM</p>
-                              <p>CN2: 548 Lý Thái Tổ, Phường 10, Quận 10, HCM</p>
-                              <p>N3: 297 Quang Trung, Phường 10, Q. Gò Vấp, HCM</p>
-                              <p> CN4: 72 Đinh Tiên Hoàng, Phường 01, Q. Bình Thạnh, HCM</p>
-                              <p> Hotline: 0888 70 8284 - 0936 11 7080 (zalo)</p>
-                              </p>
-                           </li>
-                        </ul>
-                        <div class="hiring-box">
-                           <strong class="title">Chào bạn!</strong>
-                           <p>Mọi thắc mắc bạn hãy gửi về mail của chúng tôi <strong>3tmobile@webextrasite.com</strong> chúng tôi sẽ giải đáp cho bạn.</p>
-                           <p><a href="." class="arrow-link"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Về trang chủ</a></p>
+                      <?php endforeach; ?>
+                  <?php else: ?>
+                      <tr>
+                        <td colspan="6" class="text-center">Giỏ hàng của bạn đang trống.</td>
+                      </tr>
+                  <?php endif; ?>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="6" class="textright_text">
+                        <div class="sum_price_all">
+                          <span class="text_price">Tổng tiền thanh toán</span>:
+                          <span class="text_price color_red total-price"><?php echo number_format($total, 0, ',', '.'); ?> đ</span>
                         </div>
+                      </td>
+                    </tr>
+                  </tfoot>
+               </table>
+            </div>
+            <div class="contact_form">
+               <div class="contact_left">
+                  <div class="ch-contacts-details">
+                     <ul class="contact-list">
+                        <li class="addr">
+                           <strong class="title">Thông tin liên hệ</strong>
+                           <p>Hotline: 1800 1525</p>
+                           <p>Email: support@hippocoffee.com.vn</p>
+                           <p>Giờ làm việc: 8:00 - 22:00</p>
+                        </li>
+                     </ul>
+                     <div class="hiring-box">
+                        <strong class="title">Chính sách thanh toán</strong>
+                        <p>- Thanh toán khi nhận hàng (COD)</p>
+                        <p>- Thanh toán qua ngân ngân hàng</p>
+                        <p>- Thanh toán qua ví điện tử momo</p>
                      </div>
                   </div>
-                  <div class="contact_right">
-                     <div class="form_contact_in">
-                        <div class="box_contact">
-                           <form name="FormDatHang" method="post" action="gio-hang/">
-                              <div class="content-box_contact">
-                                 <div class="row">
-                                    <div class="input">
-                                       <label>Họ và tên: <span style="color:red;">*</span></label>
-                                       <input type="text" name="txtHoTen" required class="clsip">
-                                    </div>
-                                    <div class="clear"></div>
+               </div>
+               <div class="contact_right">
+                  <div class="form_contact_in">
+                     <div class="box_contact">
+                        <form name="FormDatHang" method="post" action="gio-hang/">
+                           <div class="content-box_contact">
+                              <div class="row">
+                                 <div class="input">
+                                    <label>Họ và tên: <span style="color:red;">*</span></label>
+                                    <input type="text" name="txtHoTen" required class="clsip" placeholder="Nhập họ và tên">
                                  </div>
-                                 <!---row---->
-                                 <div class="row">
-                                    <div class="input">
-                                       <label>Số điện thoại: <span style="color:red;">*</span></label>
-                                       <input type="text" name="txtDienThoai" required onkeydown="return checkIt(event)" class="clsip">
-                                    </div>
-                                    <div class="clear"></div>
-                                 </div>
-                                 <!---row---->
-                                 <div class="row">
-                                    <div class="input">
-                                       <label>Địa chỉ: <span style="color:red;">*</span></label>
-                                       <input type="text" name="txtDiaChi" required class="clsip">
-                                    </div>
-                                    <div class="clear"></div>
-                                 </div>
-                                 <!---row---->
-                                 <div class="row">
-                                    <div class="input">
-                                       <label>Email: <span style="color:red;">*</span></label>
-                                       <input type="text" name="txtEmail" onchange="return KiemTraEmail(this);" required class="clsip">
-                                    </div>
-                                    <div class="clear"></div>
-                                 </div>
-                                 <!---row---->
-                                 <div class="row">
-                                    <div class="input">
-                                       <label>Nội dung: <span style="color:red;">*</span></label>
-                                       <textarea type="text" name="txtNoiDung" class="clsipa"></textarea>
-                                    </div>
-                                    <div class="clear"></div>
-                                 </div>
-                                 <!---row---->
-                                 <div class="row btnclass">
-                                    <div class="input ipmaxn ">
-                                       <input type="submit" class="btn-gui" name="frmSubmit" id="frmSubmit" value="Gửi đơn hàng">
-                                       <input type="reset" class="btn-gui" value="Nhập lại">
-                                    </div>
-                                    <div class="clear"></div>
-                                 </div>
-                                 <!---row---->
-                                 <div class="clear"></div>
                               </div>
-                           </form>
-                        </div>
+                              <div class="row">
+                                 <div class="input">
+                                    <label>Số điện thoại: <span style="color:red;">*</span></label>
+                                    <input type="text" name="txtDienThoai" required class="clsip" placeholder="Nhập số điện thoại">
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div class="input">
+                                    <label>Địa chỉ: <span style="color:red;">*</span></label>
+                                    <input type="text" name="txtDiaChi" required class="clsip" placeholder="Nhập địa chỉ giao hàng">
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div class="input">
+                                    <label>Email: <span style="color:red;">*</span></label>
+                                    <input type="email" name="txtEmail" required class="clsip" placeholder="Nhập email">
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div class="input">
+                                    <label>Ghi chú:</label>
+                                    <textarea name="txtNoiDung" class="clsipa" placeholder="Nhập ghi chú (nếu có)"></textarea>
+                                 </div>
+                              </div>
+                              <div class="row btnclass">
+                                 <div class="input ipmaxn">
+                                    <input type="submit" class="btn-gui" name="frmSubmit" value="Đặt hàng" id="btn-order">
+                                    <input type="reset" class="btn-gui" value="Nhập lại">
+                                 </div>
+                              </div>
+                           </div>
+                        </form>
                      </div>
                   </div>
                </div>
             </div>
          </div>
       </div>
-   </section>
+    </div>
+  </div>
+</section>
+<!-- Popup chọn phương thức thanh toán -->
+<div id="payment-modal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:12px;max-width:400px;width:90vw;padding:32px 24px;box-shadow:0 8px 32px rgba(0,0,0,0.15);position:relative;">
+    <button id="close-modal" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;">&times;</button>
+    <h2 style="color:#d32f2f;text-align:center;margin-bottom:18px;font-size:1.3rem;">Chọn phương thức thanh toán</h2>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:1.1em;">
+        <input type="radio" name="payment-method" value="cod" checked> Thanh toán khi nhận hàng (COD)
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:1.1em;">
+        <input type="radio" name="payment-method" value="bank"> Chuyển khoản
+      </label>
+    </div>
+    <div id="qr-section" style="display:none;margin-top:20px;text-align:center;">
+      <div style="margin-bottom:12px;font-weight:600;">Quét mã để chuyển khoản:</div>
+      <div style="display:flex;justify-content:center;gap:18px;">
+        <div>
+          <div style="font-size:0.95em;margin-bottom:4px;">Momo</div>
+          <img src="/public/images/qr-momo.png" alt="QR Momo" style="width:100px;height:100px;border-radius:8px;border:1px solid #eee;object-fit:cover;">
+        </div>
+        <div>
+          <div style="font-size:0.95em;margin-bottom:4px;">Ngân hàng</div>
+          <img src="/public/images/qr-bank.png" alt="QR Ngân hàng" style="width:100px;height:100px;border-radius:8px;border:1px solid #eee;object-fit:cover;">
+        </div>
+      </div>
+    </div>
+    <button id="confirm-payment" style="margin-top:28px;width:100%;background:linear-gradient(90deg,#d32f2f 60%,#8B0000 100%);color:#fff;font-weight:700;font-size:1.1em;padding:12px 0;border:none;border-radius:8px;cursor:pointer;">Xác nhận</button>
+  </div>
+</div>
+<script>
+document.querySelectorAll('.inputsoluong').forEach(function(input) {
+    input.addEventListener('input', function() {
+        var price = parseInt(input.getAttribute('data-price'));
+        var qty = parseInt(input.value) || 1;
+        var total = price * qty;
+        var totalStr = total.toLocaleString('vi-VN') + ' đ';
+        var row = input.closest('tr');
+        row.querySelector('.item-total').textContent = totalStr;
+        var sum = 0;
+        document.querySelectorAll('.inputsoluong').forEach(function(ip) {
+            var p = parseInt(ip.getAttribute('data-price'));
+            var q = parseInt(ip.value) || 1;
+            sum += p * q;
+        });
+        document.querySelector('.total-price').textContent = sum.toLocaleString('vi-VN') + ' đ';
+    });
+});
+// Hiển thị popup khi ấn Đặt hàng
+const btnOrder = document.getElementById('btn-order');
+const modal = document.getElementById('payment-modal');
+const closeModal = document.getElementById('close-modal');
+const qrSection = document.getElementById('qr-section');
+const radios = document.getElementsByName('payment-method');
+const confirmBtn = document.getElementById('confirm-payment');
+
+btnOrder.addEventListener('click', function(e) {
+  e.preventDefault();
+  modal.style.display = 'flex';
+});
+closeModal.addEventListener('click', function() {
+  modal.style.display = 'none';
+});
+radios.forEach(function(radio) {
+  radio.addEventListener('change', function() {
+    if (this.value === 'bank') {
+      qrSection.style.display = 'block';
+    } else {
+      qrSection.style.display = 'none';
+    }
+  });
+});
+confirmBtn.addEventListener('click', function() {
+  modal.style.display = 'none';
+  alert('Cảm ơn bạn đã đặt hàng!');
+});
+// Đóng popup khi click ra ngoài
+modal.addEventListener('click', function(e) {
+  if (e.target === modal) modal.style.display = 'none';
+});
+// Xóa sản phẩm khỏi giỏ hàng
+const deleteBtns = document.querySelectorAll('.actions .btn_df');
+deleteBtns.forEach(function(btn) {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    const row = btn.closest('tr');
+    row.remove();
+    // Cập nhật lại tổng tiền
+    let sum = 0;
+    document.querySelectorAll('.inputsoluong').forEach(function(ip) {
+      if (ip.closest('tr')) { // chỉ tính các dòng còn lại
+        var p = parseInt(ip.getAttribute('data-price'));
+        var q = parseInt(ip.value) || 1;
+        sum += p * q;
+      }
+    });
+    document.querySelector('.total-price').textContent = sum.toLocaleString('vi-VN') + ' đ';
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.remove-from-cart').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const productId = this.getAttribute('data-product-id');
+            if (!confirm('Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?')) return;
+            fetch(`${Base_URL}CartController/remove`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `product_id=${productId}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // Xóa dòng sản phẩm khỏi bảng
+                    const row = this.closest('tr');
+                    row.parentNode.removeChild(row);
+                    // Cập nhật số lượng giỏ hàng trên header
+                    const cartCount = document.querySelector('.cart-count');
+                    if (cartCount) cartCount.textContent = data.cart_count;
+                    // Cập nhật lại tổng tiền
+                    let sum = 0;
+                    document.querySelectorAll('.item-total').forEach(function(span) {
+                        sum += parseInt(span.textContent.replace(/\D/g, '')) || 0;
+                    });
+                    document.querySelector('.total-price').textContent = sum.toLocaleString('vi-VN') + ' đ';
+                } else {
+                    alert(data.message || 'Xóa sản phẩm thất bại!');
+                }
+            });
+        });
+    });
+});
+</script>

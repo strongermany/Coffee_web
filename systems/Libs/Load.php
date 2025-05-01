@@ -11,7 +11,7 @@
             include 'apps/Views/'.$fileName.'.php';
         }
         public function model($fileName){
-            include 'apps/Models/'.$fileName.'.php';
+            include_once 'apps/Models/'.$fileName.'.php';
             return new $fileName();
         }
     }

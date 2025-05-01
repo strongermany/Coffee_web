@@ -1,8 +1,9 @@
 <?php
     class Session{
         public static function init(){
-            session_start();
-
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
         }
         public static function set($key,$value){
             $_SESSION[$key]= $value;
@@ -28,7 +29,10 @@
         }
 
         public static function unset($key){
-            session_unset($key);
+            // Xóa một session key cụ thể
+            if(isset($_SESSION[$key])) {
+                unset($_SESSION[$key]);
+            }
         }
     }
 ?>

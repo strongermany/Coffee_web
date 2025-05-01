@@ -1,0 +1,220 @@
+/* Navbar Container */
+.navbar {
+    padding: 0.5rem 0;
+}
+
+.navbar-logo {
+    height: 80px;
+    margin-right: 30px;
+}
+
+/* Brand/Logo */
+.navbar-brand {
+    font-family: 'Oswald', 'Roboto', Arial, sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-right: 40px;
+    color: #111 !important;
+    white-space: nowrap;
+}
+
+/* Main Navigation */
+.navbar-nav {
+    margin: 0 auto;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    gap: 18px;
+}
+
+.nav-item {
+    margin: 0 8px;
+    flex-shrink: 0;
+}
+
+.nav-link {
+    color: #111;
+    font-family: 'Roboto', 'Oswald', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+    padding: 0.5rem 1.2rem;
+    white-space: nowrap;
+}
+
+.nav-link:hover {
+    color: #333;
+}
+
+.nav-link.active {
+    color: #111;
+    font-weight: 700;
+}
+
+/* Container adjustment */
+.container {
+    max-width: 1300px;
+}
+
+/* Search Form */
+.search-form {
+    width: 250px;
+}
+
+.search-input {
+    border-radius: 20px 0 0 20px;
+    border: 1px solid #ddd;
+}
+
+.search-btn {
+    border-radius: 0 20px 20px 0;
+    background: #febd69;
+    border: 1px solid #febd69;
+}
+
+.search-btn:hover {
+    background: #f3a847;
+    border-color: #f3a847;
+}
+
+/* User Dropdown Menu */
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+    margin-right: 1rem;
+}
+
+.user-dropdown .nav-link {
+    color: #111;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-dropdown .nav-link:hover {
+    color: #333;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    min-width: 200px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 8px 0;
+    z-index: 1000;
+}
+
+.user-dropdown:hover .dropdown-content {
+    display: block;
+    animation: fadeIn 0.2s ease;
+}
+
+.dropdown-content a {
+    color: #111;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.2s;
+}
+
+.dropdown-content a i {
+    width: 20px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.dropdown-content a:hover {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Cart Badge */
+.cart-count {
+    background-color: #febd69;
+    color: #000;
+    font-size: 0.7rem;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .navbar-brand {
+        font-size: 1.5rem;
+        margin-right: 20px;
+    }
+    .nav-link {
+        font-size: 1rem;
+        padding: 0.5rem 0.8rem;
+    }
+    .navbar-nav {
+        gap: 10px;
+    }
+}
+
+@media (max-width: 991px) {
+    .navbar-collapse {
+        margin-top: 1rem;
+    }
+    .navbar-nav {
+        flex-wrap: wrap;
+        white-space: normal;
+        gap: 0;
+    }
+    .nav-item {
+        margin: 5px 0;
+        width: 100%;
+    }
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+    .nav-link {
+        font-size: 0.98rem;
+        padding: 0.5rem 0.6rem;
+    }
+    .search-form {
+        width: 100%;
+        margin-top: 1rem;
+    }
+    .user-dropdown {
+        margin: 0;
+    }
+    .dropdown-content {
+        width: 100%;
+        position: static;
+        box-shadow: none;
+        border-radius: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1rem;
+        margin-right: 10px;
+    }
+    .nav-link {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.5rem;
+    }
+} 

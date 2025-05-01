@@ -8,7 +8,11 @@
             
         }
         public function index(){
-            return $this->login();
+            Session::init();
+            if(Session::get('login') == true) {
+                header("Location:".Base_URL."LoginController/Dashboard");
+            }
+            $this->load->view('cpanel/login');
         }
         public function login() {
                    
@@ -30,22 +34,21 @@
             $this->load->view('cpanel/footer');
         }
         public function authentication_login(){
-            $username = $_POST['username'];
-            $password = $_POST['password'];
+            $username = $_POST['Username'];
+            $password = $_POST['Password'];
             $table_admin = 'tbl_admin';
             $loginmodel = $this->load->model('LoginModel');
-            $count = $loginmodel->login($table_admin,$username,$password);
-            if($count == 0){
-                $message['msg']= 'User name or password is incorrect';
-                header("Location:".Base_URL."LoginController/login");
-            }else{
-                $result =$loginmodel->getLogin($table_admin,$username,$password);
+            
+            $count = $loginmodel->login($table_admin, $username, $password);
+            if($count == 0) {
+                $message['msg'] = 'Username or password is incorrect';
+                header("Location:".Base_URL."LoginController");
+            } else {
+                $result = $loginmodel->getLogin($table_admin, $username, $password);
                 Session::init();
-                Session::set('login',true);//check user login or not 
-                Session::set('Admin_name',$result[0]['Admin_name']);
-                Session::set('Admin_Id',$result[0]['Admin_Id']);
-                //cho $result[0]['Admin_name'];
-                // echo $result[0]['password'];
+                Session::set('login', true);
+                Session::set('admin_name', $result[0]['admin_name']);
+                Session::set('admin_id', $result[0]['admin_id']);
                 header("Location:".Base_URL."LoginController/Dashboard");
             }
         }
@@ -54,6 +57,18 @@
             Session::destroy();
             header("Location:".Base_URL."LoginController");
            
+        }
+
+        public function choice() {
+            $this->load->view('login_choice');
+        }
+
+        public function customer() {
+            $this->load->view('login', ['type' => 'customer']);
+        }
+
+        public function admin() {
+            $this->load->view('login', ['type' => 'admin']);
         }
 
     }

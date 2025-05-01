@@ -1,0 +1,204 @@
+.edit-profile-page body {
+    background: #f7f3ef;
+    font-family: 'Roboto', Arial, sans-serif;
+}
+
+.edit-profile-page .profile-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(108, 56, 39, 0.08);
+    padding: 0 0 30px 0;
+}
+
+.edit-profile-page .profile-header {
+    background: linear-gradient(90deg, #a9744f 0%, #e1bc91 100%);
+    border-radius: 14px 14px 0 0;
+    padding: 32px 40px 24px 40px;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(108, 56, 39, 0.07);
+    margin-bottom: 0;
+}
+
+.edit-profile-page .profile-header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin: 0;
+    color: #fff;
+}
+
+.edit-profile-page .profile-content {
+    display: flex;
+    gap: 32px;
+    padding: 32px 40px 0 40px;
+}
+
+.edit-profile-page .profile-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+}
+
+.edit-profile-page .profile-nav {
+    background: #f5eee6;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(108, 56, 39, 0.06);
+    overflow: hidden;
+}
+
+.edit-profile-page .nav-item {
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #e1bc91;
+    color: #6c3827;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+}
+
+.edit-profile-page .nav-item:last-child {
+    border-bottom: none;
+}
+
+.edit-profile-page .nav-item i {
+    font-size: 20px;
+    color: #a9744f;
+    transition: color 0.2s;
+}
+
+.edit-profile-page .nav-item.active, .edit-profile-page .nav-item:hover {
+    background: #e1bc91;
+    color: #6c3827;
+}
+
+.edit-profile-page .nav-item.active i, .edit-profile-page .nav-item:hover i {
+    color: #6c3827;
+}
+
+.edit-profile-page .profile-main {
+    flex: 1;
+}
+
+.edit-profile-page .profile-section {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 1px 6px rgba(108, 56, 39, 0.07);
+    padding: 32px 28px;
+    margin-bottom: 28px;
+}
+
+.edit-profile-page .profile-section h2 {
+    font-size: 1.3rem;
+    color: #a9744f;
+    margin-bottom: 22px;
+    font-weight: 700;
+    border-bottom: 1px solid #e1bc91;
+    padding-bottom: 10px;
+}
+
+.edit-profile-page .edit-form .form-group {
+    margin-bottom: 20px;
+}
+
+.edit-profile-page .edit-form label {
+    display: block;
+    font-size: 0.98rem;
+    color: #6c3827;
+    margin-bottom: 7px;
+    font-weight: 500;
+}
+
+.edit-profile-page .edit-form input[type="text"],
+.edit-profile-page .edit-form input[type="email"],
+.edit-profile-page .edit-form input[type="tel"],
+.edit-profile-page .edit-form textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #e1bc91;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #f7f3ef;
+    color: #6c3827;
+    transition: border 0.2s;
+}
+
+.edit-profile-page .edit-form input:focus,
+.edit-profile-page .edit-form textarea:focus {
+    border-color: #a9744f;
+    outline: none;
+}
+
+.edit-profile-page .edit-form textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+.edit-profile-page .form-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 18px;
+}
+
+.edit-profile-page .save-btn {
+    background: linear-gradient(90deg, #a9744f 0%, #e1bc91 100%);
+    color: #fff;
+    border: none;
+    padding: 10px 28px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(108, 56, 39, 0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.edit-profile-page .save-btn:hover {
+    background: linear-gradient(90deg, #e1bc91 0%, #a9744f 100%);
+    box-shadow: 0 4px 16px rgba(108, 56, 39, 0.13);
+}
+
+.edit-profile-page .cancel-btn {
+    background: #fff;
+    color: #a9744f;
+    border: 1px solid #a9744f;
+    padding: 10px 22px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+
+.edit-profile-page .cancel-btn:hover {
+    background: #f5eee6;
+    color: #6c3827;
+}
+
+@media (max-width: 900px) {
+    .edit-profile-page .profile-content {
+        flex-direction: column;
+        padding: 24px 10px 0 10px;
+    }
+    .edit-profile-page .profile-sidebar {
+        width: 100%;
+        margin-bottom: 18px;
+    }
+}
+
+@media (max-width: 600px) {
+    .edit-profile-page .profile-header, .edit-profile-page .profile-content, .edit-profile-page .profile-section {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .edit-profile-page .profile-header {
+        padding-top: 18px;
+        padding-bottom: 12px;
+    }
+    .edit-profile-page .profile-section {
+        padding: 18px 8px;
+    }
+}

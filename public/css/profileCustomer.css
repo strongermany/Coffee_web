@@ -1,0 +1,189 @@
+/* Profile Container */
+.profile-page .profile-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.profile-page .profile-header {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+}
+
+.profile-page .profile-header h1 {
+    font-size: 28px;
+    color: #0a305f;
+    font-weight: 500;
+}
+
+/* Profile Content Layout */
+.profile-page .profile-content {
+    display: flex;
+    gap: 30px;
+}
+
+/* Sidebar Styles */
+.profile-page .profile-sidebar {
+    width: 250px;
+    flex-shrink: 0;
+}
+
+.profile-page .profile-nav {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.profile-page .nav-item {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid #eee;
+}
+
+.profile-page .nav-item:last-child {
+    border-bottom: none;
+}
+
+.profile-page .nav-item i {
+    font-size: 18px;
+    color: #666;
+}
+
+.profile-page .nav-item span {
+    font-size: 14px;
+    color: #333;
+}
+
+.profile-page .nav-item:hover {
+    background-color: #f5f5f5;
+}
+
+.profile-page .nav-item.active {
+    background-color: #febd69;
+}
+
+.profile-page .nav-item.active i,
+.profile-page .nav-item.active span {
+    color: #232f3e;
+}
+
+/* Main Content Styles */
+.profile-page .profile-main {
+    flex: 1;
+}
+
+.profile-page .profile-section {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.profile-page .profile-section h2 {
+    font-size: 20px;
+    color: #232f3e;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Profile Info Styles */
+.profile-page .profile-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.profile-page .info-group {
+    margin-bottom: 15px;
+}
+
+.profile-page .info-group label {
+    display: block;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.profile-page .info-group p {
+    font-size: 16px;
+    color: #232f3e;
+    margin: 0;
+}
+
+/* Button Styles */
+.profile-page .edit-profile-btn {
+    grid-column: 1 / -1;
+    background: #febd69;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    color: #232f3e;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.profile-page .edit-profile-btn:hover {
+    background: #f3a847;
+}
+
+/* Recent Orders Section */
+.profile-page .recent-orders {
+    padding: 20px 0;
+}
+
+.profile-page .no-orders {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-page .profile-content {
+        flex-direction: column;
+    }
+
+    .profile-page .profile-sidebar {
+        width: 100%;
+    }
+
+    .profile-page .profile-info {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Amazon-like Colors */
+:root {
+    --amazon-orange: #febd69;
+    --amazon-dark: #232f3e;
+    --amazon-light: #f5f5f5;
+    --amazon-hover: #f3a847;
+}
+
+/* Additional Hover Effects */
+.profile-page .nav-item:hover i {
+    transform: scale(1.1);
+}
+
+.profile-page .edit-profile-btn:active {
+    transform: translateY(1px);
+}
+
+/* Box Shadow Effects */
+.profile-page .profile-section {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.profile-page .profile-section:hover {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
