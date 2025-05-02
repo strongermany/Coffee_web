@@ -51,15 +51,29 @@
             return $result ? $result : null;
         }
         
-        public function insert($table ,$data){
-            $keys = implode(",",array_keys($data));
-            $values = ":".implode(", :",array_keys($data));
-            $sql = "Insert into $table($keys) values($values)";
-            $statement = $this->prepare($sql);
-            foreach($data as $key => $value){
-                $statement->bindValue(":$key",$value);
+        public function insert($table, $data) {
+            try {
+                $keys = implode(",", array_keys($data));
+                $values = ":" . implode(", :", array_keys($data));
+                $sql = "INSERT INTO $table($keys) VALUES($values)";
+                
+                $statement = $this->prepare($sql);
+                
+                foreach($data as $key => $value) {
+                    $statement->bindValue(":$key", $value);
+                }
+                
+                if (!$statement->execute()) {
+                    $error = $statement->errorInfo();
+                    error_log("Database insert error: " . print_r($error, true));
+                    return false;
+                }
+                
+                return true;
+            } catch (PDOException $e) {
+                error_log("PDO insert error: " . $e->getMessage());
+                return false;
             }
-            return $statement->execute();
         }
 
         public function update($table, $data, $cond, $condData = array()) {
@@ -81,13 +95,22 @@
             return $statement->execute();
         }
 
-        public function delete($table,$cond,$data = array(),$limit = 1){
-            $sql = "Delete from $table Where $cond Limit $limit";
-            $statement = $this->prepare($sql);
-            foreach($data as $key => $value){
-                $statement->bindValue($key,$value);
+        public function delete($table, $cond, $data = array(), $limit = 1) {
+            try {
+                $sql = "DELETE FROM $table WHERE $cond LIMIT $limit";
+                $statement = $this->prepare($sql);
+                
+                if (!empty($data)) {
+                    foreach($data as $key => $value) {
+                        $statement->bindValue($key + 1, $value);
+                    }
+                }
+                
+                return $statement->execute();
+            } catch (PDOException $e) {
+                error_log("Database delete error: " . $e->getMessage());
+                return false;
             }
-            return $statement->execute();
         }
 
         public function affectedRows($sql,$username,$password){

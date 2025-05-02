@@ -21,10 +21,9 @@ if (!empty($_GET['msg'])) {
                 <label for="exampleInputEmail1" class="form-label">Category</label>
                 <input type="text"  value="<?php echo $cate['Category'] ?>"  name="Category" class="form-control" aria-describedby="emailHelp">
             </div>
-            <div class="mb-3">
-                <label class="form-label">Description</label>
-                <textarea name="Description" style="resize: none;" row="5" class="form-control"><?php echo $cate['Descript_Cate'] ?></textarea>
-                
+            <div class="form-group">
+                <label for="description" class="form-label">Description</label>
+                <textarea name="Description" id="description" class="form-control" required><?php echo $cate['Descript_Cate'] ?></textarea>
             </div>
 
             <button type="submit" class="btn btn-primary">Update</button>
@@ -35,3 +34,17 @@ if (!empty($_GET['msg'])) {
 
 
 </div>
+
+<script>
+    // Initialize CKEditor
+    ClassicEditor
+        .create(document.querySelector('#description'), {
+            toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|', 'outdent', 'indent', '|', 'blockQuote', 'insertTable', 'undo', 'redo'],
+            language: 'en'
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+    // Existing JavaScript code
+</script>

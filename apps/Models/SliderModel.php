@@ -17,8 +17,8 @@ class SliderModel extends BaseModel {
     }
 
     public function getSliderById($id) {
-        $sql = "SELECT * FROM $this->table WHERE id = :id";
-        return $this->db->select($sql, array(':id' => $id));
+        $sql = "SELECT * FROM $this->table WHERE id = ?";
+        return $this->db->select($sql, array($id));
     }
 
     public function insertSlider($data) {
@@ -32,9 +32,8 @@ class SliderModel extends BaseModel {
 
     public function updateSlider($data, $id) {
         try {
-            $cond = "id = :id";
-            $data[':id'] = $id;
-            return $this->db->update($this->table, $data, $cond);
+            $cond = "id = ?";
+            return $this->db->update($this->table, $data, $cond, array($id));
         } catch (Exception $e) {
             error_log("Error updating slider: " . $e->getMessage());
             return false;
@@ -43,9 +42,8 @@ class SliderModel extends BaseModel {
 
     public function deleteSlider($id) {
         try {
-            $cond = "id = :id";
-            $data = array(':id' => $id);
-            return $this->db->delete($this->table, $cond, $data);
+            $cond = "id = ?";
+            return $this->db->delete($this->table, $cond, array($id));
         } catch (Exception $e) {
             error_log("Error deleting slider: " . $e->getMessage());
             return false;

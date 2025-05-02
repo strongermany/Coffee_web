@@ -12,22 +12,22 @@ class SliderController extends BaseController {
         $data['sliders'] = $this->sliderModel->getAllSliders();
         $this->load->view('cpanel/header');
         $this->load->view('cpanel/menu');
-        $this->load->view('cpanel/slider/list', $data);
+        $this->load->view('cpanel/slider/add', $data);
         $this->load->view('cpanel/footer');
     }
 
     public function add() {
         Session::checkSession();
+        $data['sliders'] = $this->sliderModel->getAllSliders();
         $this->load->view('cpanel/header');
         $this->load->view('cpanel/menu');
-        $this->load->view('cpanel/slider/add');
+        $this->load->view('cpanel/slider/add', $data);
         $this->load->view('cpanel/footer');
     }
 
     public function insert() {
         Session::checkSession();
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $title = $_POST['title'];
             $image = $_FILES['image'];
             
             // Kiểm tra thư mục upload
@@ -43,8 +43,8 @@ class SliderController extends BaseController {
             $unique_name = uniqid() . '_' . time() . '.' . $file_ext;
             $upload_path = $upload_dir . $unique_name;
 
-            if (empty($title) || empty($file_name)) {
-                $message['msg'] = "Fields cannot be empty";
+            if (empty($file_name)) {
+                $message['msg'] = "Please select an image";
                 header("Location:".Base_URL."SliderController/add?msg=".urlencode(serialize($message)));
                 exit;
             }
@@ -60,25 +60,40 @@ class SliderController extends BaseController {
             // Upload file
             if (move_uploaded_file($file_tmp, $upload_path)) {
                 $data = array(
-                    'title' => $title,
                     'image' => $unique_name,
                     'status' => 1
                 );
 
-                $result = $this->sliderModel->insertSlider($data);
-                
-                if ($result) {
-                    $message['msg'] = "Added slider successfully";
-                    header("Location:".Base_URL."SliderController?msg=".urlencode(serialize($message)));
-                } else {
-                    // Nếu thêm vào database thất bại, xóa file đã upload
-                    unlink($upload_path);
-                    $message['msg'] = "Failed to add slider to database";
+                try {
+                    $result = $this->sliderModel->insertSlider($data);
+                    
+                    if ($result) {
+                        $message['msg'] = "Added slider successfully";
+                        header("Location:".Base_URL."SliderController?msg=".urlencode(serialize($message)));
+                        exit;
+                    } else {
+                        // Nếu thêm vào database thất bại, xóa file đã upload
+                        if (file_exists($upload_path)) {
+                            unlink($upload_path);
+                        }
+                        error_log("Failed to insert slider data: " . print_r($data, true));
+                        $message['msg'] = "Failed to add slider to database";
+                        header("Location:".Base_URL."SliderController/add?msg=".urlencode(serialize($message)));
+                        exit;
+                    }
+                } catch (Exception $e) {
+                    if (file_exists($upload_path)) {
+                        unlink($upload_path);
+                    }
+                    error_log("Exception when inserting slider: " . $e->getMessage());
+                    $message['msg'] = "Error occurred while adding slider";
                     header("Location:".Base_URL."SliderController/add?msg=".urlencode(serialize($message)));
+                    exit;
                 }
             } else {
                 $message['msg'] = "Failed to upload image";
                 header("Location:".Base_URL."SliderController/add?msg=".urlencode(serialize($message)));
+                exit;
             }
         }
     }
@@ -155,32 +170,83 @@ class SliderController extends BaseController {
 
     public function delete($id) {
         Session::checkSession();
-        $slider = $this->sliderModel->getSliderById($id);
-        if (!empty($slider[0]['image'])) {
-            $file_path = "public/uploads/slider/" . $slider[0]['image'];
-            if (file_exists($file_path)) {
-                unlink($file_path);
+        
+        $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+        $response = array('success' => false, 'message' => '');
+        
+        try {
+            if (empty($id)) {
+                throw new Exception("Invalid slider ID");
             }
+
+            $slider = $this->sliderModel->getSliderById($id);
+            if (empty($slider)) {
+                throw new Exception("Slider not found");
+            }
+
+            // Xóa file ảnh nếu tồn tại
+            if (!empty($slider[0]['image'])) {
+                $file_path = "public/uploads/slider/" . $slider[0]['image'];
+                if (file_exists($file_path)) {
+                    if (!unlink($file_path)) {
+                        error_log("Failed to delete file: " . $file_path);
+                        throw new Exception("Failed to delete slider image");
+                    }
+                }
+            }
+
+            $result = $this->sliderModel->deleteSlider($id);
+            if (!$result) {
+                throw new Exception("Failed to delete slider from database");
+            }
+
+            $response['success'] = true;
+            $response['message'] = "Deleted slider successfully";
+
+        } catch (Exception $e) {
+            $response['success'] = false;
+            $response['message'] = $e->getMessage();
+            error_log("Slider deletion error: " . $e->getMessage());
         }
-        $result = $this->sliderModel->deleteSlider($id);
-        if ($result) {
-            $message['msg'] = "Deleted slider successfully";
+
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode($response);
+            exit;
         } else {
-            $message['msg'] = "Failed to delete slider";
+            $message['msg'] = $response['message'];
+            header("Location:".Base_URL."SliderController?msg=".urlencode(serialize($message)));
+            exit;
         }
-        header("Location:".Base_URL."SliderController?msg=".urlencode(serialize($message)));
     }
 
     public function status($id) {
+        Session::init();
         Session::checkSession();
+        
+        if (empty($id)) {
+            $message['msg'] = "Invalid slider ID";
+            header("Location:".Base_URL."SliderController?msg=".urlencode(serialize($message)));
+            exit;
+        }
+
         $slider = $this->sliderModel->getSliderById($id);
+        if (empty($slider)) {
+            $message['msg'] = "Slider not found";
+            header("Location:".Base_URL."SliderController?msg=".urlencode(serialize($message)));
+            exit;
+        }
+
         $status = ($slider[0]['status'] == 1) ? 0 : 1;
         $result = $this->sliderModel->updateStatus($id, $status);
+        
         if ($result) {
             $message['msg'] = "Updated status successfully";
         } else {
             $message['msg'] = "Failed to update status";
         }
+        
         header("Location:".Base_URL."SliderController?msg=".urlencode(serialize($message)));
+        exit;
     }
 } 
