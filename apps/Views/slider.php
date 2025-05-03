@@ -61,10 +61,7 @@
                         <div class="image-container">
                             <img src="<?php echo Base_URL; ?>public/uploads/slider/<?php echo $slider['image']; ?>" 
                                  alt="<?php echo $slider['title']; ?>">
-                            <div class="carousel-caption d-none d-md-block">
-                                <h1 class="animate__animated animate__slideInDown" style="color:rgb(43, 110, 22)">
-                                    <b><?php echo $slider['title']; ?></b>
-                                </h1>
+                            <div class="carousel-caption">
                                 <button class="mt-3 p-4 px-5 btn font-weight-bold button-1 animate__animated animate__zoomIn">
                                     Xem thêm
                                 </button>
@@ -77,13 +74,7 @@
                 <div class="carousel-item active">
                     <div class="image-container">
                         <img src="<?php echo Base_URL; ?>public/images/BANNER1 (3).jpg" alt="Default Slider">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h1 class="animate__animated animate__slideInDown" style="color:rgb(43, 110, 22)">
-                                <b>CAFE MỘC NGUYÊN CHẤT</b>
-                            </h1>
-                            <h3 class="animate__animated animate__slideInDown">
-                                Trồng trọt - chế biến - thu hoạch từ vùng đất Tây Nguyên
-                            </h3>
+                        <div class="carousel-caption">
                             <button class="mt-3 p-4 px-5 btn font-weight-bold button-1 animate__animated animate__zoomIn">
                                 Xem thêm
                             </button>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thông tin tài khoản</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <link rel="stylesheet" href="<?php echo Base_URL?>public/css/profileCustomer.css?v=123">
 </head>
@@ -82,209 +82,517 @@
     </div>
 
     <!-- Modal chỉnh sửa thông tin -->
-    <div id="editProfileModal" class="edit-profile-modal">
-        <div class="edit-profile-modal-overlay"></div>
-        <div class="edit-profile-modal-content">
-            <h2>Chỉnh sửa thông tin</h2>
-            <form id="editProfileForm" class="edit-form">
-                <div class="form-group">
-                    <label>Họ và tên</label>
-                    <input type="text" name="customer_name" value="<?php echo $customerInfo['customer_name']; ?>" required>
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" name="email" value="<?php echo $customerInfo['email']; ?>" required>
-                </div>
-                <div class="form-group">
-                    <label>Số điện thoại</label>
-                    <input type="tel" name="phone" value="<?php echo $customerInfo['phone']; ?>" required>
-                </div>
-                <div class="form-group">
-                    <label>Địa chỉ</label>
-                    <textarea name="address" rows="3"><?php echo $customerInfo['address']; ?></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="save-btn">Lưu thay đổi</button>
-                    <button type="button" class="cancel-btn" id="closeEditProfileModal">Hủy</button>
-                </div>
-            </form>
+    <div id="editProfileModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Chỉnh sửa thông tin</h2>
+                <button class="modal-close" id="closeEditProfileModal">&times;</button>
+            </div>
+            <div class="modal-content">
+                <form id="editProfileForm" class="edit-form">
+                    <div class="form-group">
+                        <label>Họ và tên</label>
+                        <input type="text" name="customer_name" value="<?php echo $customerInfo['customer_name']; ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" value="<?php echo $customerInfo['email']; ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Số điện thoại</label>
+                        <input type="tel" name="phone" value="<?php echo $customerInfo['phone']; ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Địa chỉ</label>
+                        <textarea name="address" rows="3"><?php echo $customerInfo['address']; ?></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">Lưu thay đổi</button>
+                        <button type="button" class="cancel-btn" id="closeEditProfileModalBtn">Hủy</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    <div id="changePasswordModal" class="edit-profile-modal">
-        <div class="edit-profile-modal-overlay"></div>
-        <div class="edit-profile-modal-content">
-            <h2>Đổi mật khẩu</h2>
-            <form id="changePasswordForm" class="edit-form">
-                <div class="form-group">
-                    <label>Mật khẩu hiện tại</label>
-                    <input type="password" name="current_password" required>
-                </div>
-                <div class="form-group">
-                    <label>Mật khẩu mới</label>
-                    <input type="password" name="new_password" required>
-                </div>
-                <div class="form-group">
-                    <label>Xác nhận mật khẩu mới</label>
-                    <input type="password" name="confirm_password" required>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="save-btn">Đổi mật khẩu</button>
-                    <button type="button" class="cancel-btn" id="closeChangePasswordModal">Hủy</button>
-                </div>
-            </form>
+
+    <!-- Modal đổi mật khẩu -->
+    <div id="changePasswordModal" class="modal password-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2><i class="fas fa-lock"></i> Đổi mật khẩu</h2>
+                <button class="modal-close" id="closeChangePasswordModal">&times;</button>
+            </div>
+            <div class="modal-content">
+                <form id="changePasswordForm" class="edit-form">
+                    <div class="form-group password-group">
+                        <label>Mật khẩu hiện tại</label>
+                        <div class="password-input-group">
+                            <input type="password" name="current_password" required>
+                            <button type="button" class="toggle-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group password-group">
+                        <label>Mật khẩu mới</label>
+                        <div class="password-input-group">
+                            <input type="password" name="new_password" required>
+                            <button type="button" class="toggle-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group password-group">
+                        <label>Xác nhận mật khẩu mới</label>
+                        <div class="password-input-group">
+                            <input type="password" name="confirm_password" required>
+                            <button type="button" class="toggle-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">
+                            <i class="fas fa-key"></i> Đổi mật khẩu
+                        </button>
+                        <button type="button" class="cancel-btn" id="closeChangePasswordModalBtn">
+                            <i class="fas fa-times"></i> Hủy
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
     <style>
-    .edit-profile-modal {
+    /* Common Modal Animation Styles */
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95) translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+
+    @keyframes modalOverlayFadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* Base Modal Styles */
+    .modal {
         display: none;
         position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
-        z-index: 9999;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+        font-family: 'Oswald', sans-serif;
+    }
+
+    .modal.active {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(108, 56, 39, 0.3);
+        backdrop-filter: blur(5px);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .modal.active .modal-overlay {
+        opacity: 1;
+        animation: modalOverlayFadeIn 0.3s ease forwards;
+    }
+
+    .modal-container {
+        position: relative;
+        width: 90%;
+        max-width: 500px;
+        margin: 20px;
+        background: #f7f3ef;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(108, 56, 39, 0.15);
+        opacity: 0;
+        transform: scale(0.95) translateY(-20px);
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .modal.active .modal-container {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        animation: modalFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px 32px;
+        border-bottom: 2px solid rgba(169, 116, 79, 0.1);
+        background: #fff;
+        border-radius: 16px 16px 0 0;
+    }
+
+    .modal-header h2 {
+        margin: 0;
+        color: #6c3827;
+        font-size: 1.8rem;
+        font-weight: 500;
+        font-family: 'Oswald', sans-serif;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .modal-header h2 i {
+        color: #a9744f;
+    }
+
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 28px;
+        color: #a9744f;
+        cursor: pointer;
+        transition: all 0.3s;
+        width: 40px;
+        height: 40px;
+        display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: 50%;
+        padding: 0;
+        margin: -8px;
     }
-    .edit-profile-modal.active {
-        display: flex;
+
+    .modal-close:hover {
+        background: #f8e8dd;
+        color: #6c3827;
+        transform: rotate(90deg);
     }
-    .edit-profile-modal-overlay {
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0,0,0,0.25);
-        z-index: 1;
+
+    .modal-content {
+        padding: 32px;
+        background: #f7f3ef;
+        border-radius: 0 0 16px 16px;
     }
-    .edit-profile-modal-content {
-        position: relative;
-        z-index: 2;
+
+    /* Form Styles */
+    .edit-form .form-group {
+        margin-bottom: 24px;
+        transition: all 0.3s ease;
+    }
+
+    .edit-form .form-group:hover {
+        transform: translateX(5px);
+    }
+
+    .edit-form label {
+        display: block;
+        margin-bottom: 10px;
+        color: #6c3827;
+        font-weight: 500;
+        font-size: 1.1rem;
+        letter-spacing: 0.3px;
+        transition: color 0.3s ease;
+    }
+
+    .edit-form .form-group:hover label {
+        color: #a9744f;
+    }
+
+    .edit-form input,
+    .edit-form textarea {
+        width: 100%;
+        padding: 14px 16px;
+        border: 2px solid #e1bc91;
+        border-radius: 10px;
+        font-size: 1rem;
         background: #fff;
-        border-radius: 14px;
-        box-shadow: 0 4px 24px rgba(108, 56, 39, 0.18);
-        padding: 32px 28px;
-        min-width: 340px;
-        max-width: 95vw;
-        width: 400px;
-        animation: modalFadeIn 0.2s;
+        color: #6c3827;
+        transition: all 0.3s ease;
+        font-family: 'Roboto', sans-serif;
     }
-    @keyframes modalFadeIn {
-        from { opacity: 0; transform: translateY(40px); }
-        to { opacity: 1; transform: none; }
+
+    .edit-form input:focus,
+    .edit-form textarea:focus {
+        border-color: #a9744f;
+        box-shadow: 0 0 0 3px rgba(169, 116, 79, 0.15);
+        transform: translateY(-2px);
     }
-    .profile-blur {
-        filter: blur(4px) brightness(0.8);
-        pointer-events: none;
-        user-select: none;
-        transition: filter 0.2s;
+
+    .form-actions {
+        display: flex;
+        gap: 16px;
+        justify-content: flex-end;
+        margin-top: 32px;
     }
-    .edit-form .form-group { margin-bottom: 18px; }
-    .edit-form label { display: block; font-weight: 500; color: #a9744f; margin-bottom: 6px; }
-    .edit-form input, .edit-form textarea {
-        width: 100%; padding: 10px 14px; border: 1px solid #e1bc91; border-radius: 6px;
-        background: #f7f3ef; color: #6c3827; font-size: 1rem; margin-bottom: 0;
-    }
-    .edit-form input:focus, .edit-form textarea:focus { border-color: #a9744f; outline: none; }
-    .form-actions { display: flex; gap: 16px; margin-top: 18px; }
-    .save-btn {
-        background: linear-gradient(90deg, #a9744f 0%, #e1bc91 100%);
-        color: #fff; border: none; padding: 10px 28px; border-radius: 6px;
-        font-size: 1rem; font-weight: 600; cursor: pointer;
-        box-shadow: 0 2px 8px rgba(108, 56, 39, 0.08);
-        transition: background 0.2s, box-shadow 0.2s;
-    }
-    .save-btn:hover {
-        background: linear-gradient(90deg, #e1bc91 0%, #a9744f 100%);
-        box-shadow: 0 4px 16px rgba(108, 56, 39, 0.13);
-    }
+
+    .save-btn,
     .cancel-btn {
-        background: #fff; color: #a9744f; border: 1px solid #a9744f;
-        padding: 10px 22px; border-radius: 6px; font-size: 1rem; font-weight: 600;
-        transition: background 0.2s, color 0.2s;
+        padding: 14px 28px;
+        border-radius: 10px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        font-family: 'Oswald', sans-serif;
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
-    .cancel-btn:hover { background: #f5eee6; color: #6c3827; }
+
+    .save-btn {
+        background: linear-gradient(135deg, #a9744f 0%, #6c3827 100%);
+        color: white;
+        border: none;
+        box-shadow: 0 4px 15px rgba(169, 116, 79, 0.2);
+    }
+
+    .save-btn:hover {
+        background: linear-gradient(135deg, #8c5e3d 0%, #522a1c 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(169, 116, 79, 0.3);
+    }
+
+    .save-btn:active {
+        transform: translateY(0);
+    }
+
+    .cancel-btn {
+        background: transparent;
+        color: #a9744f;
+        border: 2px solid #a9744f;
+    }
+
+    .cancel-btn:hover {
+        background: #f8e8dd;
+        color: #6c3827;
+        border-color: #6c3827;
+        transform: translateY(-2px);
+    }
+
+    .cancel-btn:active {
+        transform: translateY(0);
+    }
+
+    /* Blur effect */
+    .blur-background {
+        filter: blur(5px) brightness(0.95);
+        transition: filter 0.3s ease;
+    }
+
+    /* Responsive styles */
     @media (max-width: 600px) {
-        .edit-profile-modal-content { padding: 16px 6px; min-width: 0; width: 98vw; }
+        .modal-container {
+            width: 95%;
+            margin: 10px;
+        }
+        
+        .modal-header {
+            padding: 20px;
+        }
+        
+        .modal-content {
+            padding: 20px;
+        }
+        
+        .form-actions {
+            flex-direction: column;
+        }
+        
+        .save-btn,
+        .cancel-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    /* Password Modal Specific Styles */
+    .password-modal .password-input-group {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .password-input-group input {
+        padding-right: 45px;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 12px;
+        background: none;
+        border: none;
+        color: #a9744f;
+        cursor: pointer;
+        padding: 5px;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
+
+    .toggle-password:hover {
+        background: #f8e8dd;
+        color: #6c3827;
+        transform: rotate(180deg);
+    }
+
+    .password-group {
+        position: relative;
+    }
+
+    .password-group::after {
+        content: '';
+        position: absolute;
+        bottom: -12px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(to right, #e1bc91 0%, transparent 100%);
+        opacity: 0.3;
+        transition: opacity 0.3s ease;
+    }
+
+    .password-group:hover::after {
+        opacity: 0.6;
+    }
+
+    .password-group:last-of-type::after {
+        display: none;
     }
     </style>
 
     <script>
-    // Hiện modal
-    document.getElementById('openEditProfileModal').onclick = function() {
-        document.querySelector('.profile-page').classList.add('profile-blur');
-        var header = document.querySelector('.main-header');
-        if(header) header.classList.add('profile-blur');
-        var footer = document.querySelector('.main-footer');
-        if(footer) footer.classList.add('profile-blur');
-        document.getElementById('editProfileModal').classList.add('active');
-    };
-    // Đóng modal
-    document.getElementById('closeEditProfileModal').onclick = function() {
-        document.querySelector('.profile-page').classList.remove('profile-blur');
-        var header = document.querySelector('.main-header');
-        if(header) header.classList.remove('profile-blur');
-        var footer = document.querySelector('.main-footer');
-        if(footer) footer.classList.remove('profile-blur');
-        document.getElementById('editProfileModal').classList.remove('active');
-    };
-    // Gửi form AJAX
-    document.getElementById('editProfileForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        fetch('<?php echo Base_URL?>CustomerController/updateProfile', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                alert(data.message);
-                window.location.href = '<?php echo Base_URL?>CustomerController';
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Có lỗi xảy ra, vui lòng thử lại');
-        });
-    });
-    </script>
-     <script>
-    // ... existing code ...
-    // Mở modal đổi mật khẩu khi click nav-item "Đổi mật khẩu"
-    document.querySelectorAll('.nav-item').forEach(function(item) {
-        if(item.textContent.includes('Đổi mật khẩu')) {
-            item.onclick = function() {
-                document.querySelector('.profile-page').classList.add('profile-blur');
-                document.getElementById('changePasswordModal').classList.add('active');
-            };
+    document.addEventListener('DOMContentLoaded', function() {
+        // Elements
+        const editProfileModal = document.getElementById('editProfileModal');
+        const changePasswordModal = document.getElementById('changePasswordModal');
+        const mainContent = document.querySelector('.profile-page');
+        const changePasswordNavItem = document.querySelector('.nav-item:has(.fa-lock)');
+
+        // Modal functions
+        function closeModal(modal) {
+            modal.classList.remove('active');
+            mainContent.classList.remove('blur-background');
         }
-    });
-    // Đóng modal đổi mật khẩu
-    document.getElementById('closeChangePasswordModal').onclick = function() {
-        document.querySelector('.profile-page').classList.remove('profile-blur');
-        document.getElementById('changePasswordModal').classList.remove('active');
-    };
-    // Gửi form đổi mật khẩu AJAX
-    document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        fetch('<?php echo Base_URL?>CustomerController/changePassword', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert(data.message);
-            if (data.status === 'success') {
-                document.querySelector('.profile-page').classList.remove('profile-blur');
-                document.getElementById('changePasswordModal').classList.remove('active');
+
+        function togglePasswordVisibility(button) {
+            const input = button.parentElement.querySelector('input');
+            const icon = button.querySelector('i');
+            const isPassword = input.type === 'password';
+            
+            input.type = isPassword ? 'text' : 'password';
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+        }
+
+        // Event Listeners
+        document.getElementById('openEditProfileModal').addEventListener('click', () => {
+            editProfileModal.classList.add('active');
+            mainContent.classList.add('blur-background');
+        });
+
+        changePasswordNavItem.addEventListener('click', (e) => {
+            e.preventDefault();
+            changePasswordModal.classList.add('active');
+            mainContent.classList.add('blur-background');
+        });
+
+        // Close buttons
+        ['closeEditProfileModal', 'closeEditProfileModalBtn'].forEach(id => {
+            document.getElementById(id)?.addEventListener('click', () => closeModal(editProfileModal));
+        });
+
+        ['closeChangePasswordModal', 'closeChangePasswordModalBtn'].forEach(id => {
+            document.getElementById(id)?.addEventListener('click', () => closeModal(changePasswordModal));
+        });
+
+        // Close on overlay click and Escape key
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) closeModal(e.target.parentElement);
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal(editProfileModal);
+                closeModal(changePasswordModal);
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Có lỗi xảy ra, vui lòng thử lại');
+        });
+
+        // Password visibility toggles
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', () => togglePasswordVisibility(button));
+        });
+
+        // Form submissions
+        document.getElementById('editProfileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            fetch('<?php echo Base_URL ?>CustomerController/updateProfile', {
+                method: 'POST',
+                body: new FormData(this)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.status === 'success') location.reload();
+            });
+        });
+
+        document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            
+            if (formData.get('new_password') !== formData.get('confirm_password')) {
+                alert('Mật khẩu mới không khớp!');
+                return;
+            }
+            
+            if (formData.get('new_password').length < 8) {
+                alert('Mật khẩu phải có ít nhất 8 ký tự!');
+                return;
+            }
+            
+            fetch('<?php echo Base_URL ?>CustomerController/changePassword', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.status === 'success') location.reload();
+            });
         });
     });
-    // ... existing code ...
     </script>
 
 </body>

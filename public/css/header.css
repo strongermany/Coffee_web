@@ -217,4 +217,35 @@
         font-size: 0.9rem;
         padding: 0.5rem 0.5rem;
     }
+}
+
+/* Header background image */
+header {
+    position: relative;
+    background-image: url('./images/background.jpg'); /* Thay bằng đường dẫn ảnh của bạn */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    min-height: 300px; /* Có thể điều chỉnh chiều cao nếu muốn */
+}
+
+/* Overlay mờ trên hình nền để nội dung dễ đọc hơn */
+header::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.3); /* Điều chỉnh độ mờ tại đây */
+    z-index: 1;
+}
+
+header > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* Đảm bảo các thành phần trong header không bị ảnh hưởng bởi overlay */
+.navbar, .container, .navbar-logo, .navbar-brand, .navbar-nav, .d-flex {
+    position: relative;
+    z-index: 2;
 } 

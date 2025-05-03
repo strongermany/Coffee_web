@@ -1,0 +1,392 @@
+/* Navbar Container */
+.navbar {
+    padding: 0.5rem 0;
+}
+
+.navbar-logo {
+    height: 80px;
+    margin-right: 30px;
+}
+
+/* Brand/Logo */
+.navbar-brand {
+    font-family: 'Cinzel', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-right: 40px;
+    color: #fff !important;
+    white-space: nowrap;
+}
+
+/* Main Navigation */
+.navbar-nav {
+    margin: 0 auto;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    gap: 18px;
+}
+
+.nav-item {
+    margin: 0 8px;
+    flex-shrink: 0;
+}
+
+.nav-link {
+    color: #111;
+    font-family: 'Roboto', 'Oswald', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+    padding: 0.5rem 1.2rem;
+    white-space: nowrap;
+}
+
+.nav-link:hover {
+    color: #333;
+}
+
+.nav-link.active {
+    color: #111;
+    font-weight: 700;
+}
+
+/* Font và màu cho menu header */
+.navbar-nav .nav-link {
+    color: #fff !important;
+    font-family: 'Cinzel', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+    color: #fff !important;
+}
+
+.navbar-nav .nav-link.active {
+    color: #ffe4a1 !important;
+    border-bottom: none;
+}
+
+/* Container adjustment */
+.container {
+    max-width: 1300px;
+}
+
+/* Search Form */
+.d-flex.align-items-center {
+    position: relative;
+}
+.search-form {
+    display: none !important;
+    position: absolute;
+    right: 0;
+    top: 120%;
+    z-index: 2000;
+    background: #fff;
+    border-radius: 30px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+    padding: 8px 18px;
+    min-width: 240px;
+    max-width: 320px;
+    width: 100%;
+    transition: all 0.2s;
+    border: 1.5px solid #eee;
+}
+.search-form.active {
+    display: flex !important;
+}
+.search-input {
+    border-radius: 20px 0 0 20px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    padding: 6px 14px;
+    background: #fafafa;
+}
+.search-btn {
+    border-radius: 0 20px 20px 0;
+    background: #febd69;
+    border: 1px solid #febd69;
+    color: #222;
+    font-size: 1.1rem;
+    padding: 6px 16px;
+    transition: background 0.2s, color 0.2s;
+}
+.search-btn:hover {
+    background: #f3a847;
+    color: #fff;
+}
+@media (max-width: 600px) {
+    .search-form {
+        position: fixed;
+        top: 16px;
+        left: 8px;
+        right: 8px;
+        margin: 0 auto;
+        min-width: unset;
+        max-width: unset;
+        width: auto;
+        z-index: 3000;
+        padding: 6px 10px;
+        border-radius: 24px;
+    }
+    .search-input {
+        font-size: 0.95rem;
+        padding: 5px 8px;
+    }
+    .search-btn {
+        font-size: 1rem;
+        padding: 5px 10px;
+    }
+}
+
+/* User Dropdown Menu */
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+    margin-right: 1rem;
+}
+
+.user-dropdown .nav-link {
+    color: #111;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-dropdown .nav-link:hover {
+    color: #333;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    min-width: 200px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 8px 0;
+    z-index: 1000;
+}
+
+.user-dropdown:hover .dropdown-content {
+    display: block;
+    animation: fadeIn 0.2s ease;
+}
+
+.dropdown-content a {
+    color: #111;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.2s;
+}
+
+.dropdown-content a i {
+    width: 20px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.dropdown-content a:hover {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Cart Badge */
+.cart-count {
+    background-color: #febd69;
+    color: #000;
+    font-size: 0.7rem;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .navbar-brand {
+        font-size: 1.5rem;
+        margin-right: 20px;
+    }
+    .nav-link {
+        font-size: 1rem;
+        padding: 0.5rem 0.8rem;
+    }
+    .navbar-nav {
+        gap: 10px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .container.p-3 {
+        display: none !important;
+    }
+    .navbar-toggler {
+        display: block !important;
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        z-index: 1051;
+    }
+    .offcanvas {
+        display: block !important;
+        z-index: 2000;
+    }
+}
+
+@media (min-width: 992px) {
+    .container.p-3 {
+        display: flex !important;
+    }
+    .navbar-toggler,
+    .offcanvas {
+        display: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1rem;
+        margin-right: 10px;
+    }
+    .nav-link {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.5rem;
+    }
+}
+
+/* Header background image */
+header {
+    position: relative;
+    background-image: url('../images/background.jpg'); /* Thay bằng đường dẫn ảnh của bạn */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    min-height: 900px; /* Có thể điều chỉnh chiều cao nếu muốn */
+}
+
+/* Overlay mờ trên hình nền để nội dung dễ đọc hơn */
+header::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.3); /* Điều chỉnh độ mờ tại đây */
+    z-index: 1;
+}
+
+header > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* Đảm bảo các thành phần trong header không bị ảnh hưởng bởi overlay */
+.navbar, .container, .navbar-logo, .navbar-brand, .navbar-nav, .d-flex {
+    position: relative;
+    z-index: 2;
+}
+
+/* Dropdown Menu */
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    animation: fadeIn 0.2s ease;
+}
+
+.dropdown-menu {
+    background-color: rgba(70, 35, 20, 0.95); /* Màu nâu cafe pha đỏ */
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    margin-top: 0;
+}
+
+.dropdown-item {
+    color: #fff; /* Màu chữ trắng */
+    font-family: 'Cinzel', sans-serif;
+    font-size: 0.9rem;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(90, 45, 25, 0.95); /* Màu nâu đậm hơn khi hover */
+    color: #ffe4a1; /* Màu vàng nhạt khi hover */
+}
+
+.offcanvas {
+    background: #fff;
+}
+.offcanvas .nav-link, .offcanvas .dropdown-item {
+    color: #222 !important;
+    z-index: 9999;
+    position: relative;
+}
+.offcanvas .nav-link:last-child {
+    border-bottom: none;
+}
+.offcanvas .offcanvas-title {
+    font-family: 'Cinzel', serif;
+    color: #7a3a1d;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+.offcanvas .btn-close {
+    filter: none;
+}
+.offcanvas .dropdown-menu {
+    position: static !important;
+    float: none;
+    width: 100%;
+    margin-top: 0;
+    box-shadow: none;
+    background: #fff;
+    border: none;
+}
+.offcanvas .dropdown-toggle::after {
+    float: right;
+    margin-left: 8px;
+}
+.offcanvas .dropdown-item:last-child {
+    border-bottom: none;
+}
+.offcanvas .dropdown-item:hover {
+    background: #ffe4a1;
+    color: #222;
+}
+
+.offcanvas-categories-list .dropdown-item {
+    padding-left: 18px;
+    font-size: 1rem;
+    color: #222;
+    font-family: 'Cinzel', serif;
+    background: transparent;
+    border: none;
+    transition: color 0.2s, background 0.2s;
+}
+.offcanvas-categories-list .dropdown-item:hover {
+    color: #7a3a1d;
+    background: #ffe4a1;
+} 

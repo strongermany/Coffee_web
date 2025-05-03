@@ -21,7 +21,7 @@ class index extends BaseController
             'sliders' => $this->sliderModel->getActiveSliders()
         );
         $this->load->view('header', $this->headerData);
-        $this->load->view('slider', $data);
+        //$this->load->view('slider', $data);
         $this->load->view('HomeView');
         $this->load->view('footer');
     }
