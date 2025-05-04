@@ -3,12 +3,14 @@ class index extends BaseController
 {
     private $sliderModel;
     private $productModel;
+    protected $categoryModel;
 
     public function __construct()
     {
         parent::__construct();
         $this->sliderModel = $this->load->model('SliderModel');
         $this->productModel = $this->load->model('ProductModel');
+        $this->categoryModel = $this->load->model('CategoryModel');
     }
     public function index()
     {
@@ -28,8 +30,14 @@ class index extends BaseController
 
     public function menu(){
         $this->headerData = $this->getAllHeader();
+        $products = $this->productModel->getAllProducts();
+        $categories = $this->categoryModel->getAllCategories();
+        $data = [
+            'products' => $products,
+            'categories' => $categories
+        ];
         $this->load->view('header', $this->headerData);
-        $this->load->view('menu');
+        $this->load->view('menu', $data);
         $this->load->view('footer');
     }   
 

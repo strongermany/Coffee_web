@@ -248,4 +248,23 @@ header > * {
 .navbar, .container, .navbar-logo, .navbar-brand, .navbar-nav, .d-flex {
     position: relative;
     z-index: 2;
-} 
+}
+
+/* Header Background Styles */
+.header-bg {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.header-bg h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+}

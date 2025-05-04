@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,7 +23,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>TRANG CHỦ</title>
 </head>
-<header>
+<header style="background-image: url('<?php echo Base_URL . $backgroundImage; ?>');">
     
     <nav class="navbar navbar-expand-lg ">
         <div class="container p-3">

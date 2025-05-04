@@ -12,8 +12,8 @@
     <nav class="admin-navbar">
         <ul class="admin-menu">
             <li class="admin-menu-item active">
-                <a href="<?php echo Base_URL ?>LoginController/Dashboard">
-                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                <a href="<?php echo Base_URL ?>HeaderBackgroundController">
+                    <i class="fas fa-tachometer-alt"></i> background
                 </a>
             </li>
             <li class="admin-menu-item">

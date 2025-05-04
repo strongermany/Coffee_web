@@ -1,6 +1,6 @@
 <?php
 
-    class cartController extends BaseController{
+    class CartController extends BaseController{
         protected $data = array();
         private $productModel;
         private $cartModel;
@@ -22,6 +22,7 @@
             $cartItems = [];
             $total = 0;
             $cart_count = 0;
+            $customerInfo = null;
             if ($customerId) {
                 $items = $this->cartModel->getCartItems($customerId);
                 foreach ($items as $item) {
@@ -33,10 +34,17 @@
                     $total += $item['quantity'] * $item['Price_product'];
                 }
                 $cart_count = $this->cartModel->getCartOrderCount($customerId);
+                // Lấy thông tin khách hàng
+                $customerModel = $this->load->model('CustomerModel');
+                $customer = $customerModel->getCustomerById($customerId);
+                if ($customer && isset($customer[0])) {
+                    $customerInfo = $customer[0];
+                }
             }
             $data = [
                 'cartItems' => $cartItems,
-                'total' => $total
+                'total' => $total,
+                'customerInfo' => $customerInfo
             ];
             $this->headerData['cart_count'] = $cart_count;
             $this->load->view('header', $this->headerData);
@@ -75,6 +83,7 @@
                     $response['message'] = 'Sản phẩm không có sẵn';
                 }
             }
+           
             header('Content-Type: application/json');
             echo json_encode($response);
         }
@@ -124,45 +133,48 @@
         }
         
         public function checkout() {
+            Session::init();
             if (!Session::get('customer_login')) {
                 header('Location: ' . Base_URL . 'LoginController/choice');
                 return;
             }
-
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $customerId = Session::get('customer_id');
                 $totalAmount = 0;
                 $orderItems = [];
-                
+                // Lấy giỏ hàng từ database
+                $cartItems = $this->cartModel->getCartItems($customerId);
+                if (empty($cartItems)) {
+                    $this->setFlash('error', 'Giỏ hàng của bạn đang trống!');
+                    header('Location: ' . Base_URL . 'cart');
+                    return;
+                }
                 // Calculate total and validate stock
-                foreach ($_SESSION['cart'] as $productId => $quantity) {
-                    $product = $this->productModel->getProductById($productId);
-                    if (!$product || $product['Quantity_product'] < $quantity) {
+                foreach ($cartItems as $item) {
+                    $product = $this->productModel->getProductById($item['product_id']);
+                    if (!$product || $product['Quantity_product'] < $item['quantity']) {
                         $this->setFlash('error', 'Một số sản phẩm không còn đủ số lượng');
                         header('Location: ' . Base_URL . 'cart');
                         return;
                     }
-                    $totalAmount += $quantity * $product['Price_product'];
+                    $totalAmount += $item['quantity'] * $product['Price_product'];
                     $orderItems[] = [
-                        'product_id' => $productId,
-                        'quantity' => $quantity,
+                        'product_id' => $item['product_id'],
+                        'quantity' => $item['quantity'],
                         'price' => $product['Price_product']
                     ];
                 }
-                
                 // Create order
                 $orderData = [
                     'customer_id' => $customerId,
                     'order_date' => date('Y-m-d H:i:s'),
                     'total_amount' => $totalAmount,
                     'status' => 'pending',
-                    'shipping_address' => $_POST['shipping_address'],
-                    'payment_method' => $_POST['payment_method']
+                    'shipping_address' => $_POST['customer_address'],
+                    'payment_method' => $_POST['payment_method'],
+                    'note' => isset($_POST['note']) ? $_POST['note'] : ''
                 ];
-                
-                // Insert order and get order ID
                 $orderId = $this->cartModel->insertOrder($orderData);
-                
                 if ($orderId) {
                     // Insert order items
                     foreach ($orderItems as $item) {
@@ -173,30 +185,25 @@
                             'price' => $item['price']
                         ];
                         $this->cartModel->insertOrderItem($itemData);
-                        
                         // Update product quantity
                         $this->productModel->updateProductQuantity($item['product_id'], $item['quantity']);
                     }
-                    
-                    // Clear cart
-                    unset($_SESSION['cart']);
-                    $this->updateCartCount();
-                    
+                    // Xóa giỏ hàng trong database
+                    $this->cartModel->clearCart($customerId);
+                    $this->updateCartCount($customerId);
                     $this->setFlash('success', 'Đặt hàng thành công');
-                    header('Location: ' . Base_URL . 'orders/view/' . $orderId);
+                    header('Location: ' . Base_URL . 'CartController/listOrder');
                 } else {
                     $this->setFlash('error', 'Có lỗi xảy ra khi đặt hàng');
-                    header('Location: ' . Base_URL . 'cart');
+                    header('Location: ' . Base_URL . 'CartController/listOrder');
                 }
             }
         }
         
-        private function updateCartCount() {
+        private function updateCartCount($customerId = null) {
             $count = 0;
-            if (isset($_SESSION['cart'])) {
-                foreach ($_SESSION['cart'] as $quantity) {
-                    $count += $quantity;
-                }
+            if ($customerId) {
+                $count = $this->cartModel->getCartCount($customerId);
             }
             $_SESSION['cart_count'] = $count;
         }
@@ -206,6 +213,20 @@
                 'type' => $type,
                 'message' => $message
             ];
+        }
+
+        public function listOrder() {
+            Session::init();
+            $customerId = Session::get('customer_id');
+            $order = null;
+            if ($customerId) {
+                $order = $this->cartModel->getLatestOrderByCustomer($customerId);
+            }
+            $this->headerData['cart_count'] = isset($_SESSION['cart_count']) ? $_SESSION['cart_count'] : 0;
+            $data = ['order' => $order];
+            $this->load->view('header', $this->headerData);
+            $this->load->view('listOrdered', $data);
+            $this->load->view('footer');
         }
     }
 

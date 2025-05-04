@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="public/css/footer.css">
+<link rel="stylesheet" href="<?php echo Base_URL; ?>public/css/footer.css">
 <script
     src="https://kit.fontawesome.com/a076d05399.js"
     crossorigin="anonymous"></script>

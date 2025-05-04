@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?php echo Base_URL ?>/public/css/cart.css" />
+<link rel="stylesheet" href="<?php echo Base_URL ?>public/css/cart1.css" />
 <script>var Base_URL = "<?php echo Base_URL; ?>";</script>
 <section>
   <div class="cart-page-body">
@@ -86,36 +86,41 @@
                <div class="contact_right">
                   <div class="form_contact_in">
                      <div class="box_contact">
-                        <form name="FormDatHang" method="post" action="gio-hang/">
+                        <form name="FormDatHang" id="order-form" method="post" action="<?php echo Base_URL; ?>CartController/checkout">
                            <div class="content-box_contact">
                               <div class="row">
                                  <div class="input">
                                     <label>Họ và tên: <span style="color:red;">*</span></label>
-                                    <input type="text" name="txtHoTen" required class="clsip" placeholder="Nhập họ và tên">
+                                    <input type="text" name="customer_name" required class="clsip" placeholder="Nhập họ và tên" value="<?php echo isset($customerInfo['customer_name']) ? htmlspecialchars($customerInfo['customer_name']) : '' ?>">
                                  </div>
                               </div>
                               <div class="row">
                                  <div class="input">
                                     <label>Số điện thoại: <span style="color:red;">*</span></label>
-                                    <input type="text" name="txtDienThoai" required class="clsip" placeholder="Nhập số điện thoại">
+                                    <input type="text" name="customer_phone" required class="clsip" placeholder="Nhập số điện thoại" value="<?php echo isset($customerInfo['phone']) ? htmlspecialchars($customerInfo['phone']) : '' ?>">
                                  </div>
                               </div>
                               <div class="row">
                                  <div class="input">
                                     <label>Địa chỉ: <span style="color:red;">*</span></label>
-                                    <input type="text" name="txtDiaChi" required class="clsip" placeholder="Nhập địa chỉ giao hàng">
+                                    <input type="text" name="customer_address" required class="clsip" placeholder="Nhập địa chỉ giao hàng" value="<?php echo isset($customerInfo['address']) ? htmlspecialchars($customerInfo['address']) : '' ?>">
                                  </div>
                               </div>
                               <div class="row">
                                  <div class="input">
                                     <label>Email: <span style="color:red;">*</span></label>
-                                    <input type="email" name="txtEmail" required class="clsip" placeholder="Nhập email">
+                                    <input type="email" name="customer_email" required class="clsip" placeholder="Nhập email" value="<?php echo isset($customerInfo['email']) ? htmlspecialchars($customerInfo['email']) : '' ?>">
                                  </div>
                               </div>
                               <div class="row">
                                  <div class="input">
                                     <label>Ghi chú:</label>
-                                    <textarea name="txtNoiDung" class="clsipa" placeholder="Nhập ghi chú (nếu có)"></textarea>
+                                    <textarea name="note" class="clsipa" placeholder="Nhập ghi chú (nếu có)"><?php echo isset($customerInfo['note']) ? htmlspecialchars($customerInfo['note']) : '' ?></textarea>
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div class="input">
+                                    <input type="hidden" name="payment_method" id="payment_method" value="cod">
                                  </div>
                               </div>
                               <div class="row btnclass">
@@ -153,11 +158,11 @@
       <div style="display:flex;justify-content:center;gap:18px;">
         <div>
           <div style="font-size:0.95em;margin-bottom:4px;">Momo</div>
-          <img src="/public/images/qr-momo.png" alt="QR Momo" style="width:100px;height:100px;border-radius:8px;border:1px solid #eee;object-fit:cover;">
+          <img src="<?php echo Base_URL ?>public/images/qr-momo.png" alt="QR Momo" class="qr-image">
         </div>
         <div>
           <div style="font-size:0.95em;margin-bottom:4px;">Ngân hàng</div>
-          <img src="/public/images/qr-bank.png" alt="QR Ngân hàng" style="width:100px;height:100px;border-radius:8px;border:1px solid #eee;object-fit:cover;">
+          <img src="<?php echo Base_URL ?>public/images/qr-bank.png" alt="QR Ngân hàng" class="qr-image">
         </div>
       </div>
     </div>
@@ -207,8 +212,12 @@ radios.forEach(function(radio) {
   });
 });
 confirmBtn.addEventListener('click', function() {
+  // Lấy phương thức thanh toán đã chọn
+  let method = document.querySelector('input[name="payment-method"]:checked').value;
+  document.getElementById('payment_method').value = method;
   modal.style.display = 'none';
-  alert('Cảm ơn bạn đã đặt hàng!');
+  // Submit form đặt hàng
+  document.getElementById('order-form').submit();
 });
 // Đóng popup khi click ra ngoài
 modal.addEventListener('click', function(e) {

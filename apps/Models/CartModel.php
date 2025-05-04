@@ -68,7 +68,7 @@ class CartModel extends BaseModel {
     // Tạo đơn hàng mới
     public function createOrder($orderData) {
         // Thêm thông tin đơn hàng
-        $sql = "INSERT INTO orders (customer_name, customer_phone, customer_email, 
+        $sql = "INSERT INTO tbl_orders (customer_name, customer_phone, customer_email, 
                 customer_address, total_amount, payment_method, note) 
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
         
@@ -127,6 +127,7 @@ class CartModel extends BaseModel {
 
     // Thêm đơn hàng mới, trả về orderId
     public function insertOrder($orderData) {
+        var_dump($orderData);
         $fields = array_keys($orderData);
         $placeholders = implode(',', array_fill(0, count($fields), '?'));
         $sql = "INSERT INTO tbl_orders (" . implode(',', $fields) . ") VALUES ($placeholders)";
@@ -150,6 +151,27 @@ class CartModel extends BaseModel {
         $result = $stmt->fetch();
        
         return $result ? (int)$result['order_count'] : 0;
+    }
+
+    // Lấy tất cả đơn hàng
+    public function getAllOrders() {
+        $sql = "SELECT * FROM tbl_orders ORDER BY order_id DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function getLatestOrderByCustomer($customerId) {
+        $sql = "SELECT * FROM tbl_orders WHERE customer_id = ? ORDER BY order_id DESC LIMIT 1";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$customerId]);
+        return $stmt->fetch();
+    }
+
+    public function clearCart($customerId) {
+        $sql = "DELETE FROM tbl_cart WHERE customer_id = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$customerId]);
     }
 }
 ?> 
