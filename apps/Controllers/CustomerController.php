@@ -14,6 +14,7 @@ class CustomerController extends BaseController {
             header("Location:" . Base_URL . "CustomerLoginController");
             exit();
         }
+        
 
         $customer_id = Session::get('customer_id');
         $customerInfo = $this->customerModel->getCustomerById($customer_id);

@@ -30,8 +30,13 @@ class index extends BaseController
 
     public function menu(){
         $this->headerData = $this->getAllHeader();
-        $products = $this->productModel->getAllProducts();
         $categories = $this->categoryModel->getAllCategories();
+        $category_id = isset($_GET['category']) ? $_GET['category'] : null;
+        if ($category_id) {
+            $products = $this->productModel->getProductsByCategory($category_id);
+        } else {
+            $products = $this->productModel->getAllProducts();
+        }
         $data = [
             'products' => $products,
             'categories' => $categories
@@ -44,20 +49,15 @@ class index extends BaseController
     public function category($category_id = null){
         $this->headerData = $this->getAllHeader();
         $data = array( 'sliders' => $this->sliderModel->getActiveSliders());
-        
-        if($category_id) {
-            $data['products'] = $this->productModel->getProductsByCategory($category_id);
-            $data['category_info'] = $this->categoryModel->getCategoryById($category_id);
-        } else {
-            $data['products'] = $this->productModel->getAllProducts();
-        }
-        
+        $data['products'] = $this->productModel->getProductsByCategory(16);
+        $data['category_info'] = $this->categoryModel->getCategoryById(16);
         $this->load->view('header', $this->headerData);
         $this->load->view('slider', $data);
         $this->load->view('categoryProduct', $data);
         $this->load->view('footer');
     }
     public function notFound()
+
     {
         $this->headerData = $this->getAllHeader();
         $this->load->view('header', $this->headerData);

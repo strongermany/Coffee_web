@@ -90,6 +90,15 @@ if (isset($_GET['msg'])) {
 .ck.ck-editor {
     width: 100% !important;
 }
+
+.edit-product-container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 24px 32px;
+    margin: 0;
+    width: 100%;
+}
 </style>
 
 <script>

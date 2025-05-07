@@ -1,55 +1,43 @@
 <?php
-$category_name = isset($category_info) ? $category_info['Category'] : 'Tất cả sản phẩm';
+$category_name = isset($category_info) ? $category_info['Category'] : 'Gia dụng';
 ?>
 
-<div class="category-banner">
-  <link rel="stylesheet" href="<?php echo Base_URL ?>public/css/footer.css" />
-    <div class="container">
-        <h1 class="text-center mb-4 animate__animated animate__fadeInDown"><?php echo $category_name; ?></h1>
-    </div>
-</div>
-
-<div class="container py-5">
-    <div class="row g-4">
-        <?php if(isset($products) && is_array($products)): ?>
-            <?php foreach($products as $product): ?>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                    <div class="product-card animate__animated animate__fadeInUp">
-                        <div class="product-image">
-                            <img src="<?php echo Base_URL; ?>public/uploads/product/<?php echo $product['Images_product']; ?>" 
-                                 alt="<?php echo $product['Title_product']; ?>" 
-                                 class="img-fluid">
-                            <div class="product-overlay">
-                                <a href="<?php echo Base_URL; ?>index/detailsProduct/<?php echo $product['Id_product']; ?>" 
-                                   class="btn btn-outline-light btn-sm">
-                                    Xem chi tiết
-                                </a>
-                                <div class="d-flex align-items-center" style="gap: 8px;">
-                                    <input type="number" min="1" value="1" class="form-control form-control-sm qty-input" style="width:60px;">
-                                    <button class="btn btn-primary btn-sm add-to-cart" 
-                                            data-product-id="<?php echo $product['Id_product']; ?>">
-                                        Thêm vào giỏ
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">
-                                <?php echo $product['Title_product']; ?>
-                            </h3>
-                            <div class="product-price">
-                                <?php echo number_format($product['Price_product'], 0, ',', '.'); ?>đ
-                            </div>
-                        </div>
-                    </div>
+<link rel="stylesheet" href="<?php echo Base_URL ?>public/css/giadung.css" />
+<div class="giadung-wrapper">
+  <div class="container">
+    <div class="giadung-title"><?php echo $category_name; ?></div>
+    <div class="giadung-hr"></div>
+    <div class="giadung-products">
+      <?php if(isset($products) && is_array($products) && count($products) > 0): ?>
+        <?php foreach($products as $product): ?>
+          <?php $imgPath = Base_URL . 'public/uploads/product/' . $product['Images_product']; ?>
+          <div class="giadung-card" data-product-id="<?php echo $product['Id_product']; ?>">
+            <div class="giadung-card-image">
+              <img src="<?php echo $imgPath; ?>" alt="<?php echo htmlspecialchars($product['Title_product']); ?>" onerror="this.style.background='#eee';this.style.objectFit='contain';this.src='<?php echo Base_URL ?>public/images/no-image.png';">
+              <div class="giadung-card-overlay">
+                <div class="giadung-qty-group">
+                  <button class="giadung-qty-btn">-</button>
+                  <input type="number" class="giadung-qty-input qty" min="1" value="1">
+                  <button class="giadung-qty-btn">+</button>
                 </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <div class="col-12 text-center">
-                <p>Không có sản phẩm nào trong danh mục này.</p>
+                <div class="giadung-card-actions">
+                  <button class="giadung-btn">Đặt hàng</button>
+                  <button class="giadung-btn add-to-cart" data-product-id="<?php echo $product['Id_product']; ?>"><i class="fas fa-cart-plus"></i></button>
+                </div>
+              </div>
             </div>
-        <?php endif; ?>
+            <div class="giadung-card-rating">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+            </div>
+            <div class="giadung-card-title"><?php echo htmlspecialchars($product['Title_product']); ?></div>
+            <div class="giadung-card-price"><?php echo number_format($product['Price_product'], 0, ',', '.'); ?>đ</div>
+          </div>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <div>Không có sản phẩm nào trong danh mục này.</div>
+      <?php endif; ?>
     </div>
+  </div>
 </div>
 
 <style>
@@ -170,69 +158,55 @@ $category_name = isset($category_info) ? $category_info['Category'] : 'Tất c�
 </style>
 
 <script>
-      var Base_URL = "<?php echo Base_URL; ?>";
+var Base_URL = "<?php echo Base_URL; ?>";
 document.addEventListener('DOMContentLoaded', function() {
-    // Xử lý thêm vào giỏ hàng
-    const addToCartButtons = document.querySelectorAll('.add-to-cart');
-    addToCartButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const productId = this.dataset.productId;
-            // Lấy số lượng từ input cùng hàng
-            const qtyInput = this.closest('.d-flex').querySelector('.qty-input');
-            const quantity = qtyInput ? parseInt(qtyInput.value) : 1;
-
-            // Animation khi click
-            this.innerHTML = '<i class="fas fa-check"></i> Đã thêm';
-            this.classList.add('added');
-            
-            // Gọi API thêm vào giỏ hàng
-            fetch(`${Base_URL}CartController/add/${productId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ quantity: quantity })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.redirect) {
-                    window.location.href = data.redirect;
-                    return;
-                }
-                if(data.success) {
-                    // Cập nhật số lượng giỏ hàng
-                    const cartCount = document.querySelector('.cart-count');
-                    if(cartCount) {
-                        cartCount.textContent = data.cart_count;
+    // Xử lý thêm vào giỏ hàng cho nút giadung-btn (icon giỏ hàng)
+    document.querySelectorAll('.giadung-card').forEach(function(card) {
+        const addToCartBtn = card.querySelector('.giadung-btn i.fa-cart-plus')?.closest('.giadung-btn');
+        const qtyInput = card.querySelector('.giadung-qty-input');
+        if (addToCartBtn && qtyInput) {
+            addToCartBtn.addEventListener('click', function() {
+                const id = card.getAttribute('data-product-id');
+                const quantity = parseInt(qtyInput.value) || 1;
+                // Animation khi click
+                addToCartBtn.innerHTML = '<i class="fas fa-check"></i> Đã thêm';
+                addToCartBtn.classList.add('added');
+                // Gọi API thêm vào giỏ hàng
+                fetch(`${Base_URL}CartController/add/${id}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ quantity: quantity })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.redirect) {
+                        window.location.href = data.redirect;
+                        return;
                     }
-                    // Hiển thị thông báo thành công
-                    showNotification('Đã thêm sản phẩm vào giỏ hàng', 'success');
-                } else {
-                    // Hiển thị thông báo lỗi
-                    showNotification(data.message || 'Có lỗi xảy ra', 'error');
-                    // Reset button state
-                    this.innerHTML = 'Thêm vào giỏ';
-                    this.classList.remove('added');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showNotification('Có lỗi xảy ra khi thêm vào giỏ hàng', 'error');
-                // Reset button state
-                this.innerHTML = 'Thêm vào giỏ';
-                this.classList.remove('added');
+                    if (data.success) {
+                        const cartCount = document.querySelector('.cart-count');
+                        if (cartCount) cartCount.textContent = data.cart_count;
+                        showNotification('Đã thêm sản phẩm vào giỏ hàng', 'success');
+                    } else {
+                        showNotification(data.message || 'Có lỗi xảy ra', 'error');
+                        addToCartBtn.innerHTML = '<i class="fas fa-cart-plus"></i>';
+                        addToCartBtn.classList.remove('added');
+                    }
+                })
+                .catch(() => {
+                    showNotification('Có lỗi xảy ra khi thêm vào giỏ hàng', 'error');
+                    addToCartBtn.innerHTML = '<i class="fas fa-cart-plus"></i>';
+                    addToCartBtn.classList.remove('added');
+                });
             });
-        });
+        }
     });
-
     // Hàm hiển thị thông báo
     function showNotification(message, type = 'success') {
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         notification.textContent = message;
         document.body.appendChild(notification);
-        
-        // Thêm style cho notification
         notification.style.position = 'fixed';
         notification.style.top = '20px';
         notification.style.right = '20px';
@@ -241,14 +215,11 @@ document.addEventListener('DOMContentLoaded', function() {
         notification.style.color = 'white';
         notification.style.zIndex = '1000';
         notification.style.animation = 'slideIn 0.5s ease-out';
-        
         if (type === 'success') {
             notification.style.backgroundColor = '#4CAF50';
         } else {
             notification.style.backgroundColor = '#f44336';
         }
-        
-        // Xóa notification sau 3 giây
         setTimeout(() => {
             notification.style.animation = 'slideOut 0.5s ease-out';
             setTimeout(() => {
@@ -256,29 +227,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 500);
         }, 3000);
     }
-
     // Thêm keyframes cho animation
     const style = document.createElement('style');
     style.textContent = `
         @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
         @keyframes slideOut {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(100%);
-                opacity: 0;
-            }
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
         }
     `;
     document.head.appendChild(style);

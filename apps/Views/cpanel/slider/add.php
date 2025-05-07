@@ -157,6 +157,15 @@ showNotification('<?php echo addslashes($message['msg']); ?>');
 </script>
 
 <style>
+.slider-container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 24px 32px;
+    margin: 0;
+    width: 100%;
+}
+
 /* Add these styles for the notification */
 .notification {
     position: fixed;

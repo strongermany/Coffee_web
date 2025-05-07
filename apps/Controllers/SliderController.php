@@ -9,22 +9,31 @@ class SliderController extends BaseController {
 
     public function index() {
         Session::checkSession();
-        $data['sliders'] = $this->sliderModel->getAllSliders();
-        $this->load->view('cpanel/header');
-        $this->load->view('cpanel/menu');
-        $this->load->view('cpanel/slider/add', $data);
-        $this->load->view('cpanel/footer');
+        $sliders = $this->sliderModel->getAllSliders();
+        $data = [
+            'sliders' => $sliders,
+            'currentPage' => 'slider',
+            'pageTitle' => 'Slider Management',
+            'viewFile' => 'cpanel/slider/add',
+            'load' => $this->load,
+            'data' => ['sliders' => $sliders]
+        ];
+        $this->load->view('cpanel/menu', $data);
     }
 
     public function add() {
         Session::checkSession();
-        $data['sliders'] = $this->sliderModel->getAllSliders();
-        $this->load->view('cpanel/header');
-        $this->load->view('cpanel/menu');
-        $this->load->view('cpanel/slider/add', $data);
-        $this->load->view('cpanel/footer');
+        $sliders = $this->sliderModel->getAllSliders();
+        $data = [
+            'sliders' => $sliders,
+            'currentPage' => 'slider',
+            'pageTitle' => 'Add New Slider',
+            'viewFile' => 'cpanel/slider/add',
+            'load' => $this->load,
+            'data' => ['sliders' => $sliders]
+        ];
+        $this->load->view('cpanel/menu', $data);
     }
-
     public function insert() {
         Session::checkSession();
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -100,11 +109,15 @@ class SliderController extends BaseController {
 
     public function edit($id) {
         Session::checkSession();
-        $data['sliderbyid'] = $this->sliderModel->getSliderById($id);
-        $this->load->view('cpanel/header');
-        $this->load->view('cpanel/menu');
-        $this->load->view('cpanel/slider/edit', $data);
-        $this->load->view('cpanel/footer');
+        $sliderbyid = $this->sliderModel->getSliderById($id);
+        $data = [
+            'currentPage' => 'slider',
+            'pageTitle' => 'Edit Slider',
+            'viewFile' => 'cpanel/slider/edit',
+            'load' => $this->load,
+            'data' => ['sliderbyid' => $sliderbyid]
+        ];
+        $this->load->view('cpanel/menu', $data);
     }
 
     public function update($id) {

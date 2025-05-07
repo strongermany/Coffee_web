@@ -128,11 +128,12 @@ if (isset($_GET['msg'])) {
 <style>
 /* Post Management Styles */
 .post-container {
-    background: white;
+    background: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 24px 32px;
+    margin: 0;
+    width: 100%;
 }
 
 .post-header {

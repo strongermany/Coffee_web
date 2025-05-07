@@ -1,0 +1,211 @@
+/* Gia Dụng Product Styles */
+.giadung-wrapper {
+  background: #fdf5e6;
+  min-height: 100vh;
+  padding: 3rem 0;
+  font-family: 'Playfair Display', serif;
+}
+.giadung-title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #8B5E3C;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
+}
+.giadung-hr {
+  width: 60px;
+  height: 3px;
+  background: #C6A27E;
+  margin: 0 auto 2.5rem auto;
+  border: none;
+  border-radius: 2px;
+}
+.giadung-products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+}
+.giadung-card {
+  width: 300px;
+  height: 300px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: box-shadow 0.2s, transform 0.18s;
+  position: relative;
+  overflow: hidden;
+}
+.giadung-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 8px 24px rgba(139,94,60,0.13);
+}
+.giadung-card-image {
+  width: 100%;
+  height: 65%;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px 16px 0 0;
+  overflow: hidden;
+}
+.giadung-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 16px 16px 0 0;
+}
+.giadung-card-rating {
+  color: #FFD600;
+  font-size: 1.2em;
+  margin: 8px 0 0 0;
+  text-align: center;
+  width: 100%;
+}
+.giadung-card-title {
+  font-size: 1.1rem;
+  color: #4A3428;
+  font-weight: 600;
+  
+  text-align: center;
+  white-space: nowrap;  
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.giadung-card-price {
+  color: #a1887f;
+  font-size: 1.1rem;
+  margin: 4px 0 0 0;
+  text-align: center;
+}
+.giadung-card-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
+}
+.giadung-btn {
+  background: #bcaaa4;
+  color: #4e342e;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 18px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  font-weight: 500;
+}
+.giadung-btn:hover {
+  background: #8d6e63;
+  color: #fff;
+}
+.giadung-qty-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 6px;
+}
+.giadung-qty-btn {
+  background: #eee;
+  color: #4e342e;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.1em;
+  transition: background 0.2s;
+}
+.giadung-qty-btn:hover {
+  background: #bcaaa4;
+}
+.giadung-qty-input {
+  width: 28px;
+  text-align: center;
+  font-size: 0.95em;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  padding: 1px 0;
+  background: #fff;
+  color: #4e342e;
+}
+@media (max-width: 600px) {
+  .giadung-card {
+    width: 90vw;
+    height: 90vw;
+    min-width: 120px;
+    max-width: 98vw;
+    min-height: 120px;
+    max-height: 98vw;
+  }
+}
+
+/* Overlay cho card */
+.giadung-card-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(70, 35, 20, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+  z-index: 2;
+}
+.giadung-card:hover .giadung-card-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+.giadung-qty-group, .giadung-card-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 12px 0;
+}
+.giadung-qty-group, .giadung-card-actions {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.giadung-card:hover .giadung-qty-group,
+.giadung-card:hover .giadung-card-actions {
+  opacity: 1;
+}
+.giadung-card-title, .giadung-card-rating, .giadung-card-price {
+  z-index: 3;
+}
+.giadung-card .giadung-qty-group,
+.giadung-card .giadung-card-actions {
+  position: absolute;
+  left: 0; right: 0;
+  margin-left: auto; margin-right: auto;
+}
+.giadung-card .giadung-qty-group {
+  top: 38%;
+}
+.giadung-card .giadung-card-actions {
+  top: 55%;
+}
+.giadung-card .giadung-qty-group,
+.giadung-card .giadung-card-actions {
+  justify-content: center;
+}
+.giadung-card:not(:hover) .giadung-qty-group,
+.giadung-card:not(:hover) .giadung-card-actions {
+  display: none;
+}
+.giadung-card-title, .giadung-card-rating, .giadung-card-price {
+  position: relative;
+  background: transparent;
+  margin-bottom: 0.2em;
+}

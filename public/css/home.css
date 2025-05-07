@@ -1,6 +1,6 @@
 /* Nền tổng thể */
 .home-main-bg {
-    background-color: rgba(70, 35, 20, 0.95);
+    background: linear-gradient(to bottom, rgb(29, 17, 10) 100%, #5c270c 0%);
     min-height: 100vh;
     padding: 40px 0 60px 0;
 }

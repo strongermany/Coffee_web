@@ -2,6 +2,7 @@
 class CartModel extends BaseModel {
     public function __construct() {
         parent::__construct();
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
     }
 
     // Thêm sản phẩm vào giỏ hàng
@@ -106,8 +107,10 @@ class CartModel extends BaseModel {
 
     // Lấy thông tin đơn hàng
     public function getOrder($orderId) {
-        $sql = "SELECT * FROM orders WHERE order_id = ?";
-        return $this->db->query($sql, $orderId)->fetch();
+        $sql = "SELECT * FROM tbl_orders WHERE order_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$orderId]);
+        return $stmt->fetch();
     }
 
     // Lấy chi tiết đơn hàng
@@ -116,13 +119,16 @@ class CartModel extends BaseModel {
                 FROM order_items oi 
                 JOIN products p ON oi.product_id = p.product_id 
                 WHERE oi.order_id = ?";
-        return $this->db->query($sql, $orderId)->fetchAll();
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$orderId]);
+        return $stmt->fetchAll();
     }
 
     // Cập nhật trạng thái đơn hàng
     public function updateOrderStatus($orderId, $status) {
-        $sql = "UPDATE orders SET status = ? WHERE order_id = ?";
-        return $this->db->query($sql, $status, $orderId);
+        $sql = "UPDATE tbl_orders SET status = ? WHERE order_id = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$status, $orderId]);
     }
 
     // Thêm đơn hàng mới, trả về orderId

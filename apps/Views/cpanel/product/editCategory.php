@@ -10,6 +10,17 @@ if (!empty($_GET['msg'])) {
 
 <h3 style="text-align: center;">Update category</h3>
 
+<style>
+.col-md-6 {
+    padding: 24px 32px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 100%;
+}
+</style>
+
 <div class="col-md-6">
     <?php
     foreach ($categoryById as $key => $cate) {

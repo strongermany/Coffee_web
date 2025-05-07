@@ -17,10 +17,14 @@
         public function addOrder(){
             $cartModel = $this->load->model('CartModel');
             $orders = $cartModel->getAllOrders();
-            $this->load->view('cpanel/header');
-            $this->load->view('cpanel/menu');
-            $this->load->view('cpanel/order/addOrder', ['orders' => $orders]);
-            $this->load->view('cpanel/footer');
+            $data = [
+                'currentPage' => 'orders',
+                'pageTitle' => 'Order Management',
+                'viewFile' => 'cpanel/order/addOrder',
+                'load' => $this->load,
+                'data' => ['orders' => $orders]
+            ];
+            $this->load->view('cpanel/menu', $data);
         }
         public function confirmPaid() {
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_id'])) {

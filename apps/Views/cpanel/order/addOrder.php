@@ -1,7 +1,6 @@
 <P>This is all Add orRder </P>
 
-<?php if (!empty(
-    $orders)) : ?>
+<?php if (!empty($data['orders'])) : ?>
     <h2>Danh sách đơn hàng</h2>
     <table border="1" cellpadding="8" style="width:100%;border-collapse:collapse;">
         <tr>
@@ -9,16 +8,23 @@
             <th>Khách hàng</th>
             <th>Số tiền</th>
             <th>Trạng thái</th>
+            <th>Phương thức</th>
             <th>Thao tác</th>
         </tr>
-        <?php foreach ($orders as $order): ?>
+        <?php foreach ($data['orders'] as $order): ?>
             <tr>
                 <td><?php echo htmlspecialchars($order['order_id']); ?></td>
                 <td><?php echo htmlspecialchars($order['customer_id']); ?></td>
                 <td><?php echo number_format($order['total_amount'] ?? $order['amount'], 0, ',', '.'); ?> đ</td>
                 <td><?php echo htmlspecialchars($order['status']); ?></td>
+                <td><?php echo htmlspecialchars($order['payment_method']); ?></td>
                 <td>
-                    <?php if ($order['status'] !== 'paid'): ?>
+                    <?php if ($order['payment_method'] === 'bank' && $order['status'] !== 'paid'): ?>
+                        <form method="post" action="<?php echo Base_URL; ?>OrderController/confirmPaid" style="display:inline;">
+                            <input type="hidden" name="order_id" value="<?php echo htmlspecialchars($order['order_id']); ?>">
+                            <button type="submit" onclick="return confirm('Xác nhận đã nhận tiền chuyển khoản cho đơn này?')">Xác nhận đã nhận tiền</button>
+                        </form>
+                    <?php elseif ($order['status'] !== 'paid'): ?>
                         <form method="post" action="<?php echo Base_URL; ?>OrderController/confirmPaid" style="display:inline;">
                             <input type="hidden" name="order_id" value="<?php echo htmlspecialchars($order['order_id']); ?>">
                             <button type="submit" onclick="return confirm('Xác nhận đơn này đã thanh toán?')">Xác nhận đã thanh toán</button>

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,11 +7,14 @@
     <!--Nhúng bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Coiny&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Playball&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://use.typekit.net/xxxxxxx.css">
     <link rel="stylesheet" href="<?php echo Base_URL ?>public/css/home.css" />
     <link rel="stylesheet" href="<?php echo Base_URL ?>public/css/headerA.css" />
@@ -23,8 +25,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>TRANG CHỦ</title>
 </head>
-<header style="background-image: url('<?php echo Base_URL . $backgroundImage; ?>');">
-    
+<header style="background-image: url('<?php echo Base_URL . $backgroundImage; ?>'); position: relative;">
+    <div class="header-banner-text">
+        <div class="header-banner-small">From the South to your Mouth</div>
+        <div class="header-banner-large">EACH WRAPPED CON AMORE!</div>
+    </div>
+    </div>
+
     <nav class="navbar navbar-expand-lg ">
         <div class="container p-3">
             <img src="<?php echo Base_URL ?>public/images/logob.png" alt="" class="navbar-logo">
@@ -35,21 +42,24 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="<?php echo Base_URL ?>index">Trang chủ</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>index/menu">Menu</a></li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button"
+                        <a class="nav-link dropdown-toggle" href="#" id="menuDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            Danh mục
+                            Menu
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="pagesDropdown">
+                        <ul class="dropdown-menu" aria-labelledby="menuDropdown">
+                            <li><a class="dropdown-item" href="<?php echo Base_URL ?>index/menu">Tất cả sản phẩm</a></li>
                             <?php
                             if (isset($categories) && is_array($categories)) {
                                 foreach ($categories as $category) {
-                                    echo '<li><a class="dropdown-item" href="' . Base_URL . 'index/category/' . $category['Id_Cate'] . '">' . $category['Category'] . '</a></li>';
+                                    echo '<li><a class="dropdown-item" href="' . Base_URL . 'index/menu?category=' . $category['Id_Cate'] . '">' . $category['Category'] . '</a></li>';
                                 }
                             }
                             ?>
                         </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo Base_URL ?>index/category/16">Gia Dụng</a>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>NewsController">Tin tức </a>
                     </li>
@@ -99,55 +109,46 @@
         </button>
         <!-- Offcanvas menu cho mobile -->
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
-          <div class="offcanvas-header justify-content-end">
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          </div>
-          <div class="offcanvas-body">
-            <ul class="navbar-nav">
-              <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>index">Trang chủ</a></li>
-              <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>index/menu">Menu</a></li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="offcanvasPagesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Danh mục</a>
-                <ul class="dropdown-menu" aria-labelledby="offcanvasPagesDropdown">
-                  <?php
-                  if (isset($categories) && is_array($categories)) {
-                      foreach ($categories as $category) {
-                          echo '<li><a class="dropdown-item" href="' . Base_URL . 'index/category/' . $category['Id_Cate'] . '">' . $category['Category'] . '</a></li>';
-                      }
-                  }
-                  ?>
+            <div class="offcanvas-header justify-content-end">
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>index">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>index/menu">Menu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>index/category/16">Gia Dụng</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>NewsController">Tin tức</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Cửa hàng</a></li>
                 </ul>
-              </li>
-              <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>NewsController">Tin tức</a></li>
-              <li class="nav-item"><a class="nav-link" href="#">Cửa hàng</a></li>
-            </ul>
-          </div>
+            </div>
         </div>
     </nav>
+    <!-- Banner text block dưới navbar -->
+
 </header>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Toggle search form
-    var searchIcon = document.querySelector('.search-icon');
-    var searchForm = document.querySelector('.search-form');
-    if(searchIcon && searchForm) {
-        searchIcon.addEventListener('click', function() {
-            searchForm.classList.toggle('active');
-            if(searchForm.classList.contains('active')) {
-                searchForm.querySelector('input').focus();
-            }
-        });
-    }
-    // Đóng offcanvas khi lên desktop
-    function closeOffcanvasOnDesktop() {
-        if (window.innerWidth >= 992) {
-            var offcanvasEl = document.getElementById('offcanvasMenu');
-            if (offcanvasEl && offcanvasEl.classList.contains('show')) {
-                var offcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
-                if (offcanvas) offcanvas.hide();
+    document.addEventListener('DOMContentLoaded', function() {
+        // Toggle search form
+        var searchIcon = document.querySelector('.search-icon');
+        var searchForm = document.querySelector('.search-form');
+        if (searchIcon && searchForm) {
+            searchIcon.addEventListener('click', function() {
+                searchForm.classList.toggle('active');
+                if (searchForm.classList.contains('active')) {
+                    searchForm.querySelector('input').focus();
+                }
+            });
+        }
+        // Đóng offcanvas khi lên desktop
+        function closeOffcanvasOnDesktop() {
+            if (window.innerWidth >= 992) {
+                var offcanvasEl = document.getElementById('offcanvasMenu');
+                if (offcanvasEl && offcanvasEl.classList.contains('show')) {
+                    var offcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+                    if (offcanvas) offcanvas.hide();
+                }
             }
         }
-    }
-    window.addEventListener('resize', closeOffcanvasOnDesktop);
-});
+        window.addEventListener('resize', closeOffcanvasOnDesktop);
+    });
 </script>

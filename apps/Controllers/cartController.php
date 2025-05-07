@@ -121,7 +121,7 @@
                 $productId = $_POST['product_id'];
                 $this->cartModel->removeFromCart($customerId, $productId);
                 $cart_count = $this->cartModel->getCartCount($customerId);
-           var_dump($cart_count);
+          
                 $response = [
                     'success' => true,
                     'message' => 'Đã xóa sản phẩm khỏi giỏ hàng',
@@ -138,25 +138,31 @@
                 header('Location: ' . Base_URL . 'LoginController/choice');
                 return;
             }
+           
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $customerId = Session::get('customer_id');
                 $totalAmount = 0;
                 $orderItems = [];
                 // Lấy giỏ hàng từ database
                 $cartItems = $this->cartModel->getCartItems($customerId);
+                
                 if (empty($cartItems)) {
                     $this->setFlash('error', 'Giỏ hàng của bạn đang trống!');
+                    
                     header('Location: ' . Base_URL . 'cart');
                     return;
                 }
                 // Calculate total and validate stock
                 foreach ($cartItems as $item) {
                     $product = $this->productModel->getProductById($item['product_id']);
-                    if (!$product || $product['Quantity_product'] < $item['quantity']) {
-                        $this->setFlash('error', 'Một số sản phẩm không còn đủ số lượng');
-                        header('Location: ' . Base_URL . 'cart');
-                        return;
-                    }
+                    
+                    // if (!$product || $product['Quantity_product'] < $item['quantity']) {
+                        
+                    //     $this->setFlash('error', 'Một số sản phẩm không còn đủ số lượng');
+                        
+                    //     header('Location: ' . Base_URL . 'Views/cart');
+                    //     return;
+                    // }
                     $totalAmount += $item['quantity'] * $product['Price_product'];
                     $orderItems[] = [
                         'product_id' => $item['product_id'],
@@ -176,6 +182,7 @@
                 ];
                 $orderId = $this->cartModel->insertOrder($orderData);
                 if ($orderId) {
+                    
                     // Insert order items
                     foreach ($orderItems as $item) {
                         $itemData = [
@@ -191,9 +198,14 @@
                     // Xóa giỏ hàng trong database
                     $this->cartModel->clearCart($customerId);
                     $this->updateCartCount($customerId);
-                    $this->setFlash('success', 'Đặt hàng thành công');
-                    header('Location: ' . Base_URL . 'CartController/listOrder');
+                    $_SESSION['pending_order_id'] = $orderId; // Lưu lại order id để kiểm tra trạng thái
+               
+                    $this->setFlash('info', 'Vui lòng chờ admin xác nhận đơn hàng của bạn.');
+                    
+                    header('Location: ' . Base_URL . 'CartController/pendingOrder');
+                    exit;
                 } else {
+                  
                     $this->setFlash('error', 'Có lỗi xảy ra khi đặt hàng');
                     header('Location: ' . Base_URL . 'CartController/listOrder');
                 }
@@ -228,6 +240,28 @@
             $this->load->view('listOrdered', $data);
             $this->load->view('footer');
         }
+
+        public function pendingOrder() {
+           
+            $this->load->view('pendingOrder');
+        }
+
+        public function checkOrderStatus() {
+            Session::init();
+            $orderId = isset($_SESSION['pending_order_id']) ? $_SESSION['pending_order_id'] : null;
+          
+            if ($orderId) {
+                $order = $this->cartModel->getOrder($orderId);
+            
+                header('Content-Type: application/json');
+                echo json_encode(['status' => $order['status']]);
+            } else {
+              
+                echo json_encode(['status' => 'pending']);
+            }
+        }
+
+      
     }
 
 ?>

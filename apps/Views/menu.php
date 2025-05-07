@@ -4,170 +4,105 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-  <link rel="stylesheet" href="<?php echo Base_URL ?>public/css/headerA.css" />
-  <link rel="stylesheet" href="<?php echo Base_URL ?>public/css/footer.css" />
+ 
 </head>
 
 <body>
 
-  
+<?php
+$category_id = isset($_GET['category']) ? $_GET['category'] : null;
+// Xác định nếu chỉ hiển thị Gia dụng (ví dụ: category_id == 16)
+$is_giadung_only = ($category_id == 16);
+?>
+
   <div class="content-wrapper menu-products">
     <div class="container">
       <?php if (!empty($categories)): ?>
-        <?php foreach ($categories as $category): ?>
-          <h3 class="title-1" data-aos="fade-down"><?php echo $category['Category']; ?></h3>
-          <div class="hr-container" data-aos="fade-up"><hr></div>
-          <div class="products-container">
-            <?php foreach ($products as $product): ?>
-              <?php if ($product['Id_category_product'] == $category['Id_Cate']): ?>
-                <div class="product" data-name="p-<?php echo $product['Id_product']; ?>" data-product-id="<?php echo $product['Id_product']; ?>">
-                  <div class="product-image">
-                    <img src="<?php echo Base_URL; ?>public/uploads/product/<?php echo $product['Images_product']; ?>" alt="<?php echo htmlspecialchars($product['Title_product']); ?>">
-                    <div class="product-hover-card">
-                      <div class="card-content">
-                        <!-- <div class="card-desc"><?php echo $product['Desc_product']; ?></div> -->
-                        <div class="qty-group">
-                          <button class="qty-btn minus">-</button>
-                          <input type="number" class="qty-input" min="1" value="1">
-                          <button class="qty-btn plus">+</button>
-                        </div>
-                        <div class="card-actions">
-                          <button class="buy-now-btn">Đặt hàng</button>
-                          <button class="add-to-cart-btn"><i class="fas fa-cart-plus"></i></button>
+        <?php if ($category_id): ?>
+          <?php
+            $selected_category = null;
+            foreach ($categories as $category) {
+              if ($category['Id_Cate'] == $category_id) {
+                $selected_category = $category;
+                break;
+              }
+            }
+          ?>
+          <?php if ($selected_category): ?>
+            <h3 class="title-1" data-aos="fade-down"><?php echo $selected_category['Category']; ?></h3>
+            <div class="hr-container" data-aos="fade-up"><hr></div>
+            <div class="products-container">
+              <?php foreach ($products as $product): ?>
+                <?php if ($product['Id_category_product'] == $selected_category['Id_Cate']): ?>
+                  <div class="product" data-name="p-<?php echo $product['Id_product']; ?>" data-product-id="<?php echo $product['Id_product']; ?>">
+                    <div class="product-image">
+                      <img src="<?php echo Base_URL; ?>public/uploads/product/<?php echo $product['Images_product']; ?>" alt="<?php echo htmlspecialchars($product['Title_product']); ?>">
+                      <div class="product-hover-card">
+                        <div class="card-content">
+                          <div class="qty-group">
+                            <button class="qty-btn minus">-</button>
+                            <input type="number" class="qty-input" min="1" value="1">
+                            <button class="qty-btn plus">+</button>
+                          </div>
+                          <div class="card-actions">
+                            <button class="buy-now-btn">Đặt hàng</button>
+                            <button class="add-to-cart-btn"><i class="fas fa-cart-plus"></i></button>
+                          </div>
                         </div>
                       </div>
                     </div>
+                    <div class="card-rating">
+                      <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <h3><?php echo htmlspecialchars($product['Title_product']); ?></h3>
+                    <div class="price"><?php echo number_format($product['Price_product'], 0, ',', '.'); ?>đ</div>
                   </div>
-                  <div class="card-rating">
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                  </div>
-                  <h3><?php echo htmlspecialchars($product['Title_product']); ?></h3>
-                  <div class="price"><?php echo number_format($product['Price_product'], 0, ',', '.'); ?>đ</div>
-                </div>
-              <?php endif; ?>
+                <?php endif; ?>
+              <?php endforeach; ?>
+            </div>
+          <?php else: ?>
+            <div>Không tìm thấy danh mục.</div>
+          <?php endif; ?>
+        <?php else: ?>
+          <?php if (!$is_giadung_only): // Ẩn dropdown khi chỉ hiển thị Gia dụng ?>
+            <?php foreach ($categories as $category): ?>
+              <h3 class="title-1" data-aos="fade-down"><?php echo $category['Category']; ?></h3>
+              <div class="hr-container" data-aos="fade-up"><hr></div>
+              <div class="products-container">
+                <?php foreach ($products as $product): ?>
+                  <?php if ($product['Id_category_product'] == $category['Id_Cate']): ?>
+                    <div class="product" data-name="p-<?php echo $product['Id_product']; ?>" data-product-id="<?php echo $product['Id_product']; ?>">
+                      <div class="product-image">
+                        <img src="<?php echo Base_URL; ?>public/uploads/product/<?php echo $product['Images_product']; ?>" alt="<?php echo htmlspecialchars($product['Title_product']); ?>">
+                        <div class="product-hover-card">
+                          <div class="card-content">
+                            <div class="qty-group">
+                              <button class="qty-btn minus">-</button>
+                              <input type="number" class="qty-input" min="1" value="1">
+                              <button class="qty-btn plus">+</button>
+                            </div>
+                            <div class="card-actions">
+                              <button class="buy-now-btn">Đặt hàng</button>
+                              <button class="add-to-cart-btn"><i class="fas fa-cart-plus"></i></button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                      </div>
+                      <h3><?php echo htmlspecialchars($product['Title_product']); ?></h3>
+                      <div class="price"><?php echo number_format($product['Price_product'], 0, ',', '.'); ?>đ</div>
+                    </div>
+                  <?php endif; ?>
+                <?php endforeach; ?>
+              </div>
             <?php endforeach; ?>
-          </div>
-        <?php endforeach; ?>
+          <?php endif; ?>
+        <?php endif; ?>
       <?php else: ?>
         <div>Không có danh mục nào.</div>
       <?php endif; ?>
-
-      <!-- Tea Section -->
-      <h3 class="title-1" data-aos="fade-down">Trà</h3>
-      <div class="hr-container" data-aos="fade-up">
-        <hr>
-      </div>
-      <div class="products-container">
-        <div class="product" data-name="p-4" data-product-id="4">
-          <div class="product-image">
-            <img src="images/trà dâu tằm.jpg" alt="Trà dâu tằm" loading="lazy" />
-          </div>
-          <h3>Trà dâu tằm</h3>
-          <div class="price">35.000đ</div>
-        </div>
-
-        <div class="product" data-name="p-5" data-product-id="5">
-          <div class="product-image">
-            <img src="images/trà chanh.jpg" alt="Trà chanh" loading="lazy" />
-          </div>
-          <h3>Trà chanh</h3>
-          <div class="price">25.000đ</div>
-        </div>
-
-        <div class="product" data-name="p-6" data-product-id="6">
-          <div class="product-image">
-            <img src="images/trà ổi.jpg" alt="Trà ổi" loading="lazy" />
-          </div>
-          <h3>Trà ổi</h3>
-          <div class="price">35.000đ</div>
-        </div>
-
-        <div class="product" data-name="p-7" data-product-id="7">
-          <div class="product-image">
-            <img src="images/trà xanh matcha.jpg" alt="Trà xanh matcha" loading="lazy" />
-          </div>
-          <h3>Trà xanh matcha</h3>
-          <div class="price">35.000đ</div>
-        </div>
-
-        <div class="product" data-name="p-8" data-product-id="8">
-          <div class="product-image">
-            <img src="images/trà bạc hà.jpg" alt="Trà bạc hà" loading="lazy" />
-          </div>
-          <h3>Trà bạc hà</h3>
-          <div class="price">32.000đ</div>
-        </div>
-
-        <div class="product" data-name="p-9" data-product-id="9">
-          <div class="product-image">
-            <img src="images/trà dâu.jpg" alt="Trà dâu" loading="lazy" />
-          </div>
-          <h3>Trà dâu</h3>
-          <div class="price">35.000đ</div>
-        </div>
-      </div>
-
-      <!-- Bingsu Section -->
-      <h3 class="title-1" data-aos="fade-down">Bingsu</h3>
-      <div class="hr-container" data-aos="fade-up">
-        <hr>
-      </div>
-      <div class="products-container">
-        <div class="product" data-name="p-10" data-product-id="10">
-          <div class="product-image">
-            <img src="images/bánh matcha.jpg" alt="Matcha" loading="lazy" />
-          </div>
-          <h3>Matcha</h3>
-          <div class="price">45.000đ</div>
-        </div>
-
-        <div class="product" data-name="p-11" data-product-id="11">
-          <div class="product-image">
-            <img src="images/bánh socola.jpg" alt="Chocolate" loading="lazy" />
-          </div>
-          <h3>Chocolate</h3>
-          <div class="price">45.000đ</div>
-        </div>
-
-        <div class="product" data-name="p-12" data-product-id="12">
-          <div class="product-image">
-            <img src="images/Yến mạch.jpg" alt="Yến mạch" loading="lazy" />
-          </div>
-          <h3>Yến mạch</h3>
-          <div class="price">48.000đ</div>
-        </div>
-      </div>
-
-      <!-- Best Seller Section -->
-      <h3 class="title" data-aos="fade-down">Best Seller</h3>
-      <div class="hr-container" data-aos="fade-up">
-        <hr>
-      </div>
-      <div class="products-container">
-        <div class="product" data-name="p-13" data-product-id="13">
-          <div class="product-image">
-            <img src="images/cafe bạc hà.jpg" alt="Cafe Bạc Hà" loading="lazy" />
-          </div>
-          <h3>Cafe Bạc Hà</h3>
-          <div class="price">28.000đ</div>
-        </div>
-
-        <div class="product" data-name="p-14" data-product-id="14">
-          <div class="product-image">
-            <img src="images/matcha latte.jpg" alt="Matcha Latte" loading="lazy" />
-          </div>
-          <h3>Matcha Latte</h3>
-          <div class="price">38.000đ</div>
-        </div>
-
-        <div class="product" data-name="p-15" data-product-id="15">
-          <div class="product-image">
-            <img src="images/đá dâu.jpg" alt="Dâu sữa đá" loading="lazy" />
-          </div>
-          <h3>Dâu sữa đá</h3>
-          <div class="price">40.000đ</div>
-        </div>
-      </div>
     </div>
 
     <!-- Product Preview Modal -->

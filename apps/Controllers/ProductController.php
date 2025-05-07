@@ -13,33 +13,47 @@ class ProductController extends BaseController
 
     public function add_category()
     {
-        $this->load->view('cpanel/header');
-        $this->load->view('cpanel/menu');
-
+        Session::checkSession();
         $table = "tbl_Category";
-        $data['category'] = $this->categoryModel->category($table);
-
-        $this->load->view('cpanel/product/addCategory', $data);
-        $this->load->view('cpanel/footer');
+        $categories = $this->categoryModel->category($table);
+        
+        $data = [
+            'currentPage' => 'category',
+            'pageTitle' => 'Category Management',
+            'viewFile' => 'cpanel/product/addCategory',
+            'load' => $this->load,
+            'data' => ['category' => $categories]
+        ];
+        
+        $this->load->view('cpanel/menu', $data);
     }
 
     public function add_product()
     {
-        $this->load->view('cpanel/header');
-        $this->load->view('cpanel/menu');
-
+        Session::checkSession();
         $table_category = "tbl_category";
         $table_product = "tbl_product";
         
-        $data['category'] = $this->categoryModel->category($table_category);
-        $data['product'] = $this->categoryModel->product($table_product, $table_category);
-
-        $this->load->view('cpanel/product/addProduct', $data);
-        $this->load->view('cpanel/footer');
+        $categories = $this->categoryModel->category($table_category);
+        $products = $this->categoryModel->product($table_product, $table_category);
+        
+        $data = [
+            'currentPage' => 'product',
+            'pageTitle' => 'Product Management',
+            'viewFile' => 'cpanel/product/addProduct',
+            'load' => $this->load,
+            'data' => [
+                'category' => $categories,
+                'product' => $products
+            ]
+        ];
+        
+        $this->load->view('cpanel/menu', $data);
     }
 
     public function insert_category()
     {
+        Session::checkSession();
         try {
             $category = filter_input(INPUT_POST, 'Category', FILTER_SANITIZE_STRING);
             $description = filter_input(INPUT_POST, 'Description', FILTER_SANITIZE_STRING);
@@ -71,6 +85,7 @@ class ProductController extends BaseController
 
     public function insert_product()
     {
+        Session::checkSession();
         $title = $_POST['title_product'];
         $price = $_POST['price'];
         $quantity = $_POST['quantity'];
@@ -84,60 +99,69 @@ class ProductController extends BaseController
 
         $path_uploads= "public/uploads/product/".$unique_image;
         if (move_uploaded_file($tmp_img, $path_uploads)) {
-            echo "File uploaded successfully!";
+            $product_category = $_POST['product_category'];
+            $table = "tbl_product";
+            $data = array(
+                'Title_product' => $title,
+                'Price_product' => $price,
+                'Desc_product' => $description,
+                'Quantity_product' => $quantity,
+                'Images_product' => $unique_image,
+                'Id_category_product' => $product_category
+            );
+            
+            $result = $this->categoryModel->InsertProduct($table, $data);
+            if ($result == 1) {
+                $message['msg'] = "Adding product was successful.";
+                header('Location:' . Base_URL . "ProductController/add_product?msg=" . urlencode(serialize($message)));
+            } else {
+                $message['msg'] = "Adding product was unsuccessful.";
+                header('Location:' . Base_URL . "ProductController/add_product?msg=" . urlencode(serialize($message)));
+            }
         } else {
-            echo "File upload failed!";
-        }
-
-        $product_category = $_POST['product_category'];
-        $table = "tbl_product";
-        $data = array(
-            'Title_product' => $title,
-            'Price_product' => $price,
-            'Desc_product' => $description,
-            'Quantity_product' => $quantity,
-            'Images_product' => $unique_image,
-            'Id_category_product' => $product_category
-        );
-        
-        $result = $this->categoryModel->InsertProduct($table, $data);
-        if ($result == 1) {
-            $message['msg'] = "Adding product was successful. ";
-            header('Location:' . Base_URL . "ProductController/list_product?msg=" . urldecode(serialize($message)));
-        } else {
-            $message['msg'] = "Adding product was unsuccessful. ";
-            header('Location:' . Base_URL . "ProductController/list_product?msg=" . urldecode(serialize($message)));
+            $message['msg'] = "Failed to upload image.";
+            header('Location:' . Base_URL . "ProductController/add_product?msg=" . urlencode(serialize($message)));
         }
     }
 
     public function list_product()
     {
-        $this->load->view('cpanel/header');
-        $this->load->view('cpanel/menu');
-
+        Session::checkSession();
         $table_product = "tbl_product";
         $table_category = "tbl_category";
-
-        $data['product'] = $this->categoryModel->product($table_product,$table_category);
-
-        $this->load->view('cpanel/product/listProduct', $data);
-        $this->load->view('cpanel/footer');
+        $products = $this->categoryModel->product($table_product, $table_category);
+        
+        $data = [
+            'currentPage' => 'product',
+            'pageTitle' => 'Product List',
+            'viewFile' => 'cpanel/product/listProduct',
+            'load' => $this->load,
+            'data' => ['product' => $products]
+        ];
+        
+        $this->load->view('cpanel/menu', $data);
     }
 
     public function list_category()
     {
-        $this->load->view('cpanel/header');
-        $this->load->view('cpanel/menu');
-
+        Session::checkSession();
         $table = "tbl_Category";
-        $data['category'] = $this->categoryModel->category($table);
-
-        $this->load->view('cpanel/product/listCategory', $data);
-        $this->load->view('cpanel/footer');
+        $categories = $this->categoryModel->category($table);
+        
+        $data = [
+            'currentPage' => 'category',
+            'pageTitle' => 'Category List',
+            'viewFile' => 'cpanel/product/listCategory',
+            'load' => $this->load,
+            'data' => ['category' => $categories]
+        ];
+        
+        $this->load->view('cpanel/menu', $data);
     }
 
     public function delete_category($id)
     {
+        Session::checkSession();
         try {
             if (!is_numeric($id)) {
                 throw new Exception("Invalid category ID.");
@@ -167,22 +191,25 @@ class ProductController extends BaseController
         exit();
     }
 
-    public function delete_product($id){
+    public function delete_product($id)
+    {
+        Session::checkSession();
         $cond = "Id_product = '$id'";
         $table = "tbl_product";
-        $result = $this->categoryModel->DeleteProduct($table,$cond);
+        $result = $this->categoryModel->DeleteProduct($table, $cond);
 
         if ($result == 1) {
-            $message['msg'] = "Deleting product was successful. ";
-            header('Location:' . Base_URL . "ProductController/add_product?msg=" . urldecode(serialize($message)));
+            $message['msg'] = "Deleting product was successful.";
+            header('Location:' . Base_URL . "ProductController/add_product?msg=" . urlencode(serialize($message)));
         } else {
-            $message['msg'] = "Deleting product was unsuccessful. ";
-            header('Location:' . Base_URL . "ProductController/add_product?msg=" . urldecode(serialize($message)));
+            $message['msg'] = "Deleting product was unsuccessful.";
+            header('Location:' . Base_URL . "ProductController/add_product?msg=" . urlencode(serialize($message)));
         }
     }
 
     public function edit_category($id)
     {
+        Session::checkSession();
         try {
             if (!is_numeric($id)) {
                 throw new Exception("Invalid category ID.");
@@ -191,17 +218,20 @@ class ProductController extends BaseController
             $table = "tbl_Category";
             $cond = "Id_Cate = " . (int)$id;
             
-            $data['categoryById'] = $this->categoryModel->cateByID($table, $cond);
-            if (!$data['categoryById']) {
+            $categoryById = $this->categoryModel->cateByID($table, $cond);
+            if (!$categoryById) {
                 throw new Exception("Category not found.");
             }
 
-            $data['category'] = $this->categoryModel->category($table);
-
-            $this->load->view('cpanel/header');
-            $this->load->view('cpanel/menu');
-            $this->load->view('cpanel/product/editCategory', $data);
-            $this->load->view('cpanel/footer');
+            $data = [
+                'currentPage' => 'category',
+                'pageTitle' => 'Edit Category',
+                'viewFile' => 'cpanel/product/editCategory',
+                'load' => $this->load,
+                'data' => ['categoryById' => $categoryById]
+            ];
+            
+            $this->load->view('cpanel/menu', $data);
 
         } catch (Exception $e) {
             $message = [
@@ -213,22 +243,33 @@ class ProductController extends BaseController
         }
     }
 
-    public function edit_product($id){
+    public function edit_product($id)
+    {
+        Session::checkSession();
         $cond = "Id_product = $id";
         $table_product = "tbl_product";
         $table_category = "tbl_category";
 
-        $data['productById'] = $this->categoryModel->productByID($table_product,$cond);
-        $data['category'] = $this->categoryModel->category($table_category);
-
-        $this->load->view('cpanel/header');
-        $this->load->view('cpanel/menu');
-        $this->load->view('cpanel/product/editProduct',$data);
-        $this->load->view('cpanel/footer');
+        $productById = $this->categoryModel->productByID($table_product, $cond);
+        $categories = $this->categoryModel->category($table_category);
+        
+        $data = [
+            'currentPage' => 'product',
+            'pageTitle' => 'Edit Product',
+            'viewFile' => 'cpanel/product/editProduct',
+            'load' => $this->load,
+            'data' => [
+                'productById' => $productById,
+                'category' => $categories
+            ]
+        ];
+        
+        $this->load->view('cpanel/menu', $data);
     }
 
     public function update_category($id)
     {
+        Session::checkSession();
         try {
             if (!is_numeric($id)) {
                 throw new Exception("Invalid category ID.");
@@ -264,7 +305,9 @@ class ProductController extends BaseController
         exit();
     }
 
-    public function update_product($id){
+    public function update_product($id)
+    {
+        Session::checkSession();
         $cond = "Id_product = $id";
         $table = "tbl_product";
         
@@ -273,6 +316,14 @@ class ProductController extends BaseController
         $desc = $_POST['desc_product'];
         $quantity = $_POST['quantity_product'];
         $category = $_POST['category_product'];
+        
+        $data = [
+            'Title_product' => $title,
+            'Price_product' => $price,
+            'Desc_product' => $desc,
+            'Quantity_product' => $quantity,
+            'Id_category_product' => $category
+        ];
         
         if($_FILES['image']['name']){
             $image = $_FILES['image']['name'];
@@ -288,21 +339,13 @@ class ProductController extends BaseController
             }
         }
         
-        $data = array_merge($data ?? [], [
-            'Title_product' => $title,
-            'Price_product' => $price,
-            'Desc_product' => $desc,
-            'Quantity_product' => $quantity,
-            'Id_category_product' => $category
-        ]);
-        
         $result = $this->categoryModel->UpdateProduct($table, $data, $cond);
         if ($result == 1) {
-            $message['msg'] = "Updating product was successful. ";
-            header('Location:' . Base_URL . "ProductController/add_product?msg=" . urldecode(serialize($message)));
+            $message['msg'] = "Updating product was successful.";
+            header('Location:' . Base_URL . "ProductController/add_product?msg=" . urlencode(serialize($message)));
         } else {
-            $message['msg'] = "Updating product was unsuccessful. ";
-            header('Location:' . Base_URL . "ProductController/add_product?msg=" . urldecode(serialize($message)));
+            $message['msg'] = "Updating product was unsuccessful.";
+            header('Location:' . Base_URL . "ProductController/add_product?msg=" . urlencode(serialize($message)));
         }
     }
 }
