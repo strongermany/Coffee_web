@@ -25,13 +25,20 @@ class NewsController extends BaseController
 
     public function detailPost($id = null){
         $postModel = $this->load->model('PostModel');
+        $categoryModel = $this->load->model('CategoryModel');
         if ($id === null) {
             // Nếu không có id, chuyển về trang chủ hoặc trang blog
             header('Location: ' . Base_URL . 'NewsController/category');
             exit;
         }
         $post = $postModel->postById('tbl_post', 'Id_post = ' . intval($id));
-        $data = ['post' => !empty($post) ? $post[0] : null];
+        $categories = $categoryModel->postCategory('tbl_category_post');
+        $recentPosts = $postModel->getRecentPostsExcludeId('tbl_post', intval($id), 3);
+        $data = [
+            'post' => !empty($post) ? $post[0] : null,
+            'categories' => $categories,
+            'recentPosts' => $recentPosts
+        ];
         $this->load->view('header');
         $this->load->view('detailNews', $data);
         $this->load->view('footer');

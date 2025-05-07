@@ -49,21 +49,25 @@
                     <div class="profile-section">
                         <h2>Thông tin cá nhân</h2>
                         <div class="profile-info">
-                            <div class="info-group">
-                                <label>Họ và tên</label>
-                                <p><?php echo isset($customerInfo['customer_name']) ? $customerInfo['customer_name'] : ''; ?></p>
+                            <div class="profile-info-row">
+                                <div class="info-group">
+                                    <label>Họ và tên</label>
+                                    <p><?php echo isset($customerInfo['customer_name']) ? $customerInfo['customer_name'] : ''; ?></p>
+                                </div>
+                                <div class="info-group">
+                                    <label>Email</label>
+                                    <p><?php echo isset($customerInfo['email']) ? $customerInfo['email'] : ''; ?></p>
+                                </div>
                             </div>
-                            <div class="info-group">
-                                <label>Email</label>
-                                <p><?php echo isset($customerInfo['email']) ? $customerInfo['email'] : ''; ?></p>
-                            </div>
-                            <div class="info-group">
-                                <label>Số điện thoại</label>
-                                <p><?php echo isset($customerInfo['phone']) ? $customerInfo['phone'] : ''; ?></p>
-                            </div>
-                            <div class="info-group">
-                                <label>Địa chỉ</label>
-                                <p><?php echo isset($customerInfo['address']) ? $customerInfo['address'] : ''; ?></p>
+                            <div class="profile-info-row">
+                                <div class="info-group">
+                                    <label>Số điện thoại</label>
+                                    <p><?php echo isset($customerInfo['phone']) ? $customerInfo['phone'] : ''; ?></p>
+                                </div>
+                                <div class="info-group">
+                                    <label>Địa chỉ</label>
+                                    <p><?php echo isset($customerInfo['address']) ? $customerInfo['address'] : ''; ?></p>
+                                </div>
                             </div>
                             <button class="edit-profile-btn" id="openEditProfileModal">Chỉnh sửa thông tin</button>
                         </div>
@@ -72,8 +76,45 @@
                     <div class="profile-section">
                         <h2>Đơn hàng gần đây</h2>
                         <div class="recent-orders">
-                            <!-- Sẽ hiển thị danh sách đơn hàng gần đây ở đây -->
-                            <p class="no-orders">Chưa có đơn hàng nào</p>
+                            <?php if (!empty($orders)): ?>
+                                <div class="orders-list">
+                                    <?php foreach ($orders as $order): ?>
+                                        <div class="order-card">
+                                            <div class="order-header">
+                                                <span class="order-id">Mã đơn: #<?php echo $order['order_id']; ?></span>
+                                                <span class="order-date"><?php echo date('d/m/Y', strtotime($order['order_date'])); ?></span>
+                                            </div>
+                                            <div class="order-details">
+                                                <div class="order-info">
+                                                    <p><strong>Tổng tiền:</strong> <?php echo number_format($order['total_amount'], 0, ',', '.'); ?> đ</p>
+                                                    <p><strong>Trạng thái:</strong> 
+                                                        <span class="status-badge <?php echo strtolower($order['status']); ?>">
+                                                            <?php echo ucfirst($order['status']); ?>
+                                                        </span>
+                                                    </p>
+                                                    <p><strong>Phương thức thanh toán:</strong> <?php echo ucfirst($order['payment_method']); ?></p>
+                                                </div>
+                                                <?php if (!empty($order['items'])): ?>
+                                                <div class="order-items">
+                                                    <?php foreach ($order['items'] as $item): ?>
+                                                        <div class="order-item">
+                                                            <img src="<?php echo Base_URL . 'public/uploads/product/' . $item['image']; ?>" alt="<?php echo $item['name']; ?>" class="item-image">
+                                                            <div class="item-details">
+                                                                <h4><?php echo $item['name']; ?></h4>
+                                                                <p>Số lượng: <?php echo $item['quantity']; ?></p>
+                                                                <p>Giá: <?php echo number_format($item['price'], 0, ',', '.'); ?> đ</p>
+                                                            </div>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else: ?>
+                                <p class="no-orders">Chưa có đơn hàng nào</p>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -487,6 +528,116 @@
 
     .password-group:last-of-type::after {
         display: none;
+    }
+
+    .orders-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .order-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    .order-header {
+        background: #f8f9fa;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #eee;
+    }
+
+    .order-id {
+        font-weight: 600;
+        color: #6c3827;
+    }
+
+    .order-date {
+        color: #666;
+    }
+
+    .order-details {
+        padding: 20px;
+    }
+
+    .order-info {
+        margin-bottom: 20px;
+    }
+
+    .order-info p {
+        margin: 8px 0;
+        color: #333;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        font-weight: 500;
+    }
+
+    .status-badge.pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .status-badge.paid {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .status-badge.cancelled {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .order-items {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .order-item {
+        display: flex;
+        gap: 15px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .item-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .item-details {
+        flex: 1;
+    }
+
+    .item-details h4 {
+        margin: 0 0 8px 0;
+        color: #333;
+    }
+
+    .item-details p {
+        margin: 4px 0;
+        color: #666;
+    }
+
+    .no-orders {
+        text-align: center;
+        color: #666;
+        padding: 30px;
+        background: #f8f9fa;
+        border-radius: 8px;
     }
     </style>
 

@@ -17,9 +17,14 @@ if (isset($_GET['msg'])) {
     <!-- Header Section -->
     <div class="post-header">
         <h2 class="post-title">Blog Management</h2>
-        <button type="button" class="post-add-btn" onclick="toggleForm()">
-            <i class="fas fa-plus"></i> Add New Blog
-        </button>
+        <div style="display: flex; gap: 10px;">
+            <button type="button" class="post-add-btn" onclick="toggleForm()">
+                <i class="fas fa-plus"></i> Add New Blog
+            </button>
+            <button type="button" class="post-add-btn" style="background: #f6ad55; color: #222;" onclick="openCategoryModal()">
+                <i class="fas fa-folder-plus"></i> Add Category
+            </button>
+        </div>
     </div>
 
     <!-- Add Form Section -->
@@ -30,6 +35,18 @@ if (isset($_GET['msg'])) {
                     <div class="post-form-group">
                         <label for="title_post" class="post-label">Blog Title</label>
                         <input type="text" name="title_post" id="title_post" class="post-input" required>
+                    </div>
+
+                    <div class="post-form-group">
+                        <label for="category_post" class="post-label">Category</label>
+                        <select name="Id_category_post" id="category_post" class="post-input" required>
+                            <option value="">-- Select Category --</option>
+                            <?php if (!empty($categories)) foreach ($categories as $cat): ?>
+                                <option value="<?php echo $cat['Id_category_post']; ?>">
+                                    <?php echo htmlspecialchars($cat['Title_category_post']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
 
                     <div class="post-form-group">
@@ -122,6 +139,28 @@ if (isset($_GET['msg'])) {
                 <?php endif; ?>
             </tbody>
         </table>
+    </div>
+
+    <!-- Category Modal -->
+    <div id="category-modal" class="category-modal-bg" style="display:none;">
+        <div class="category-modal-content">
+            <span class="category-modal-close" onclick="closeCategoryModal()">&times;</span>
+            <h3>Add Category Post</h3>
+            <form action="<?php echo Base_URL ?>PostController/insert_category_post" method="POST" id="categoryForm">
+                <div class="post-form-group">
+                    <label for="category_title" class="post-label">Category Title</label>
+                    <input type="text" name="Title" id="category_title" class="post-input" required>
+                </div>
+                <div class="post-actions">
+                    <button type="submit" class="post-submit" style="background:#f6ad55;color:#222;">
+                        <i class="fas fa-plus"></i> Add Category
+                    </button>
+                    <button type="button" class="post-cancel" onclick="closeCategoryModal()">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -497,6 +536,40 @@ td.post-actions {
 .post-content-preview p {
     margin: 0;
 }
+
+.category-modal-bg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.4);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.category-modal-content {
+    background: #fff;
+    border-radius: 8px;
+    padding: 32px 28px;
+    min-width: 320px;
+    max-width: 95vw;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    position: relative;
+    animation: fadeInModal 0.3s;
+}
+.category-modal-close {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    font-size: 24px;
+    color: #e53e3e;
+    cursor: pointer;
+    font-weight: bold;
+}
+@keyframes fadeInModal {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 </style>
 
 <!-- Include CKEditor from CDN -->
@@ -631,5 +704,14 @@ if (document.getElementById('notification')) {
     setTimeout(function() {
         document.getElementById('notification').style.display = 'none';
     }, 3000);
+}
+
+function openCategoryModal() {
+    document.getElementById('category-modal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+function closeCategoryModal() {
+    document.getElementById('category-modal').style.display = 'none';
+    document.body.style.overflow = '';
 }
 </script>

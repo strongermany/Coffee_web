@@ -115,9 +115,9 @@ class CartModel extends BaseModel {
 
     // Lấy chi tiết đơn hàng
     public function getOrderItems($orderId) {
-        $sql = "SELECT oi.*, p.name, p.image 
-                FROM order_items oi 
-                JOIN products p ON oi.product_id = p.product_id 
+        $sql = "SELECT oi.*, p.Title_product as name, p.Images_product as image 
+                FROM tbl_order_items oi 
+                JOIN tbl_product p ON oi.product_id = p.Id_product 
                 WHERE oi.order_id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$orderId]);
@@ -178,6 +178,18 @@ class CartModel extends BaseModel {
         $sql = "DELETE FROM tbl_cart WHERE customer_id = ?";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$customerId]);
+    }
+
+    public function getCustomerOrders($customerId) {
+        $sql = "SELECT o.*, od.quantity, od.price, p.name as product_name, p.image 
+                FROM orders o 
+                JOIN order_details od ON o.order_id = od.order_id 
+                JOIN products p ON od.product_id = p.id 
+                WHERE o.customer_id = ? 
+                ORDER BY o.order_date DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$customerId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?> 

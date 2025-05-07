@@ -1,7 +1,9 @@
 /* Profile Page Styles */
 .profile-page {
     padding: 2rem;
-    background: #fff;
+    /* background: #fff; */
+    background: linear-gradient(135deg, #f7e9dd 0%, #e9c9a6 50%, #c69c6d 100%);
+    min-height: 100vh;
 }
 
 .profile-container {
@@ -19,6 +21,7 @@
     display: grid;
     grid-template-columns: 250px 1fr;
     gap: 2rem;
+    align-items: flex-start;
 }
 
 /* Sidebar Styles */
@@ -26,6 +29,9 @@
     background: #f7f3ef;
     border-radius: 12px;
     padding: 1rem;
+    align-self: flex-start;
+    height: auto;
+    min-height: unset;
 }
 
 .profile-nav .nav-item {
@@ -63,44 +69,70 @@
 
 .profile-section {
     margin-bottom: 2rem;
+    background: rgba(255, 250, 245, 0.95);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(198, 156, 109, 0.10);
+    padding: 2.5rem 2rem 2rem 2rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    border: 1.5px solid #e9c9a6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .profile-section h2 {
     color: #6c3827;
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    width: 100%;
 }
 
 .profile-info .info-group {
-    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    width: 100%;
 }
 
 .profile-info label {
-    display: block;
     color: #a9744f;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+    font-size: 1.1rem;
+    letter-spacing: 0.2px;
+    text-align: center;
+    width: 100%;
 }
 
 .profile-info p {
     color: #6c3827;
-    font-size: 1rem;
-    margin: 0;
+    font-size: 1.1rem;
+    margin: 0 0 0.2rem 0.5rem;
+    font-weight: 400;
+    word-break: break-word;
+    text-align: center;
+    width: 100%;
 }
 
 .edit-profile-btn {
-    background: #a9744f;
-    color: #fff;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.edit-profile-btn:hover {
-    background: #6c3827;
+    background: linear-gradient(90deg, #a9744f 0%, #e1bc91 100%);
+    display: block;
+    margin: 2rem auto 0 auto;
+    padding: 0.9rem 2.2rem;
+    font-size: 1.1rem;
+    border-radius: 8px;
 }
 
 /* Modal Styles */
@@ -241,6 +273,20 @@
     }
 }
 
+@media (max-width: 700px) {
+    .profile-section {
+        padding: 1.2rem 0.5rem 1.5rem 0.5rem;
+        max-width: 98vw;
+    }
+    .profile-info p {
+        font-size: 1rem;
+    }
+    .edit-profile-btn {
+        width: 100%;
+        padding: 0.9rem 0;
+    }
+}
+
 /* Amazon-like Colors */
 :root {
     --amazon-orange: #febd69;
@@ -266,4 +312,51 @@
 
 .profile-page .profile-section:hover {
     box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.orders-list, .order-card, .order-details, .order-items, .order-item {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.order-card {
+    background: #f7e9dd !important;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(198, 156, 109, 0.10);
+    border: 1px solid #e9c9a6;
+}
+
+.order-header {
+    background: #f3e3d1 !important;
+    border-bottom: 1px solid #e9c9a6;
+}
+
+.order-item {
+    background: #f3e3d1 !important;
+    border-radius: 8px;
+    border: 1px solid #e9c9a6;
+}
+
+.profile-info-row {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+.profile-info-row .info-group {
+    flex: 1 1 0;
+    min-width: 0;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 700px) {
+    .profile-info-row {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 }

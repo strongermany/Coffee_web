@@ -28,13 +28,11 @@ class PostController extends BaseController
     public function insert_category_post()
     {
         Session::checkSession();
-        $title = $_POST['Title'];
-        $content = $_POST['Content'];
+        $title = isset($_POST['Title']) ? trim($_POST['Title']) : '';
         
         $table = "tbl_category_post";
         $data = array(
-            'Title_category_post' => $title,
-            'Content_category_post' => $content
+            'Title_category_post' => $title
         );
         
         $categoryModel = $this->load->model('CategoryModel');
@@ -42,10 +40,10 @@ class PostController extends BaseController
         
         if ($result == 1) {
             $message['msg'] = "Adding category post was successful.";
-            header('Location:' . Base_URL . "PostController/list_category_post?msg=" . urlencode(serialize($message)));
+            header('Location:' . Base_URL . "PostController/add_post?msg=" . urlencode(serialize($message)));
         } else {
             $message['msg'] = "Adding category post was unsuccessful.";
-            header('Location:' . Base_URL . "PostController?msg=" . urlencode(serialize($message)));
+            header('Location:' . Base_URL . "PostController/add_post?msg=" . urlencode(serialize($message)));
         }
     }
 
@@ -133,15 +131,18 @@ class PostController extends BaseController
         Session::checkSession();
         $postModel = $this->load->model('PostModel');
         $posts = $postModel->getAllPosts();
-        
+        $categoryModel = $this->load->model('CategoryModel');
+        $categories = $categoryModel->postCategory('tbl_category_post');
         $data = [
             'currentPage' => 'blogs',
             'pageTitle' => 'Add Post',
             'viewFile' => 'cpanel/post/addPost',
             'load' => $this->load,
-            'data' => ['post' => $posts]
+            'data' => [
+                'post' => $posts,
+                'categories' => $categories
+            ]
         ];
-        
         $this->load->view('cpanel/menu', $data);
     }
 
@@ -152,6 +153,7 @@ class PostController extends BaseController
         $content = $_POST['content_post'];
         $image = $_FILES['image_post']['name'];
         $tmp_img = $_FILES['image_post']['tmp_name'];
+        $id_category_post = isset($_POST['Id_category_post']) ? intval($_POST['Id_category_post']) : null;
 
         $div = explode('.',$image);
         $file_ext = strtolower(end($div));
@@ -161,12 +163,13 @@ class PostController extends BaseController
         if (move_uploaded_file($tmp_img, $path_uploads)) {
             $postModel = $this->load->model('PostModel');
             $data = array(
-                'title_post' => $title,
-                'content_post' => $content,
-                'image_post' => $unique_image
+                'Title_post' => $title,
+                'Content_post' => $content,
+                'Image_post' => $unique_image,
+                'Id_category_post' => $id_category_post
             );
             
-            $result = $postModel->insertPost($data);
+            $result = $postModel->InsertPost('tbl_post', $data);
             if ($result == 1) {
                 $message['msg'] = "Adding post was successful.";
                 header('Location:' . Base_URL . "PostController/add_post?msg=" . urlencode(serialize($message)));

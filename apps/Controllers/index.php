@@ -19,12 +19,18 @@ class index extends BaseController
     public function homePage()
     {
         $this->headerData = $this->getAllHeader();
+        $postModel = $this->load->model('PostModel');
+        $latestNews = $postModel->getLatestPosts(3);
+        $products = $this->productModel->getAllProducts();
+
         $data = array(
-            'sliders' => $this->sliderModel->getActiveSliders()
+            'sliders' => $this->sliderModel->getActiveSliders(),
+            'latestNews' => $latestNews,
+            'products' => $products
         );
         $this->load->view('header', $this->headerData);
-        //$this->load->view('slider', $data);
-        $this->load->view('HomeView');
+        $this->load->view('slider', $data);
+        $this->load->view('HomeView', $data);
         $this->load->view('footer');
     }
 

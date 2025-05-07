@@ -194,17 +194,65 @@ class ProductController extends BaseController
     public function delete_product($id)
     {
         Session::checkSession();
-        $cond = "Id_product = '$id'";
-        $table = "tbl_product";
-        $result = $this->categoryModel->DeleteProduct($table, $cond);
+        try {
+            $cond = "Id_product = '$id'";
+            $table = "tbl_product";
+            
+            // Lấy thông tin sản phẩm trước khi xóa
+            $product = $this->categoryModel->productByID($table, $cond);
+            // if (isset($product[0]['Images_product'])) {
+            //     echo "Images_product: " . $product[0]['Images_product'];
+            // } else {
+            //     echo "Không tìm thấy Images_product";
+            // }
+            // exit();
+            if (!$product) {
+                throw new Exception("Không tìm thấy sản phẩm");
+            }
 
-        if ($result == 1) {
-            $message['msg'] = "Deleting product was successful.";
-            header('Location:' . Base_URL . "ProductController/add_product?msg=" . urlencode(serialize($message)));
-        } else {
-            $message['msg'] = "Deleting product was unsuccessful.";
-            header('Location:' . Base_URL . "ProductController/add_product?msg=" . urlencode(serialize($message)));
+            // Xử lý xóa file hình ảnh
+            if (!empty( $product[0]['Images_product'])) {
+               
+                
+                // Sử dụng đường dẫn tuyệt đối
+                $image_path = 'D:\laragon\www\CafeWeb\public\uploads\product\\'.$product[0]['Images_product'];
+                // Debug thông tin
+              
+                // Kiểm tra và xóa file
+                if (file_exists($image_path) && is_file($image_path)) {
+                    // Thử xóa file
+                    
+                   
+                    if (!unlink($image_path)) {
+                        $error = error_get_last();
+                        error_log("Failed to delete image file. Error: " . ($error ? $error['message'] : 'Unknown error'));
+                        
+                        // Thử thay đổi quyền truy cập và xóa lại
+                        chmod($image_path, 0777);
+                        
+                       
+                    } else {
+                        error_log("Successfully deleted image file");
+                    }
+                } else {
+                    error_log("Image file not found or not accessible: " . $image_path);
+                }
+            }
+            
+            // Xóa sản phẩm từ database
+            $result = $this->categoryModel->DeleteProduct($table, $cond);
+
+            if ($result == 1) {
+                $message['msg'] = "Xóa sản phẩm thành công";
+            } else {
+                throw new Exception("Không thể xóa sản phẩm từ database");
+            }
+        } catch (Exception $e) {
+            error_log("Delete product error: " . $e->getMessage());
+            $message['msg'] = "Lỗi: " . $e->getMessage();
         }
+        
+        header('Location:' . Base_URL . "ProductController/add_product?msg=" . urlencode(serialize($message)));
     }
 
     public function edit_category($id)

@@ -11,8 +11,17 @@
             <!-- Meta -->
             <div class="blog-meta-dark">
                 <span class="meta-category"><i class="fas fa-folder"></i>
-                    <?php echo $post['Name_category_post'] ?? 'Uncategorized' ?></span>
-                <span class="meta-author"><i class="fas fa-user"></i> Admin</span>
+                    <?php echo $post['Title_category_post'] ?? 'Uncategorized'; ?>
+                    <?php if (!empty($post['Date_post'])): ?>
+                        <span style="color:#bfa76a; font-size:0.98em; margin-left:10px;">
+                            <?php 
+                                $dt = new DateTime($post['Date_post']);
+                                echo $dt->format('H:i d/m/Y');
+                            ?>
+                        </span>
+                    <?php endif; ?>
+                </span>
+                
             </div>
             <!-- Title -->
             <h1 class="blog-title-dark"><?php echo $post['Title_post'] ?></h1>
@@ -31,18 +40,7 @@
         <!-- Sidebar -->
         <aside class="blog-sidebar-dark animated fadeInRight">
             <!-- Author Card -->
-            <div class="sidebar-card sidebar-author">
-                <img class="author-avatar" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar">
-                <div class="author-name">ALEX JOHN</div>
-                <div class="author-desc">It is a long ested fact that reader will be distracted the readable cont of a
-                    page when looking</div>
-                <div class="author-social">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
+          
             <!-- Categories (Dynamic) -->
             <div class="sidebar-card sidebar-categories">
                 <div class="sidebar-title">CATEGORIES</div>
@@ -52,7 +50,7 @@
                     <li>
                         <a
                             href="<?php echo Base_URL; ?>NewsController/category/<?php echo $cat['Id_category_post']; ?>">
-                            <?php echo $cat['Name_category_post']; ?>
+                            <?php echo $cat['Title_category_post']; ?>
                         </a>
                         <span>(<?php echo $cat['post_count'] ?? 0; ?>)</span>
                     </li>
@@ -75,6 +73,13 @@
                                 href="<?php echo Base_URL; ?>NewsController/detailPost/<?php echo $recent['Id_post']; ?>">
                                 <?php echo $recent['Title_post']; ?>
                             </a>
+                            <div style="color:#fff; font-size:0.95em; margin-top:2px;">
+                                <?php
+                                    $words = preg_split('/\s+/', strip_tags($recent['Content_post']));
+                                    $preview = implode(' ', array_slice($words, 0, 10));
+                                    echo $preview . '...';
+                                ?>
+                            </div>
                         </div>
                     </li>
                     <?php endforeach; ?>

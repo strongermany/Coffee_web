@@ -1,10 +1,12 @@
 <?php
 class CustomerController extends BaseController {
     private $customerModel;
+    private $cartModel;
 
     public function __construct() {
         parent::__construct();
         $this->customerModel = $this->load->model('CustomerModel');
+        $this->cartModel = $this->load->model('CartModel');
     }
 
     // Hiển thị trang thông tin khách hàng
@@ -15,12 +17,27 @@ class CustomerController extends BaseController {
             exit();
         }
         
-
         $customer_id = Session::get('customer_id');
         $customerInfo = $this->customerModel->getCustomerById($customer_id);
+        
+        // Get customer's orders
+        $orders = $this->cartModel->getAllOrders();
+        $customerOrders = array_filter($orders, function($order) use ($customer_id) {
+            return $order['customer_id'] == $customer_id;
+        });
+
+        // Get order items for each order
+        $ordersWithItems = [];
+        foreach ($customerOrders as $order) {
+            $order['items'] = $this->cartModel->getOrderItems($order['order_id']);
+            $ordersWithItems[] = $order;
+        }
 
         $this->load->view('header');
-        $this->load->view('customer', ['customerInfo' => $customerInfo[0]]);
+        $this->load->view('customer', [
+            'customerInfo' => $customerInfo[0],
+            'orders' => $ordersWithItems
+        ]);
         $this->load->view('footer');
     }
 
