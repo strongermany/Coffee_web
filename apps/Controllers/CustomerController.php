@@ -11,6 +11,7 @@ class CustomerController extends BaseController {
 
     // Hiển thị trang thông tin khách hàng
     public function index() {
+        $this->headerData = $this->getAllHeader();
         Session::init();
         if (!Session::get('customer_id')) {
             header("Location:" . Base_URL . "CustomerLoginController");
@@ -33,7 +34,7 @@ class CustomerController extends BaseController {
             $ordersWithItems[] = $order;
         }
 
-        $this->load->view('header');
+        $this->load->view('subheader', $this->headerData);
         $this->load->view('customer', [
             'customerInfo' => $customerInfo[0],
             'orders' => $ordersWithItems
@@ -108,7 +109,7 @@ class CustomerController extends BaseController {
         $customer_id = Session::get('customer_id');
         $customerInfo = $this->customerModel->getCustomerById($customer_id);
 
-        $this->load->view('header');
+        $this->load->view('subheader');
         $this->load->view('editProfile', ['customerInfo' => $customerInfo[0]]);
         $this->load->view('footer');
     }
@@ -121,7 +122,7 @@ class CustomerController extends BaseController {
             exit();
         }
 
-        $this->load->view('header');
+        $this->load->view('subheader');
         $this->load->view('change_password');
         $this->load->view('footer');
     }

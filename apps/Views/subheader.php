@@ -18,7 +18,7 @@
 
     <link rel="stylesheet" href="https://use.typekit.net/xxxxxxx.css">
     <link rel="stylesheet" href="<?php echo Base_URL ?>public/css/home.css" />
-    <link rel="stylesheet" href="<?php echo Base_URL ?>public/css/headerA.css" />
+    <link rel="stylesheet" href="<?php echo Base_URL ?>public/css/subheader.css" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
@@ -27,10 +27,7 @@
     <title>TRANG CHỦ</title>
 </head>
 <header style="background-image: url('<?php echo Base_URL . $backgroundImage; ?>'); position: relative;">
-    <div class="header-banner-text">
-        <div class="header-banner-small">From the South to your Mouth</div>
-        <div class="header-banner-large">EACH WRAPPED CON AMORE!</div>
-    </div>
+   
     </div>
 
     <nav class="navbar navbar-expand-lg ">

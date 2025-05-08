@@ -17,8 +17,8 @@ class NewsController extends BaseController
         $postModel = $this->load->model('PostModel');
         $posts = $postModel->getAllPosts();
         $data = ['posts' => $posts];
-        $this->load->view('header');
-        $this->load->view('slider');
+        $this->load->view('subheader');
+        //$this->load->view('slider');
         $this->load->view('mainNews', $data);
         $this->load->view('footer');
     }
@@ -39,7 +39,8 @@ class NewsController extends BaseController
             'categories' => $categories,
             'recentPosts' => $recentPosts
         ];
-        $this->load->view('header');
+        $this->load->view('subheader');
+        //$this->load->view('slider');
         $this->load->view('detailNews', $data);
         $this->load->view('footer');
     }

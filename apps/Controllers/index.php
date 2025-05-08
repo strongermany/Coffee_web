@@ -29,7 +29,7 @@ class index extends BaseController
             'products' => $products
         );
         $this->load->view('header', $this->headerData);
-        $this->load->view('slider', $data);
+        //$this->load->view('slider', $data);
         $this->load->view('HomeView', $data);
         $this->load->view('footer');
     }
@@ -47,7 +47,7 @@ class index extends BaseController
             'products' => $products,
             'categories' => $categories
         ];
-        $this->load->view('header', $this->headerData);
+        $this->load->view('subheader', $this->headerData);
         $this->load->view('menu', $data);
         $this->load->view('footer');
     }   
@@ -55,10 +55,10 @@ class index extends BaseController
     public function category($category_id = null){
         $this->headerData = $this->getAllHeader();
         $data = array( 'sliders' => $this->sliderModel->getActiveSliders());
-        $data['products'] = $this->productModel->getProductsByCategory(16);
-        $data['category_info'] = $this->categoryModel->getCategoryById(16);
-        $this->load->view('header', $this->headerData);
-        $this->load->view('slider', $data);
+        $data['products'] = $this->productModel->getProductsByCategory(28);
+        $data['category_info'] = $this->categoryModel->getCategoryById(28);
+        $this->load->view('subheader', $this->headerData);
+        //$this->load->view('slider', $data);
         $this->load->view('categoryProduct', $data);
         $this->load->view('footer');
     }

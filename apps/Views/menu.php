@@ -250,7 +250,28 @@ $is_giadung_only = ($category_id == 16);
         if (buyNowBtn) {
           buyNowBtn.addEventListener('click', function(event) {
             event.stopPropagation();
-            // Xử lý logic mua ngay nếu có
+            const productId = product.getAttribute('data-product-id');
+            const quantity = qtyInput ? parseInt(qtyInput.value) : 1;
+            fetch(`${BASE_URL}CartController/add/${productId}`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ quantity: quantity })
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data.redirect) {
+                window.location.href = data.redirect;
+                return;
+              }
+              if (data.success) {
+                window.location.href = `${BASE_URL}CartController/index`;
+              } else {
+                alert(data.message || 'Có lỗi xảy ra khi đặt hàng');
+              }
+            })
+            .catch(() => {
+              alert('Có lỗi xảy ra khi đặt hàng');
+            });
           });
         }
       });
