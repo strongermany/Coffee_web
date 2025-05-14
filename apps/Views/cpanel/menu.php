@@ -60,6 +60,16 @@
                         <i class="fas fa-box"></i> Product
                     </a>
                 </li>
+                <li class="admin-menu-item <?php echo isset($currentPage) && $currentPage === 'item_category' ? 'active' : ''; ?>">
+                    <a href="<?php echo Base_URL ?>CategoryItemController/add_category">
+                        <i class="fas fa-tags"></i> Item Category
+                    </a>
+                </li>
+                <li class="admin-menu-item <?php echo isset($currentPage) && $currentPage === 'item' ? 'active' : ''; ?>">
+                    <a href="<?php echo Base_URL ?>ItemController/add_item">
+                        <i class="fas fa-cube"></i> Item
+                    </a>
+                </li>
                 <li class="admin-menu-item <?php echo isset($currentPage) && $currentPage === 'orders' ? 'active' : ''; ?>">
                     <a href="#">
                         <i class="fas fa-shopping-cart"></i> Orders <i class="fas fa-chevron-down dropdown-arrow"></i>

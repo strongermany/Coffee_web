@@ -59,12 +59,24 @@
                             ?>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?php echo Base_URL ?>index/category/16">Gia Dụng</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="itemDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Vật phẩm
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="itemDropdown">
+                            <?php
+                            if (isset($item_categories) && is_array($item_categories)) {
+                                foreach ($item_categories as $cate) {
+                                    echo '<li><a class="dropdown-item" href="' . Base_URL . 'index/category/' . $cate['id_cate_item'] . '">' . $cate['name_cate_item'] . '</a></li>';
+                                }
+                            }
+                            ?>
+                        </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>NewsController">Tin tức </a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="#">Cửa hàng</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Nhượng quyền</a></li>
                 </ul>
                 <!-- Thêm phần icon đăng nhập và giỏ hàng -->
                 <div class="d-flex align-items-center">
@@ -134,7 +146,7 @@
                             ?>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>index/category/16">Gia Dụng</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>index/category">Gia Dụng</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>NewsController">Tin tức</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Cửa hàng</a></li>
                 </ul>

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Playball&family=Cinzel:wght@700&family=Quicksand:wght@400;500&display=swap');
+
 /* Nền tổng thể */
 .home-main-bg {
     background: linear-gradient(to bottom, rgb(29, 17, 10) 100%, #5c270c 0%);
@@ -311,4 +313,127 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     z-index: 2;
     font-family: 'Roboto', Arial, sans-serif;
+}
+
+.why-choose-us {
+    text-align: center;
+    padding: 60px 10px 40px 10px;
+    background: transparent;
+}
+
+.why-choose-title,
+.why-choose-main,
+.why-choose-desc {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+}
+
+.why-choose-title.visible,
+.why-choose-main.visible,
+.why-choose-desc.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.why-choose-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+}
+
+.why-choose-text {
+    font-family: 'Playball', cursive;
+    font-size: 1.6rem;
+    color: #ffe4a1;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+.why-choose-diamond {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    background: #ffe4a1;
+    transform: rotate(45deg);
+    margin-bottom: 4px;
+}
+
+.why-choose-main {
+    font-family: 'Cinzel', sans-serif;
+    font-size: 3.2rem;
+    color: #ffe4a1;
+    font-weight: 700;
+    margin-bottom: 18px;
+    line-height: 1.1;
+    letter-spacing: 2px;
+}
+
+.why-choose-desc {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.15rem;
+    color: #fff;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+    font-weight: 400;
+}
+
+@media (max-width: 900px) {
+    .why-choose-main { font-size: 2.1rem; }
+    .why-choose-desc { font-size: 1rem; }
+}
+@media (max-width: 600px) {
+    .why-choose-main { font-size: 1.3rem; }
+    .why-choose-title {
+        font-size: 1.1rem;
+        gap: 10px;
+    }
+    .why-choose-text { font-size: 1.1rem; }
+    .why-choose-diamond {
+        width: 8px;
+        height: 8px;
+    }
+    .why-choose-desc { font-size: 0.95rem; }
+}
+.diamond-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 95%;
+    margin: 32px auto;
+    margin-top: 70px;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+}
+
+.diamond-divider.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.diamond-line {
+    flex: 1;
+    height: 2px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 1px;
+}
+
+.diamond-shape {
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    transform: rotate(45deg);
+    margin: 0 18px;
+    display: inline-block;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+@media (max-width: 600px) {
+    .diamond-shape {
+        width: 10px;
+        height: 10px;
+        margin: 0 8px;
+    }
 }

@@ -33,16 +33,20 @@
                       <?php foreach ($cartItems as $item): ?>
                         <tr>
                            <td>
-                              <img src="<?php echo Base_URL; ?>public/uploads/product/<?php echo $item['product']['Images_product']; ?>" alt="<?php echo $item['product']['Title_product']; ?>" class="img-responsive" style="width:60px;height:60px;object-fit:cover;" />
+                              <?php
+                              $imageFile = isset($item['images_item']) ? $item['images_item'] : (isset($item['image']) ? $item['image'] : '');
+                              $imgFolder = isset($item['images_item']) ? 'items' : 'product';
+                              ?>
+                              <img src="<?php echo Base_URL; ?>public/uploads/<?php echo $imgFolder ?>/<?php echo $imageFile; ?>" alt="<?php echo $item['name']; ?>" class="img-responsive" style="width:60px;height:60px;object-fit:cover;" />
                            </td>
-                           <td><?php echo $item['product']['Title_product']; ?></td>
-                           <td><span class="color_red font_money"><?php echo number_format($item['product']['Price_product'], 0, ',', '.'); ?> đ</span></td>
+                           <td><?php echo $item['name']; ?></td>
+                           <td><span class="color_red font_money"><?php echo number_format($item['price'], 0, ',', '.'); ?> đ</span></td>
                            <td>
-                              <input type="number" class="inputsoluong" name="qty[<?php echo $item['product']['Id_product']; ?>]" value="<?php echo $item['quantity']; ?>" min="1" data-price="<?php echo $item['product']['Price_product']; ?>">
+                              <input type="number" class="inputsoluong" name="qty[<?php echo $item['product_id']; ?>]" value="<?php echo $item['quantity']; ?>" min="1" data-price="<?php echo $item['price']; ?>">
                            </td>
-                           <td class="text_center"><span class="color_red font_money item-total"><?php echo number_format($item['subtotal'], 0, ',', '.'); ?> đ</span></td>
+                           <td class="text_center"><span class="color_red font_money item-total"><?php echo number_format($item['quantity'] * $item['price'], 0, ',', '.'); ?> đ</span></td>
                            <td class="actions">
-                              <button class="btn_df btn-sm remove-from-cart" data-product-id="<?php echo $item['product']['Id_product']; ?>">Xóa</button>
+                              <button class="btn_df btn-sm remove-from-cart" data-product-id="<?php echo $item['product_id']; ?>">Xóa</button>
                            </td>
                         </tr>
                       <?php endforeach; ?>

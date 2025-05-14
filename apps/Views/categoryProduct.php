@@ -1,19 +1,37 @@
 <?php
-$category_name = isset($category_info) ? $category_info['Category'] : 'Gia dụng';
+$category_name = isset($category_info) ? ($category_info['name_cate_item'] ?? 'Danh mục') : 'Danh mục';
 ?>
 
 <link rel="stylesheet" href="<?php echo Base_URL ?>public/css/giadung.css" />
+<link rel="stylesheet" href="<?php echo Base_URL ?>public/css/menu1.css" />
 <div class="giadung-wrapper">
   <div class="container">
+    <!-- Dropdown chọn danh mục -->
+    <?php if (isset($all_categories) && is_array($all_categories) && count($all_categories) > 0): ?>
+      <div class="category-dropdown-wrapper" style="margin-bottom: 24px; text-align:center;">
+        <select id="categoryDropdown" class="category-dropdown">
+          <?php foreach ($all_categories as $cate): ?>
+            <option value="<?php echo $cate['id_cate_item']; ?>" <?php if (isset($category_info) && $category_info['id_cate_item'] == $cate['id_cate_item']) echo 'selected'; ?>>
+              <?php echo htmlspecialchars($cate['name_cate_item']); ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+      <script>
+        document.getElementById('categoryDropdown').addEventListener('change', function() {
+          window.location.href = '<?php echo Base_URL; ?>index/category/' + this.value;
+        });
+      </script>
+    <?php endif; ?>
     <div class="giadung-title"><?php echo $category_name; ?></div>
     <div class="giadung-hr"></div>
     <div class="giadung-products">
-      <?php if(isset($products) && is_array($products) && count($products) > 0): ?>
-        <?php foreach($products as $product): ?>
-          <?php $imgPath = Base_URL . 'public/uploads/product/' . $product['Images_product']; ?>
-          <div class="giadung-card" data-product-id="<?php echo $product['Id_product']; ?>">
+      <?php if(isset($items) && is_array($items) && count($items) > 0): ?>
+        <?php foreach($items as $item): ?>
+          <?php $imgPath = Base_URL . 'public/uploads/items/' . $item['images_item']; ?>
+          <div class="giadung-card" data-item-id="<?php echo $item['id_item']; ?>">
             <div class="giadung-card-image">
-              <img src="<?php echo $imgPath; ?>" alt="<?php echo htmlspecialchars($product['Title_product']); ?>" onerror="this.style.background='#eee';this.style.objectFit='contain';this.src='<?php echo Base_URL ?>public/images/no-image.png';">
+              <img src="<?php echo $imgPath; ?>" alt="<?php echo htmlspecialchars($item['title_item']); ?>" onerror="this.style.background='#eee';this.style.objectFit='contain';this.src='<?php echo Base_URL ?>public/images/no-image.png';">
               <div class="giadung-card-overlay">
                 <div class="giadung-qty-group">
                   <button class="giadung-qty-btn">-</button>
@@ -22,15 +40,15 @@ $category_name = isset($category_info) ? $category_info['Category'] : 'Gia dụn
                 </div>
                 <div class="giadung-card-actions">
                   <button class="giadung-btn">Đặt hàng</button>
-                  <button class="giadung-btn add-to-cart" data-product-id="<?php echo $product['Id_product']; ?>"><i class="fas fa-cart-plus"></i></button>
+                  <button class="giadung-btn add-to-cart" data-item-id="<?php echo $item['id_item']; ?>"><i class="fas fa-cart-plus"></i></button>
                 </div>
               </div>
             </div>
             <div class="giadung-card-rating">
               <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
             </div>
-            <div class="giadung-card-title"><?php echo htmlspecialchars($product['Title_product']); ?></div>
-            <div class="giadung-card-price"><?php echo number_format($product['Price_product'], 0, ',', '.'); ?>đ</div>
+            <div class="giadung-card-title"><?php echo htmlspecialchars($item['title_item']); ?></div>
+            <div class="giadung-card-price"><?php echo number_format($item['price_item'], 0, ',', '.'); ?>đ</div>
           </div>
         <?php endforeach; ?>
       <?php else: ?>
@@ -155,6 +173,25 @@ $category_name = isset($category_info) ? $category_info['Category'] : 'Gia dụn
 .col-12:nth-child(2) .product-card { animation-delay: 0.2s; }
 .col-12:nth-child(3) .product-card { animation-delay: 0.3s; }
 .col-12:nth-child(4) .product-card { animation-delay: 0.4s; }
+
+/* Dropdown style giống menu1.css */
+.category-dropdown {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1.5px solid #bcaaa4;
+  background: #fff8f0;
+  color: #4e342e;
+  font-size: 1.1em;
+  font-family: 'Playfair Display', serif;
+  box-shadow: 0 2px 8px rgba(74, 52, 40, 0.07);
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+  margin-bottom: 10px;
+}
+.category-dropdown:focus, .category-dropdown:hover {
+  border: 2px solid #a1887f;
+  box-shadow: 0 4px 16px rgba(74, 52, 40, 0.13);
+}
 </style>
 
 <script>
@@ -163,16 +200,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Xử lý thêm vào giỏ hàng cho nút giadung-btn (icon giỏ hàng)
     document.querySelectorAll('.giadung-card').forEach(function(card) {
         const addToCartBtn = card.querySelector('.giadung-btn i.fa-cart-plus')?.closest('.giadung-btn');
+        const buyNowBtn = card.querySelector('.giadung-btn:not(.add-to-cart)');
         const qtyInput = card.querySelector('.giadung-qty-input');
+        
         if (addToCartBtn && qtyInput) {
             addToCartBtn.addEventListener('click', function() {
-                const id = card.getAttribute('data-product-id');
+                const id = card.getAttribute('data-item-id');
                 const quantity = parseInt(qtyInput.value) || 1;
                 // Animation khi click
                 addToCartBtn.innerHTML = '<i class="fas fa-check"></i> Đã thêm';
                 addToCartBtn.classList.add('added');
                 // Gọi API thêm vào giỏ hàng
-                fetch(`${Base_URL}CartController/add/${id}`, {
+                fetch(`${Base_URL}CartController/add/${id}?type=item`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ quantity: quantity })
@@ -197,6 +236,35 @@ document.addEventListener('DOMContentLoaded', function() {
                     showNotification('Có lỗi xảy ra khi thêm vào giỏ hàng', 'error');
                     addToCartBtn.innerHTML = '<i class="fas fa-cart-plus"></i>';
                     addToCartBtn.classList.remove('added');
+                });
+            });
+        }
+
+        // Thêm xử lý cho nút Đặt hàng
+        if (buyNowBtn && qtyInput) {
+            buyNowBtn.addEventListener('click', function() {
+                const id = card.getAttribute('data-item-id');
+                const quantity = parseInt(qtyInput.value) || 1;
+                
+                fetch(`${Base_URL}CartController/add/${id}?type=item`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ quantity: quantity })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.redirect) {
+                        window.location.href = data.redirect;
+                        return;
+                    }
+                    if (data.success) {
+                        window.location.href = `${Base_URL}CartController/index`;
+                    } else {
+                        showNotification(data.message || 'Có lỗi xảy ra khi đặt hàng', 'error');
+                    }
+                })
+                .catch(() => {
+                    showNotification('Có lỗi xảy ra khi đặt hàng', 'error');
                 });
             });
         }

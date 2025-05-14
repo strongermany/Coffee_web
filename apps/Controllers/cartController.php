@@ -26,12 +26,22 @@
             if ($customerId) {
                 $items = $this->cartModel->getCartItems($customerId);
                 foreach ($items as $item) {
-                    $cartItems[] = [
-                        'product' => $item,
+                    if (!isset($item['name']) || !isset($item['price'])) continue;
+                    $cartItem = [
+                        'product_id' => $item['product_id'] ?? $item['id_item'] ?? null,
+                        'name' => $item['name'],
+                        'price' => $item['price'],
                         'quantity' => $item['quantity'],
-                        'subtotal' => $item['quantity'] * $item['Price_product']
+                        'subtotal' => $item['quantity'] * $item['price']
                     ];
-                    $total += $item['quantity'] * $item['Price_product'];
+                    // Nếu là item thì truyền thêm images_item
+                    if (($item['type'] ?? '') === 'item') {
+                        $cartItem['images_item'] = $item['image'];
+                    } else {
+                        $cartItem['image'] = $item['image'];
+                    }
+                    $cartItems[] = $cartItem;
+                    $total += $item['quantity'] * $item['price'];
                 }
                 $cart_count = $this->cartModel->getCartOrderCount($customerId);
                 // Lấy thông tin khách hàng
@@ -47,15 +57,17 @@
                 'customerInfo' => $customerInfo
             ];
             $this->headerData['cart_count'] = $cart_count;
-            $this->load->view('header', $this->headerData);
+            $this->load->view('subheader', $this->headerData);
             $this->load->view('cart', $data);
             $this->load->view('footer');
         }
 
-        public function add($productId) {
+        public function add($id) {
             Session::init();
             $response = ['success' => false];
             $customerId = Session::get('customer_id');
+            $type = isset($_GET['type']) ? $_GET['type'] : 'product'; // mặc định là product
+
             if (!$customerId) {
                 header('Content-Type: application/json');
                 echo json_encode([
@@ -70,20 +82,44 @@
                 if (isset($input['quantity']) && is_numeric($input['quantity']) && $input['quantity'] > 0) {
                     $quantity = (int)$input['quantity'];
                 }
-                $product = $this->productModel->getProductById($productId);
-                if ($product && $product['Quantity_product'] > 0) {
-                    $this->cartModel->addToCart($customerId, $productId, $quantity);
-                    $cart_count = $this->cartModel->getCartCount($customerId);
-                    $response = [
-                        'success' => true,
-                        'message' => 'Đã thêm sản phẩm vào giỏ hàng',
-                        'cart_count' => $cart_count
-                    ];
+                if ($quantity <= 0) {
+                    header('Content-Type: application/json');
+                    echo json_encode([
+                        'success' => false,
+                        'message' => 'Số lượng sản phẩm không hợp lệ!'
+                    ]);
+                    exit();
+                }
+
+                if ($type === 'item') {
+                    $itemModel = $this->load->model('ItemModel');
+                    $item = $itemModel->getItemById($id);
+                    if ($item) {
+                        $this->cartModel->addToCart($customerId, $id, $quantity, 'item');
+                        $cart_count = $this->cartModel->getCartCount($customerId);
+                        $response = [
+                            'success' => true,
+                            'message' => 'Đã thêm item vào giỏ hàng',
+                            'cart_count' => $cart_count
+                        ];
+                    } else {
+                        $response['message'] = 'Item không tồn tại';
+                    }
                 } else {
-                    $response['message'] = 'Sản phẩm không có sẵn';
+                    $product = $this->productModel->getProductById($id);
+                    if ($product) {
+                        $this->cartModel->addToCart($customerId, $id, $quantity, 'product');
+                        $cart_count = $this->cartModel->getCartCount($customerId);
+                        $response = [
+                            'success' => true,
+                            'message' => 'Đã thêm sản phẩm vào giỏ hàng',
+                            'cart_count' => $cart_count
+                        ];
+                    } else {
+                        $response['message'] = 'Sản phẩm không tồn tại';
+                    }
                 }
             }
-           
             header('Content-Type: application/json');
             echo json_encode($response);
         }
@@ -154,21 +190,24 @@
                 }
                 // Calculate total and validate stock
                 foreach ($cartItems as $item) {
-                    $product = $this->productModel->getProductById($item['product_id']);
-                    
-                    // if (!$product || $product['Quantity_product'] < $item['quantity']) {
-                        
-                    //     $this->setFlash('error', 'Một số sản phẩm không còn đủ số lượng');
-                        
-                    //     header('Location: ' . Base_URL . 'Views/cart');
-                    //     return;
-                    // }
-                    $totalAmount += $item['quantity'] * $product['Price_product'];
-                    $orderItems[] = [
-                        'product_id' => $item['product_id'],
-                        'quantity' => $item['quantity'],
-                        'price' => $product['Price_product']
-                    ];
+                    if (isset($item['product_id']) && $item['product_id']) {
+                        $product = $this->productModel->getProductById($item['product_id']);
+                        $totalAmount += $item['quantity'] * $product['Price_product'];
+                        $orderItems[] = [
+                            'product_id' => $item['product_id'],
+                            'quantity' => $item['quantity'],
+                            'price' => $product['Price_product']
+                        ];
+                    } elseif (isset($item['item_id']) && $item['item_id']) {
+                        $itemModel = $this->load->model('ItemModel');
+                        $itemInfo = $itemModel->getItemById($item['item_id']);
+                        $totalAmount += $item['quantity'] * $itemInfo['price_item'];
+                        $orderItems[] = [
+                            'item_id' => $item['item_id'],
+                            'quantity' => $item['quantity'],
+                            'price' => $itemInfo['price_item']
+                        ];
+                    }
                 }
                 // Create order
                 $orderData = [
@@ -182,18 +221,23 @@
                 ];
                 $orderId = $this->cartModel->insertOrder($orderData);
                 if ($orderId) {
-                    
                     // Insert order items
                     foreach ($orderItems as $item) {
                         $itemData = [
                             'order_id' => $orderId,
-                            'product_id' => $item['product_id'],
                             'quantity' => $item['quantity'],
                             'price' => $item['price']
                         ];
-                        $this->cartModel->insertOrderItem($itemData);
-                        // Update product quantity
-                        $this->productModel->updateProductQuantity($item['product_id'], $item['quantity']);
+                        if (isset($item['product_id'])) {
+                            $itemData['product_id'] = $item['product_id'];
+                            $this->cartModel->insertOrderItem($itemData);
+                            $this->productModel->updateProductQuantity($item['product_id'], $item['quantity']);
+                        } elseif (isset($item['item_id'])) {
+                            $itemData['item_id'] = $item['item_id'];
+                            $this->cartModel->insertOrderItem($itemData);
+                            // Nếu muốn, update số lượng item ở đây
+                            // $itemModel->updateItemQuantity($item['item_id'], $item['quantity']);
+                        }
                     }
                     // Xóa giỏ hàng trong database
                     $this->cartModel->clearCart($customerId);

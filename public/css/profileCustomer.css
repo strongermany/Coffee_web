@@ -360,3 +360,39 @@
         gap: 0.5rem;
     }
 }
+
+/* Điều chỉnh kích thước ảnh trong order-item */
+.order-item .item-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(108, 56, 39, 0.10);
+    border: 1.5px solid #e1bc91;
+    margin-right: 18px;
+    background: #fff8f0;
+    display: block;
+}
+
+/* Nút Chi tiết đơn hàng tone cafe */
+.toggle-order-items-btn {
+    background: linear-gradient(90deg, #a9744f 0%, #e1bc91 100%);
+    color: #fff;
+    font-family: 'Oswald', 'Roboto', sans-serif;
+    font-weight: 600;
+    font-size: 1.08rem;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 28px;
+    margin-top: 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(108, 56, 39, 0.08);
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    letter-spacing: 0.5px;
+}
+.toggle-order-items-btn:hover {
+    background: linear-gradient(90deg, #6c3827 0%, #a9744f 100%);
+    color: #ffe7c2;
+    box-shadow: 0 4px 16px rgba(108, 56, 39, 0.13);
+}

@@ -5,46 +5,93 @@ class CartModel extends BaseModel {
         date_default_timezone_set('Asia/Ho_Chi_Minh');
     }
 
-    // Thêm sản phẩm vào giỏ hàng
-    public function addToCart($customerId, $productId, $quantity = 1) {
-        $sql = "SELECT * FROM tbl_cart WHERE customer_id = ? AND product_id = ?";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([$customerId, $productId]);
-        $item = $stmt->fetch();
-        if ($item) {
-            $sql = "UPDATE tbl_cart SET quantity = quantity + ? WHERE cart_id = ?";
+    // Thêm sản phẩm hoặc item vào giỏ hàng
+    public function addToCart($customerId, $id, $quantity = 1, $type = 'product') {
+        if ($type === 'item') {
+            $sql = "SELECT * FROM tbl_cart WHERE customer_id = ? AND item_id = ? AND type = ?";
             $stmt = $this->db->prepare($sql);
-            return $stmt->execute([$quantity, $item['cart_id']]);
+            $stmt->execute([$customerId, $id, $type]);
+            $item = $stmt->fetch();
+            if ($item) {
+                $sql = "UPDATE tbl_cart SET quantity = quantity + ? WHERE cart_id = ?";
+                $stmt = $this->db->prepare($sql);
+                return $stmt->execute([$quantity, $item['cart_id']]);
+            } else {
+                $sql = "INSERT INTO tbl_cart (customer_id, product_id, item_id, quantity, type) VALUES (?, NULL, ?, ?, ?)";
+                $stmt = $this->db->prepare($sql);
+                return $stmt->execute([$customerId, $id, $quantity, $type]);
+            }
         } else {
-            $sql = "INSERT INTO tbl_cart (customer_id, product_id, quantity) VALUES (?, ?, ?)";
+            $sql = "SELECT * FROM tbl_cart WHERE customer_id = ? AND product_id = ? AND type = ?";
             $stmt = $this->db->prepare($sql);
-            return $stmt->execute([$customerId, $productId, $quantity]);
+            $stmt->execute([$customerId, $id, $type]);
+            $item = $stmt->fetch();
+            if ($item) {
+                $sql = "UPDATE tbl_cart SET quantity = quantity + ? WHERE cart_id = ?";
+                $stmt = $this->db->prepare($sql);
+                return $stmt->execute([$quantity, $item['cart_id']]);
+            } else {
+                $sql = "INSERT INTO tbl_cart (customer_id, product_id, item_id, quantity, type) VALUES (?, ?, NULL, ?, ?)";
+                $stmt = $this->db->prepare($sql);
+                return $stmt->execute([$customerId, $id, $quantity, $type]);
+            }
         }
     }
 
     // Cập nhật số lượng sản phẩm trong giỏ hàng
-    public function updateCartQuantity($customerId, $productId, $quantity) {
-        $sql = "UPDATE tbl_cart SET quantity = ? WHERE customer_id = ? AND product_id = ?";
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$quantity, $customerId, $productId]);
+    public function updateCartQuantity($customerId, $id, $quantity, $type = 'product') {
+        if ($quantity > 0) {
+            if ($type === 'item') {
+                $sql = "UPDATE tbl_cart SET quantity = ? WHERE customer_id = ? AND item_id = ? AND type = ?";
+                $stmt = $this->db->prepare($sql);
+                return $stmt->execute([$quantity, $customerId, $id, $type]);
+            } else {
+                $sql = "UPDATE tbl_cart SET quantity = ? WHERE customer_id = ? AND product_id = ? AND type = ?";
+                $stmt = $this->db->prepare($sql);
+                return $stmt->execute([$quantity, $customerId, $id, $type]);
+            }
+        }
+        return false;
     }
 
     // Xóa sản phẩm khỏi giỏ hàng
-    public function removeFromCart($customerId, $productId) {
-        $sql = "DELETE FROM tbl_cart WHERE customer_id = ? AND product_id = ?";
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$customerId, $productId]);
+    public function removeFromCart($customerId, $id, $type = 'product') {
+        if ($type === 'item') {
+            $sql = "DELETE FROM tbl_cart WHERE customer_id = ? AND item_id = ? AND type = ?";
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([$customerId, $id, $type]);
+        } else {
+            $sql = "DELETE FROM tbl_cart WHERE customer_id = ? AND product_id = ? AND type = ?";
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([$customerId, $id, $type]);
+        }
     }
 
-    // Lấy tất cả sản phẩm trong giỏ hàng của user
+    // Lấy tất cả sản phẩm và item trong giỏ hàng của user
     public function getCartItems($customerId) {
-        $sql = "SELECT c.*, p.* FROM tbl_cart c JOIN tbl_product p ON c.product_id = p.Id_product WHERE c.customer_id = ?";
+        $sql = "SELECT c.*, 
+                CASE 
+                    WHEN c.type = 'product' THEN p.Title_product 
+                    WHEN c.type = 'item' THEN i.title_item 
+                END as name,
+                CASE 
+                    WHEN c.type = 'product' THEN p.Images_product 
+                    WHEN c.type = 'item' THEN i.images_item 
+                END as image,
+                CASE 
+                    WHEN c.type = 'product' THEN p.Price_product 
+                    WHEN c.type = 'item' THEN i.price_item 
+                END as price
+                FROM tbl_cart c 
+                LEFT JOIN tbl_product p ON c.product_id = p.Id_product AND c.type = 'product'
+                LEFT JOIN tbl_items i ON c.item_id = i.id_item AND c.type = 'item'
+                WHERE c.customer_id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$customerId]);
         return $stmt->fetchAll();
     }
 
-    // Lấy tổng số lượng sản phẩm trong giỏ hàng
+    // Lấy tổng số lượng sản phẩm và item trong giỏ hàng
     public function getCartCount($customerId) {
         $sql = "SELECT SUM(quantity) as total FROM tbl_cart WHERE customer_id = ?";
         $stmt = $this->db->prepare($sql);
@@ -55,13 +102,21 @@ class CartModel extends BaseModel {
 
     // Lấy tổng giá trị giỏ hàng
     public function getCartTotal($customerId) {
-        $sql = "SELECT c.quantity, p.Price_product FROM tbl_cart c JOIN tbl_product p ON c.product_id = p.Id_product WHERE c.customer_id = ?";
+        $sql = "SELECT c.quantity, 
+                CASE 
+                    WHEN c.type = 'product' THEN p.Price_product 
+                    WHEN c.type = 'item' THEN i.price_item 
+                END as price
+                FROM tbl_cart c 
+                LEFT JOIN tbl_product p ON c.product_id = p.Id_product AND c.type = 'product'
+                LEFT JOIN tbl_items i ON c.product_id = i.id_item AND c.type = 'item'
+                WHERE c.customer_id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$customerId]);
         $items = $stmt->fetchAll();
         $total = 0;
         foreach ($items as $item) {
-            $total += $item['quantity'] * $item['Price_product'];
+            $total += $item['quantity'] * $item['price'];
         }
         return $total;
     }
@@ -115,9 +170,22 @@ class CartModel extends BaseModel {
 
     // Lấy chi tiết đơn hàng
     public function getOrderItems($orderId) {
-        $sql = "SELECT oi.*, p.Title_product as name, p.Images_product as image 
-                FROM tbl_order_items oi 
-                JOIN tbl_product p ON oi.product_id = p.Id_product 
+        $sql = "SELECT oi.*, 
+                    CASE 
+                        WHEN oi.product_id IS NOT NULL THEN p.Title_product
+                        WHEN oi.item_id IS NOT NULL THEN i.title_item
+                    END as name,
+                    CASE 
+                        WHEN oi.product_id IS NOT NULL THEN p.Images_product
+                        WHEN oi.item_id IS NOT NULL THEN i.images_item
+                    END as image,
+                    CASE 
+                        WHEN oi.product_id IS NOT NULL THEN 'product'
+                        WHEN oi.item_id IS NOT NULL THEN 'item'
+                    END as type
+                FROM tbl_order_items oi
+                LEFT JOIN tbl_product p ON oi.product_id = p.Id_product
+                LEFT JOIN tbl_items i ON oi.item_id = i.id_item
                 WHERE oi.order_id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$orderId]);
@@ -150,12 +218,13 @@ class CartModel extends BaseModel {
         $stmt = $this->db->prepare($sql);
         return $stmt->execute(array_values($itemData));
     }
+
+    // Lấy tổng số dòng trong giỏ hàng (cho badge)
     public function getCartOrderCount($customerId) {
         $sql = "SELECT COUNT(*) as order_count FROM tbl_cart WHERE customer_id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$customerId]);
         $result = $stmt->fetch();
-       
         return $result ? (int)$result['order_count'] : 0;
     }
 

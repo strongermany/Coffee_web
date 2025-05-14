@@ -93,12 +93,16 @@
                                                         </span>
                                                     </p>
                                                     <p><strong>Phương thức thanh toán:</strong> <?php echo ucfirst($order['payment_method']); ?></p>
+                                                    <button class="toggle-order-items-btn" onclick="toggleOrderItems(this)">Chi tiết đơn hàng</button>
                                                 </div>
                                                 <?php if (!empty($order['items'])): ?>
-                                                <div class="order-items">
+                                                <div class="order-items" style="display:none;">
                                                     <?php foreach ($order['items'] as $item): ?>
+                                                        <?php
+                                                        $imgFolder = (isset($item['type']) && $item['type'] === 'item') ? 'items' : 'product';
+                                                        ?>
                                                         <div class="order-item">
-                                                            <img src="<?php echo Base_URL . 'public/uploads/product/' . $item['image']; ?>" alt="<?php echo $item['name']; ?>" class="item-image">
+                                                            <img src="<?php echo Base_URL . 'public/uploads/' . $imgFolder . '/' . $item['image']; ?>" alt="<?php echo $item['name']; ?>" class="item-image">
                                                             <div class="item-details">
                                                                 <h4><?php echo $item['name']; ?></h4>
                                                                 <p>Số lượng: <?php echo $item['quantity']; ?></p>
@@ -744,6 +748,19 @@
             });
         });
     });
+
+    function toggleOrderItems(btn) {
+        var itemsDiv = btn.parentElement.parentElement.querySelector('.order-items');
+        if (itemsDiv) {
+            if (itemsDiv.style.display === 'none' || itemsDiv.style.display === '') {
+                itemsDiv.style.display = 'block';
+                btn.textContent = 'Ẩn chi tiết đơn hàng';
+            } else {
+                itemsDiv.style.display = 'none';
+                btn.textContent = 'Chi tiết đơn hàng';
+            }
+        }
+    }
     </script>
 
 </body>
