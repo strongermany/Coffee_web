@@ -34,7 +34,7 @@ $is_giadung_only = ($category_id == 16);
             <div class="products-container">
               <?php foreach ($products as $product): ?>
                 <?php if ($product['Id_category_product'] == $selected_category['Id_Cate']): ?>
-                  <div class="product" data-name="p-<?php echo $product['Id_product']; ?>" data-product-id="<?php echo $product['Id_product']; ?>">
+                  <div class="product" data-product-id="<?php echo $product['Id_product']; ?>">
                     <div class="product-image">
                       <img src="<?php echo Base_URL; ?>public/uploads/product/<?php echo $product['Images_product']; ?>" alt="<?php echo htmlspecialchars($product['Title_product']); ?>">
                       <div class="product-hover-card">
@@ -71,7 +71,7 @@ $is_giadung_only = ($category_id == 16);
               <div class="products-container">
                 <?php foreach ($products as $product): ?>
                   <?php if ($product['Id_category_product'] == $category['Id_Cate']): ?>
-                    <div class="product" data-name="p-<?php echo $product['Id_product']; ?>" data-product-id="<?php echo $product['Id_product']; ?>">
+                    <div class="product" data-product-id="<?php echo $product['Id_product']; ?>">
                       <div class="product-image">
                         <img src="<?php echo Base_URL; ?>public/uploads/product/<?php echo $product['Images_product']; ?>" alt="<?php echo htmlspecialchars($product['Title_product']); ?>">
                         <div class="product-hover-card">
@@ -104,66 +104,6 @@ $is_giadung_only = ($category_id == 16);
         <div>Không có danh mục nào.</div>
       <?php endif; ?>
     </div>
-
-    <!-- Product Preview Modal -->
-    <div class="products-preview">
-      <div class="preview" data-target="p-1">
-        <i class="fas fa-times"></i>
-        <img src="images/đá.jpg" alt="Cà phê đen" />
-        <h3>Cà phê đen</h3>
-        <div class="stars">
-          <i class="fas fa-star" style="--i:1"></i>
-          <i class="fas fa-star" style="--i:2"></i>
-          <i class="fas fa-star" style="--i:3"></i>
-          <i class="fas fa-star" style="--i:4"></i>
-          <i class="fas fa-star-half-alt" style="--i:5"></i>
-        </div>
-        <p>Đậm sâu từng giọt, thức tỉnh mọi giác quan.</p>
-        <div class="price">19.000đ</div>
-        <div class="buttons">
-          <a href="#" class="buy">Đặt hàng</a>
-          <a href="#" class="cart">Thêm vào giỏ</a>
-        </div>
-      </div>
-
-      <div class="preview" data-target="p-2">
-        <i class="fas fa-times"></i>
-        <img src="images/cafe sữa.jpg" alt="Cà phê sữa" />
-        <h3>Cà phê sữa</h3>
-        <div class="stars">
-          <i class="fas fa-star" style="--i:1"></i>
-          <i class="fas fa-star" style="--i:2"></i>
-          <i class="fas fa-star" style="--i:3"></i>
-          <i class="fas fa-star" style="--i:4"></i>
-          <i class="fas fa-star-half-alt" style="--i:5"></i>
-        </div>
-        <p>Hòa quyện ngọt đắng, dư vị khó quên.</p>
-        <div class="price">22.000đ</div>
-        <div class="buttons">
-          <a href="#" class="buy">Đặt hàng</a>
-          <a href="#" class="cart">Thêm vào giỏ</a>
-        </div>
-      </div>
-
-      <div class="preview" data-target="p-3">
-        <i class="fas fa-times"></i>
-        <img src="images/3.jpg" alt="Bạc xỉu" />
-        <h3>Bạc xỉu</h3>
-        <div class="stars">
-          <i class="fas fa-star" style="--i:1"></i>
-          <i class="fas fa-star" style="--i:2"></i>
-          <i class="fas fa-star" style="--i:3"></i>
-          <i class="fas fa-star" style="--i:4"></i>
-          <i class="fas fa-star-half-alt" style="--i:5"></i>
-        </div>
-        <p>Ngọt béo dịu êm, một chút dư vị hoài niệm.</p>
-        <div class="price">25.000đ</div>
-        <div class="buttons">
-          <a href="#" class="buy">Đặt hàng</a>
-          <a href="#" class="cart">Thêm vào giỏ</a>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- Scripts -->
@@ -182,8 +122,14 @@ $is_giadung_only = ($category_id == 16);
   
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Hover: chỉ hiện card khi hover vào product
+      // Add click event for products
       document.querySelectorAll('.product').forEach(function(product) {
+        product.addEventListener('click', function() {
+          const productId = product.getAttribute('data-product-id');
+          window.location.href = BASE_URL + 'index/detailsProduct/' + productId;
+        });
+
+        // Hover: chỉ hiện card khi hover vào product
         const hoverCard = product.querySelector('.product-hover-card');
         product.addEventListener('mouseenter', function() {
           if (hoverCard) hoverCard.style.display = 'block';

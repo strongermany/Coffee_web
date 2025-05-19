@@ -3,7 +3,7 @@ $category_name = isset($category_info) ? ($category_info['name_cate_item'] ?? 'D
 ?>
 
 <link rel="stylesheet" href="<?php echo Base_URL ?>public/css/giadung.css" />
-<link rel="stylesheet" href="<?php echo Base_URL ?>public/css/menu1.css" />
+
 <div class="giadung-wrapper">
   <div class="container">
     <!-- Dropdown chọn danh mục -->
@@ -308,5 +308,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     `;
     document.head.appendChild(style);
+
+    // Thêm sự kiện click vào card để vào trang chi tiết sản phẩm
+    document.querySelectorAll('.giadung-card').forEach(function(card) {
+        card.addEventListener('click', function(e) {
+            if (
+                e.target.closest('.giadung-qty-btn') ||
+                e.target.closest('.giadung-btn') ||
+                e.target.closest('.giadung-qty-input')
+            ) {
+                return;
+            }
+            const id = card.getAttribute('data-item-id');
+            window.location.href = Base_URL + 'index/detailsItem/' + id;
+        });
+    });
 });
 </script>

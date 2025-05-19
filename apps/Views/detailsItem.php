@@ -3,20 +3,19 @@
 <div class="product-detail-container-dark">
     <div class="product-detail-card-dark reveal-on-scroll">
         <div class="product-detail-image-dark reveal-on-scroll">
-            <img src="<?php echo Base_URL; ?>public/uploads/product/<?php echo $product['Images_product']; ?>"
-                alt="<?php echo $product['Title_product']; ?>">
+            <img src="<?php echo Base_URL; ?>public/uploads/items/<?php echo $item['images_item']; ?>"
+                alt="<?php echo htmlspecialchars($item['title_item']); ?>">
         </div>
         <div class="product-detail-info-dark reveal-on-scroll">
-            <h2 class="product-detail-title-dark"><?php echo $product['Title_product']; ?></h2>
+            <h2 class="product-detail-title-dark"><?php echo htmlspecialchars($item['title_item']); ?></h2>
             <div class="product-detail-price-dark">
                 <span><i class="fas fa-tag"></i></span>
-                <?php echo number_format($product['Price_product'], 0, ',', '.'); ?>đ
+                <?php echo number_format($item['price_item'], 0, ',', '.'); ?>đ
             </div>
-            <div class="product-detail-desc-dark"><?php echo ($product['Desc_product']); ?></div>
+            <div class="product-detail-desc-dark"><?php echo nl2br(htmlspecialchars($item['desc_item'] ?? '')); ?></div>
             <div class="product-detail-actions-dark">
                 <button class="buy-now-btn-dark animated-btn-dark"><i class="fas fa-bolt"></i> Đặt hàng</button>
-                <button class="add-to-cart-btn-dark animated-btn-dark"><i class="fas fa-cart-plus"></i> Thêm vào
-                    giỏ</button>
+                <button class="add-to-cart-btn-dark animated-btn-dark"><i class="fas fa-cart-plus"></i> Thêm vào giỏ</button>
             </div>
         </div>
         <aside class="product-detail-aside-dark reveal-on-scroll">
@@ -334,70 +333,64 @@ function revealOnScroll() {
 window.addEventListener('scroll', revealOnScroll);
 window.addEventListener('DOMContentLoaded', revealOnScroll);
 
-// Thêm xử lý cho nút thêm vào giỏ hàng và đặt hàng
-document.addEventListener('DOMContentLoaded', function() {
-    const BASE_URL = '<?php echo Base_URL ?>';
-    const productId = '<?php echo $product['Id_product']; ?>';
-
-    // Xử lý nút thêm vào giỏ hàng
-    const addToCartBtn = document.querySelector('.add-to-cart-btn-dark');
-    if (addToCartBtn) {
-        addToCartBtn.addEventListener('click', function() {
-            fetch(`${BASE_URL}CartController/add/${productId}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ quantity: 1 })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.redirect) {
-                    window.location.href = data.redirect;
-                    return;
-                }
-                if (data.success) {
-                    const cartCount = document.querySelector('.cart-count');
-                    if (cartCount) cartCount.textContent = data.cart_count;
-                    addToCartBtn.innerHTML = '<i class="fas fa-check"></i> Đã thêm';
-                    addToCartBtn.disabled = true;
-                    setTimeout(() => {
-                        addToCartBtn.innerHTML = '<i class="fas fa-cart-plus"></i> Thêm vào giỏ';
-                        addToCartBtn.disabled = false;
-                    }, 1500);
-                } else {
-                    alert(data.message || 'Có lỗi xảy ra khi thêm vào giỏ hàng');
-                }
-            })
-            .catch(() => {
-                alert('Có lỗi xảy ra khi thêm vào giỏ hàng');
-            });
+// Xử lý thêm vào giỏ hàng và đặt hàng
+const BASE_URL = '<?php echo Base_URL ?>';
+const itemId = '<?php echo $item['id_item']; ?>';
+const addToCartBtn = document.querySelector('.add-to-cart-btn-dark');
+if (addToCartBtn) {
+    addToCartBtn.addEventListener('click', function() {
+        fetch(`${BASE_URL}CartController/add/${itemId}?type=item`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ quantity: 1 })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.redirect) {
+                window.location.href = data.redirect;
+                return;
+            }
+            if (data.success) {
+                const cartCount = document.querySelector('.cart-count');
+                if (cartCount) cartCount.textContent = data.cart_count;
+                addToCartBtn.innerHTML = '<i class=\"fas fa-check\"></i> Đã thêm';
+                addToCartBtn.disabled = true;
+                setTimeout(() => {
+                    addToCartBtn.innerHTML = '<i class=\"fas fa-cart-plus\"></i> Thêm vào giỏ';
+                    addToCartBtn.disabled = false;
+                }, 1500);
+            } else {
+                alert(data.message || 'Có lỗi xảy ra khi thêm vào giỏ hàng');
+            }
+        })
+        .catch(() => {
+            alert('Có lỗi xảy ra khi thêm vào giỏ hàng');
         });
-    }
-
-    // Xử lý nút đặt hàng
-    const buyNowBtn = document.querySelector('.buy-now-btn-dark');
-    if (buyNowBtn) {
-        buyNowBtn.addEventListener('click', function() {
-            fetch(`${BASE_URL}CartController/add/${productId}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ quantity: 1 })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.redirect) {
-                    window.location.href = data.redirect;
-                    return;
-                }
-                if (data.success) {
-                    window.location.href = `${BASE_URL}CartController/index`;
-                } else {
-                    alert(data.message || 'Có lỗi xảy ra khi đặt hàng');
-                }
-            })
-            .catch(() => {
-                alert('Có lỗi xảy ra khi đặt hàng');
-            });
+    });
+}
+const buyNowBtn = document.querySelector('.buy-now-btn-dark');
+if (buyNowBtn) {
+    buyNowBtn.addEventListener('click', function() {
+        fetch(`${BASE_URL}CartController/add/${itemId}?type=item`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ quantity: 1 })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.redirect) {
+                window.location.href = data.redirect;
+                return;
+            }
+            if (data.success) {
+                window.location.href = `${BASE_URL}CartController/index`;
+            } else {
+                alert(data.message || 'Có lỗi xảy ra khi đặt hàng');
+            }
+        })
+        .catch(() => {
+            alert('Có lỗi xảy ra khi đặt hàng');
         });
-    }
-});
+    });
+}
 </script>

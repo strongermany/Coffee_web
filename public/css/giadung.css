@@ -209,3 +209,14 @@
   background: transparent;
   margin-bottom: 0.2em;
 }
+
+/* Hide number input spinner for quantity input */
+.giadung-qty-input::-webkit-outer-spin-button,
+.giadung-qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+.giadung-qty-input[type=number] {
+  -moz-appearance: textfield !important;
+  appearance: textfield !important;
+}

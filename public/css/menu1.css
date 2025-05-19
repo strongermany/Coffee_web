@@ -466,13 +466,13 @@ html {
   color: #4e342e;
 }
 
-/* Ẩn nút tăng giảm mặc định của input number */
+/* Hide number input spinner for quantity input */
 .menu-products .qty-input::-webkit-outer-spin-button,
 .menu-products .qty-input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-.menu-products .qty-input {
+.menu-products .qty-input[type=number] {
   -moz-appearance: textfield;
 }
 

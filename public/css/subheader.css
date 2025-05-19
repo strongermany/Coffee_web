@@ -188,9 +188,9 @@
 .dropdown-content {
     display: none;
     position: absolute;
+    background-color: rgba(70, 35, 20, 0.95); /* Màu nâu cafe pha đỏ giống menu */
     top: 100%;
     right: 0;
-    background-color: #fff;
     min-width: 200px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     border-radius: 8px;
@@ -204,24 +204,26 @@
 }
 
 .dropdown-content a {
-    color: #111;
+    color: #fff !important;
+    font-family: 'Cinzel', sans-serif !important;
     padding: 10px 20px;
     text-decoration: none;
     display: flex;
     align-items: center;
     gap: 10px;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 0.98rem;
+}
+
+.dropdown-content a:hover {
+    background-color: transparent !important;
+    color: #ffe4a1 !important;
 }
 
 .dropdown-content a i {
     width: 20px;
     text-align: center;
     font-size: 1rem;
-}
-
-.dropdown-content a:hover {
-    background-color: #f8f9fa;
-    color: #333;
 }
 
 /* Cart Badge */

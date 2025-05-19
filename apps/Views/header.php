@@ -76,7 +76,7 @@
                     </li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>NewsController">Tin tức </a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="#">Nhượng quyền</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>index/franchises">Nhượng quyền</a></li>
                 </ul>
                 <!-- Thêm phần icon đăng nhập và giỏ hàng -->
                 <div class="d-flex align-items-center">
@@ -92,7 +92,7 @@
                                 <div class="dropdown-content">
                                     <a href="' . Base_URL . 'CustomerController">
                                         <i class="fas fa-user-circle"></i>
-                                        Thông tin tài khoản
+                                        Thông tin 
                                     </a>
                                     <a href="' . Base_URL . 'CustomerLoginController/logout">
                                         <i class="fas fa-sign-out-alt"></i>

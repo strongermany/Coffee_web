@@ -90,4 +90,25 @@ class index extends BaseController
         $this->load->view('detailsProduct', $data);
         $this->load->view('footer');
     }
+
+    public function detailsItem($id = null){
+        $this->headerData = $this->getAllHeader();
+        if($id) {
+            $itemModel = $this->load->model('ItemModel');
+            $data['item'] = $itemModel->getItemById($id);
+            // Nếu muốn có sản phẩm liên quan, có thể thêm:
+            // $data['related_items'] = $itemModel->getRelatedItems($id);
+        }
+        $this->load->view('subheader', $this->headerData);
+        $this->load->view('detailsItem', $data);
+        $this->load->view('footer');
+    }
+    public function franchises()
+
+    {
+        $this->headerData = $this->getAllHeader();
+        $this->load->view('subheader', $this->headerData);
+        $this->load->view('franchises');
+        $this->load->view('footer');
+    }
 }
