@@ -7,7 +7,7 @@
       <hr class="section-divider" />
       <div class="product-grid">
         <?php if (!empty($products)): ?>
-          <?php
+          <?php 
           $count = 0;
           foreach ($products as $product):
             if ($count >= 6) break;
@@ -39,6 +39,74 @@
       </div>
     </section>
 
+    <!-- Timeline Section Title -->
+    
+    <!-- End Timeline Section Title -->
+    <div class="timeline-section" style="background: transparent; text-align: left; padding-left: 0;">
+      <div class="history-title" style="justify-content: flex-start; margin-bottom: 10px; margin-left: 30px;">
+        <span class="why-choose-diamond"></span>
+        <span class="why-choose-text history-words" style="font-size: 1.3rem;">
+          <span>Our</span> <span>History</span>
+        </span>
+        <span class="why-choose-diamond"></span>
+      </div>
+      <div class="timeline-title" style="font-family: 'Cinzel', serif; font-size: 3.2rem; margin-bottom: 30px; margin-left: 30px; text-align: left;">OUR LITTLE STORY</div>
+    </div>
+    <!-- Timeline Row Section -->
+    <div class="timeline-row">
+      
+      <div class="timeline-line"></div>
+      <!-- 2000: dưới đường kẻ -->
+      <div class="timeline-col bottom">
+        <div class="timeline-dot"></div>
+        <div class="timeline-img">
+          <img src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80" alt="">
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-year">2000</div>
+          <div class="timeline-heading">EVOLVED OVER</div>
+          <div class="timeline-desc">In today's modern age, bars no longer offer, but they have become highly diverse.</div>
+        </div>
+      </div>
+      <!-- 2005: trên đường kẻ -->
+      <div class="timeline-col top">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-year">2005</div>
+          <div class="timeline-heading">WIN RESTAURANT</div>
+          <div class="timeline-desc">In the next step, the results thus found should be used to identify variance.</div>
+        </div>
+        <div class="timeline-img">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80" alt="">
+        </div>
+      </div>
+      <!-- 2016: dưới đường kẻ -->
+      <div class="timeline-col bottom">
+        <div class="timeline-dot"></div>
+        <div class="timeline-img">
+          <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=400&q=80" alt="">
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-year">2016</div>
+          <div class="timeline-heading">FAMOUS IN TOWN</div>
+          <div class="timeline-desc">Today's leaders in hospitality realise that their premises are more attractive.</div>
+        </div>
+      </div>
+      <!-- 2020: trên đường kẻ -->
+      <div class="timeline-col top">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-year">2020</div>
+          <div class="timeline-heading">FOOD OUTLETS</div>
+          <div class="timeline-desc">Take the water jug to the guests' table on a neatly folded waiter's cloth.</div>
+        </div>
+        <div class="timeline-img">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80" alt="">
+        </div>
+      </div>
+    </div>
+    <!-- End Timeline Row Section -->
+
     <!-- Tin tức mới nhất -->
     <section class="section-news">
       <h2 class="section-title">TIN TỨC MỚI NHẤT</h2>
@@ -64,7 +132,6 @@
     </div>
     <div class="why-choose-us">
       <div class="why-choose-title">
-
         <span class="why-choose-diamond"></span>
         <span class="why-choose-text">Why Choose Us</span>
         <span class="why-choose-diamond"></span>
@@ -75,6 +142,20 @@
         Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem
       </div>
     </div>
+    <div class="stats-section" id="statsSection">
+            <div class="stat-box">
+                <span class="stat-number" data-target="20">0</span>
+                <span class="stat-label">Năm kinh nghiệm</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number" data-target="150">0</span>
+                <span class="stat-label">Khách hàng mỗi ngày</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number" data-target="96">0</span>
+                <span class="stat-label">Dự án đã thực hiện</span>
+            </div>
+        </div>
   </div>
 
   <script>
@@ -190,28 +271,77 @@
       revealOnScroll();
 
       function revealWhyChoose() {
-        var els = [
-          document.querySelector('.why-choose-title'),
-          document.querySelector('.why-choose-main'),
-          document.querySelector('.why-choose-desc')
-        ];
+        var title = document.querySelector('.why-choose-title');
+        var main = document.querySelector('.why-choose-main');
+        var desc = document.querySelector('.why-choose-desc');
         var windowHeight = window.innerHeight || document.documentElement.clientHeight;
-        var triggered = false;
-        els.forEach(function(el, idx) {
-          if (!el) return;
-          var rect = el.getBoundingClientRect();
-          if (rect.top < windowHeight - 80) {
-            setTimeout(function() {
-              el.classList.add('visible');
-            }, idx * 180);
-            triggered = true;
+        if (title && main) {
+          var rectTitle = title.getBoundingClientRect();
+          var rectMain = main.getBoundingClientRect();
+          if (rectTitle.top < windowHeight - 80) title.classList.add('visible');
+          if (rectMain.top < windowHeight - 80) main.classList.add('visible');
+        }
+        if (desc) {
+          var rectDesc = desc.getBoundingClientRect();
+          if (rectDesc.top < windowHeight - 80 && rectDesc.bottom > 0) {
+            desc.classList.add('visible', 'fadeInUp');
+            window.removeEventListener('scroll', revealWhyChoose);
           }
-        });
-        if (triggered) window.removeEventListener('scroll', revealWhyChoose);
+        }
       }
       window.addEventListener('scroll', revealWhyChoose);
-      revealWhyChoose();
-      window.addEventListener('load', revealWhyChoose);
+
+      function revealHistoryTitle() {
+        var historyTitle = document.querySelector('.history-title');
+        var timelineTitle = document.querySelector('.timeline-title');
+        var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+        if (historyTitle) {
+          var rect = historyTitle.getBoundingClientRect();
+          if (rect.top < windowHeight - 80 && rect.bottom > 0) {
+            historyTitle.classList.add('visible', 'fadeInLeft');
+          }
+        }
+        if (timelineTitle) {
+          var rect2 = timelineTitle.getBoundingClientRect();
+          if (rect2.top < windowHeight - 80 && rect2.bottom > 0) {
+            timelineTitle.classList.add('visible', 'fadeInLeft');
+          }
+        }
+      }
+      window.addEventListener('scroll', revealHistoryTitle);
+      revealHistoryTitle();
     });
+    function animateCounter(element, target, duration = 1500) {
+        let start = 0;
+        let startTime = null;
+
+        function updateCounter(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const progress = Math.min((timestamp - startTime) / duration, 1);
+            const value = Math.floor(progress * (target - start) + start);
+            element.textContent = value;
+            if (progress < 1) {
+                requestAnimationFrame(updateCounter);
+            } else {
+                element.textContent = target;
+            }
+        }
+        requestAnimationFrame(updateCounter);
+    }
+
+    function handleStatsAnimation() {
+        const statsSection = document.getElementById('statsSection');
+        if (!statsSection) return;
+        const rect = statsSection.getBoundingClientRect();
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+        if (rect.top < windowHeight - 80 && rect.bottom > 0) {
+            statsSection.querySelectorAll('.stat-number').forEach(el => {
+                el.textContent = '0';
+                animateCounter(el, parseInt(el.getAttribute('data-target')));
+            });
+        }
+    }
+    window.addEventListener('scroll', handleStatsAnimation);
+    window.addEventListener('load', handleStatsAnimation);
   </script>
 </body>
