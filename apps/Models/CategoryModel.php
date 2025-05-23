@@ -43,10 +43,14 @@
         }
 
         public function postCategory($table){
-            $sql="Select distinct * from $table Order by Id_category_post Desc";
+            $sql = "SELECT c.*, COUNT(p.Id_post) as post_count 
+                   FROM $table c 
+                   LEFT JOIN tbl_post p ON c.Id_category_post = p.Id_category_post 
+                   GROUP BY c.Id_category_post 
+                   ORDER BY c.Id_category_post DESC";
             return $this->db->select($sql);
-            
         }
+
         public function DeleteCategoryPost($table, $cond)
         {
             return $this->db->delete($table,$cond);
@@ -57,7 +61,6 @@
         }
         public function UpdateCategoryPost($table, $data, $cond){
             return $this->db->update($table,$data,$cond);
-
         }
         //product
         public function InsertProduct($table, $data){
@@ -80,7 +83,6 @@
         }
         public function UpdateProduct($table,$data,$cond){
             return $this->db->update($table,$data,$cond);
-
         }
         
         

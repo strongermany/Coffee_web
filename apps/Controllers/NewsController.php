@@ -16,9 +16,17 @@ class NewsController extends BaseController
     public function homeBlog()
     {
         $postModel = $this->load->model('PostModel');
+        $categoryModel = $this->load->model('CategoryModel');
+        
         $posts = $postModel->getAllPosts();
-        $data = ['posts' => $posts];
-        $this->load->view('subheader',$this->headerData);
+        $categories = $categoryModel->postCategory('tbl_category_post');
+        
+        $data = [
+            'posts' => $posts,
+            'categories' => $categories
+        ];
+        
+        $this->load->view('subheader', $this->headerData);
         //$this->load->view('slider');
         $this->load->view('mainNews', $data);
         $this->load->view('footer');

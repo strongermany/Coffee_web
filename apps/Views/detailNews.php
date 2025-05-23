@@ -13,15 +13,15 @@
                 <span class="meta-category"><i class="fas fa-folder"></i>
                     <?php echo $post['Title_category_post'] ?? 'Uncategorized'; ?>
                     <?php if (!empty($post['Date_post'])): ?>
-                        <span style="color:#bfa76a; font-size:0.98em; margin-left:10px;">
-                            <?php 
+                    <span style="color:#bfa76a; font-size:0.98em; margin-left:10px;">
+                        <?php 
                                 $dt = new DateTime($post['Date_post']);
                                 echo $dt->format('H:i d/m/Y');
                             ?>
-                        </span>
+                    </span>
                     <?php endif; ?>
                 </span>
-                
+
             </div>
             <!-- Title -->
             <h1 class="blog-title-dark"><?php echo $post['Title_post'] ?></h1>
@@ -32,18 +32,18 @@
             <!-- Quote Box (Sample) -->
             <div class="blog-quote-box animated fadeInUp">
                 <span class="quote-icon">&#10077;</span>
-                <div class="quote-text">“Because a restaurant's story is never complete, there is always something new &
-                    wonderful to discover.”</div>
-                <div class="quote-author">SIMON PIERRO <span>- Food Critic</span></div>
+                <div class="quote-text">“Cà phê không chỉ là thức uống, mà là một phần của cuộc sống, nơi ta tìm thấy
+                    những khoảnh khắc bình yên giữa nhịp sống hối hả.”</div>
+                <div class="quote-author">Nguyễn Nhật Ánh<span>- Nhà văn</span></div>
             </div>
         </div>
         <!-- Sidebar -->
         <aside class="blog-sidebar-dark animated fadeInRight">
             <!-- Author Card -->
-          
+
             <!-- Categories (Dynamic) -->
             <div class="sidebar-card sidebar-categories">
-                <div class="sidebar-title">CATEGORIES</div>
+                <div class="sidebar-title">DANH MỤC BÀI VIẾT</div>
                 <ul>
                     <?php if (!empty($categories)): ?>
                     <?php foreach ($categories as $cat): ?>
@@ -62,7 +62,7 @@
             </div>
             <!-- Recent Posts (Dynamic) -->
             <div class="sidebar-card sidebar-recent">
-                <div class="sidebar-title">RECENT POST</div>
+                <div class="sidebar-title">BÀI VIẾT GẦN ĐÂY</div>
                 <ul>
                     <?php if (!empty($recentPosts)): ?>
                     <?php foreach ($recentPosts as $recent): ?>

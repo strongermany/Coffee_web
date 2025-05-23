@@ -26,18 +26,6 @@
                             <span>Thông tin cá nhân</span>
                         </div>
                         <div class="nav-item">
-                            <i class="fas fa-shopping-bag"></i>
-                            <span>Đơn hàng của tôi</span>
-                        </div>
-                        <div class="nav-item">
-                            <i class="fas fa-heart"></i>
-                            <span>Sản phẩm yêu thích</span>
-                        </div>
-                        <div class="nav-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Địa chỉ giao hàng</span>
-                        </div>
-                        <div class="nav-item">
                             <i class="fas fa-lock"></i>
                             <span>Đổi mật khẩu</span>
                         </div>

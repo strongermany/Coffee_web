@@ -32,14 +32,8 @@
               
             </div>
             <ul class="admin-menu">
-                <li class="admin-menu-item <?php echo isset($currentPage) && $currentPage === 'dashboard' ? 'active' : ''; ?>">
-                    <a href="<?php echo Base_URL ?>HeaderBackgroundController">
-                        <i class="fas fa-tachometer-alt"></i> Dashboard
-                    </a>
-                </li>
-                <li class="admin-menu-item <?php echo isset($currentPage) && $currentPage === 'information' ? 'active' : ''; ?>">
-                    <a href="#"><i class="fas fa-info-circle"></i> Information</a>
-                </li>
+                
+                
                 <li class="admin-menu-item <?php echo isset($currentPage) && $currentPage === 'slider' ? 'active' : ''; ?>">
                     <a href="<?php echo Base_URL ?>SliderController/add">
                         <i class="fas fa-sliders-h"></i> Slider

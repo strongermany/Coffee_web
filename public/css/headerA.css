@@ -463,7 +463,7 @@ header > * {
 .nav-link .fa-shopping-cart:hover,
 .cart-icon .fa-shopping-cart:hover {
     color: #ffe4a1 !important; /* Màu vàng nhạt khi hover */
-    font-family: 'Cinzel', sans-serif !important;
+   
     font-weight: 700 !important;
 }
 

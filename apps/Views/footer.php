@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="<?php echo Base_URL; ?>public/css/footer.css">
-<script
+<!-- <script
     src="https://kit.fontawesome.com/a076d05399.js"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script> -->
 <footer class="footer-distributed">
     <div class="footer-left">
         <h3>Hippo<span>Coffee</span></h3>

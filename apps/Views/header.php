@@ -16,7 +16,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Playball&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://use.typekit.net/xxxxxxx.css">
     <link rel="stylesheet" href="<?php echo Base_URL ?>public/css/home.css" />
     <link rel="stylesheet" href="<?php echo Base_URL ?>public/css/headerA.css" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -34,7 +33,8 @@
     </div>
 
     <nav class="navbar navbar-expand-lg ">
-        <img src="<?php echo Base_URL ?>public/images/logob.png" alt="" class="navbar-logo" style="height:60px; margin: 0 auto; display: block;">
+        <img src="<?php echo Base_URL ?>public/images/logob.png" alt="" class="navbar-logo"
+            style="height:60px; margin: 0 auto; display: block;">
         <div class="container p-3">
             <a class="navbar-brand fw-bold text-dark" href="#">HIPPO COFFEE</a>
             <!-- Đã bỏ nút hamburger ra ngoài container này -->
@@ -49,7 +49,8 @@
                             Menu
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="menuDropdown">
-                            <li><a class="dropdown-item" href="<?php echo Base_URL ?>index/menu">Tất cả sản phẩm</a></li>
+                            <li><a class="dropdown-item" href="<?php echo Base_URL ?>index/menu">Tất cả sản phẩm</a>
+                            </li>
                             <?php
                             if (isset($categories) && is_array($categories)) {
                                 foreach ($categories as $category) {
@@ -76,7 +77,8 @@
                     </li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>NewsController">Tin tức </a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>index/franchises">Nhượng quyền</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>index/franchises">Nhượng
+                            quyền</a></li>
                 </ul>
                 <!-- Thêm phần icon đăng nhập và giỏ hàng -->
                 <div class="d-flex align-items-center">
@@ -86,12 +88,12 @@
                         // Nếu đã đăng nhập, hiển thị dropdown menu
                         echo '<div class="user-dropdown">
                                 <a class="nav-link">
-                                    <i class="fas fa-user"></i>
+                                    <i class="fa-solid fa-user"></i>
                                     <span class="ms-1">' . Session::get('customer_name') . '</span>
                                 </a>
                                 <div class="dropdown-content">
                                     <a href="' . Base_URL . 'CustomerController">
-                                        <i class="fas fa-user-circle"></i>
+                                        <i class="fa-solid fa-user-circle"></i>
                                         Thông tin 
                                     </a>
                                     <a href="' . Base_URL . 'CustomerLoginController/logout">
@@ -103,7 +105,7 @@
                     } else {
                         // Nếu chưa đăng nhập
                         echo '<a href="' . Base_URL . 'LoginController/choice" class="nav-link me-3">
-                                <i class="fas fa-user"></i>
+                                <i class="fa-solid fa-user"></i>
                             </a>';
                     }
                     ?>
@@ -117,7 +119,8 @@
             </div>
         </div>
         <!-- Nút hamburger cho mobile, đặt ngoài .container.p-3 -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu"
+            aria-controls="offcanvasMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
         <!-- Offcanvas menu cho mobile -->
@@ -127,7 +130,8 @@
             </div>
             <div class="offcanvas-body">
                 <div style="text-align:center; margin-bottom: 16px;">
-                    <img src="<?php echo Base_URL ?>public/images/logob.png" alt="" class="navbar-logo" style="height:60px;">
+                    <img src="<?php echo Base_URL ?>public/images/logob.png" alt="" class="navbar-logo"
+                        style="height:60px;">
                 </div>
                 <ul class="navbar-nav">
                     <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>index">Trang chủ</a></li>
@@ -136,7 +140,8 @@
                             Menu
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="offcanvasMenuDropdown">
-                            <li><a class="dropdown-item" href="<?php echo Base_URL ?>index/menu">Tất cả sản phẩm</a></li>
+                            <li><a class="dropdown-item" href="<?php echo Base_URL ?>index/menu">Tất cả sản phẩm</a>
+                            </li>
                             <?php
                             if (isset($categories) && is_array($categories)) {
                                 foreach ($categories as $category) {
@@ -146,8 +151,10 @@
                             ?>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>index/category">Gia Dụng</a></li>
-                    <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>NewsController">Tin tức</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>index/category">Gia Dụng</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo Base_URL ?>NewsController">Tin tức</a>
+                    </li>
                     <li class="nav-item"><a class="nav-link" href="#">Cửa hàng</a></li>
                 </ul>
             </div>
@@ -157,38 +164,38 @@
 
 </header>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Toggle search form
-        var searchIcon = document.querySelector('.search-icon');
-        var searchForm = document.querySelector('.search-form');
-        if (searchIcon && searchForm) {
-            searchIcon.addEventListener('click', function() {
-                searchForm.classList.toggle('active');
-                if (searchForm.classList.contains('active')) {
-                    searchForm.querySelector('input').focus();
-                }
-            });
-        }
-        // Đóng offcanvas khi lên desktop
-        function closeOffcanvasOnDesktop() {
-            if (window.innerWidth >= 992) {
-                var offcanvasEl = document.getElementById('offcanvasMenu');
-                if (offcanvasEl && offcanvasEl.classList.contains('show')) {
-                    var offcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
-                    if (offcanvas) offcanvas.hide();
-                }
+document.addEventListener('DOMContentLoaded', function() {
+    // Toggle search form
+    var searchIcon = document.querySelector('.search-icon');
+    var searchForm = document.querySelector('.search-form');
+    if (searchIcon && searchForm) {
+        searchIcon.addEventListener('click', function() {
+            searchForm.classList.toggle('active');
+            if (searchForm.classList.contains('active')) {
+                searchForm.querySelector('input').focus();
+            }
+        });
+    }
+    // Đóng offcanvas khi lên desktop
+    function closeOffcanvasOnDesktop() {
+        if (window.innerWidth >= 992) {
+            var offcanvasEl = document.getElementById('offcanvasMenu');
+            if (offcanvasEl && offcanvasEl.classList.contains('show')) {
+                var offcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+                if (offcanvas) offcanvas.hide();
             }
         }
-        window.addEventListener('resize', closeOffcanvasOnDesktop);
-        // Chỉ áp dụng cho offcanvas (mobile)
-        document.querySelectorAll('.offcanvas .dropdown-toggle').forEach(function(toggle) {
-            toggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                var menu = this.nextElementSibling;
-                if (menu && menu.classList.contains('dropdown-menu')) {
-                    menu.classList.toggle('show');
-                }
-            });
+    }
+    window.addEventListener('resize', closeOffcanvasOnDesktop);
+    // Chỉ áp dụng cho offcanvas (mobile)
+    document.querySelectorAll('.offcanvas .dropdown-toggle').forEach(function(toggle) {
+        toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            var menu = this.nextElementSibling;
+            if (menu && menu.classList.contains('dropdown-menu')) {
+                menu.classList.toggle('show');
+            }
         });
     });
+});
 </script>
