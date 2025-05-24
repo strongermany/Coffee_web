@@ -199,4 +199,19 @@ class ItemController extends BaseController
             header('Location:' . Base_URL . "ItemController/add_item?msg=" . urlencode(serialize($message)));
         }
     }
+
+    public function detail($id)
+    {
+        $item = $this->itemModel->getItemById($id);
+        if (!$item) {
+            header('Location:' . Base_URL . '404');
+            exit;
+        }
+        $related_products = $this->itemModel->getRelatedItems($id);
+        $data = [
+            'item' => $item,
+            'related_products' => $related_products
+        ];
+        $this->load->view('detailsItem', $data);
+    }
 } 

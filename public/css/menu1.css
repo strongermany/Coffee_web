@@ -315,6 +315,7 @@ html {
 
 .menu-products .title-1 {
   font-size: 2.8rem;
+  margin-top: 1.5rem;
   color: var(--secondary-color);
   font-weight: 600;
 }

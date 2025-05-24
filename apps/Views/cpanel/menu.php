@@ -94,7 +94,7 @@
             <header class="topbar">
                 <div class="topbar-left">
                     <i class="fas fa-bars sidebar-toggle"></i>
-                    <span class="topbar-title"><?php echo isset($pageTitle) ? $pageTitle : 'Dashboard'; ?></span>
+                   
                 </div>
                 <div class="topbar-right">
                     <!-- Thêm các nút thông báo, user ở đây nếu muốn -->

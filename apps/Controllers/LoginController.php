@@ -46,7 +46,7 @@
                 Session::set('login', true);
                 Session::set('admin_name', $result[0]['admin_name']);
                 Session::set('admin_id', $result[0]['admin_id']);
-                header("Location:".Base_URL."LoginController/Dashboard");
+                header("Location:".Base_URL."SliderController/add");
             }
         }
         public function logout(){

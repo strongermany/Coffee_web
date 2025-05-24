@@ -29,8 +29,9 @@ class index extends BaseController
             'products' => $products
         );
         $this->load->view('header', $this->headerData);
-        //$this->load->view('slider', $data);
+        
         $this->load->view('HomeView', $data);
+        $this->load->view('slider', $data);
         $this->load->view('footer');
     }
 
@@ -45,7 +46,7 @@ class index extends BaseController
         }
         $data = [
             'products' => $products,
-            'categories' => $categories
+            'categories' => $categories 
         ];
         $this->load->view('subheader', $this->headerData);
         $this->load->view('menu', $data);
@@ -96,6 +97,7 @@ class index extends BaseController
         if($id) {
             $itemModel = $this->load->model('ItemModel');
             $data['item'] = $itemModel->getItemById($id);
+            $data['related_items'] = $itemModel->getRelatedItems($id);
             // Nếu muốn có sản phẩm liên quan, có thể thêm:
             // $data['related_items'] = $itemModel->getRelatedItems($id);
         }

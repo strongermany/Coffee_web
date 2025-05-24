@@ -34,7 +34,7 @@ if (isset($_GET['msg'])) {
                     <img src="" alt="Preview">
                 </div>
             </div>
-            <div class="slider-actions">
+            <div class="slider-actions" style="margin-top: 24px;">
                 <button type="submit" class="slider-submit">
                     <i class="fas fa-plus"></i> Add Slider
                 </button>
@@ -215,5 +215,35 @@ showNotification('<?php echo addslashes($message['msg']); ?>');
 
 .notification {
     animation: slideIn 0.3s ease;
+}
+
+.slider-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.slider-submit, .slider-cancel {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.slider-submit {
+    background: #4299e1;
+    color: #fff;
+}
+
+.slider-cancel {
+    background: #e53e3e;
+    color: #fff;
+    /* Xóa mọi thuộc tính position nếu có */
+    position: static;
 }
 </style> 

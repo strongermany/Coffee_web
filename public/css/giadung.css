@@ -22,10 +22,10 @@
   border-radius: 2px;
 }
 .giadung-products {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-  justify-content: center;
+  justify-items: center;
 }
 .giadung-card {
   width: 300px;
@@ -137,14 +137,14 @@
   background: #fff;
   color: #4e342e;
 }
+@media (max-width: 900px) {
+  .giadung-products {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 @media (max-width: 600px) {
-  .giadung-card {
-    width: 90vw;
-    height: 90vw;
-    min-width: 120px;
-    max-width: 98vw;
-    min-height: 120px;
-    max-height: 98vw;
+  .giadung-products {
+    grid-template-columns: 1fr;
   }
 }
 

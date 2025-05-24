@@ -27,7 +27,19 @@
 </head>
 <header style="background-image: url('<?php echo Base_URL . $backgroundImage; ?>'); position: relative;">
     <div class="header-banner-text">
-        <div class="header-banner-small">From the South to your Mouth</div>
+        <div class="header-banner-small">
+            <?php
+            $text = 'From the South to your Mouth';
+            $chars = preg_split('//u', $text, -1, PREG_SPLIT_NO_EMPTY);
+            foreach ($chars as $char) {
+                if ($char === ' ') {
+                    echo '<span style="width:0.4em;display:inline-block;"> </span>';
+                } else {
+                    echo '<span>' . htmlspecialchars($char) . '</span>';
+                }
+            }
+            ?>
+        </div>
         <div class="header-banner-large">EACH WRAPPED CON AMORE!</div>
     </div>
     </div>
@@ -36,7 +48,7 @@
         <img src="<?php echo Base_URL ?>public/images/logob.png" alt="" class="navbar-logo"
             style="height:60px; margin: 0 auto; display: block;">
         <div class="container p-3">
-            <a class="navbar-brand fw-bold text-dark" href="#">HIPPO COFFEE</a>
+            <a class="navbar-brand fw-bold text-dark" href="#">HIPPO COFFEE </a>
             <!-- Đã bỏ nút hamburger ra ngoài container này -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">

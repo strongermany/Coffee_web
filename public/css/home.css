@@ -8,12 +8,17 @@
 }
 
 .section-title {
+  font-family: 'Cinzel', serif;
   color: #ffe4a1;
-  font-family: "Oswald", sans-serif;
-  font-size: 2.2rem;
+  font-size: 4vw;
+  font-weight: 400;
+  text-transform: uppercase;
   text-align: center;
-  margin-bottom: 10px;
-  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 18px;
+  background: none;
+  border: none;
+  box-shadow: none;
   letter-spacing: 2px;
 }
 
@@ -645,7 +650,7 @@
   border: none !important;
   position: absolute !important;
   left: 50% !important;
-  top: 51.4% !important;
+  top: 55.4% !important;
   transform: translate(-50%, -50%) rotate(45deg) !important;
   z-index: 2 !important;
   box-shadow: none !important;
@@ -717,6 +722,9 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  margin-bottom: 150px !important;
+  
+
   /* margin: 0 auto 60px auto;  XÓA DÒNG NÀY */
   max-width: 1200px;
   margin: -75px auto 30px auto; /* GIỮ DÒNG NÀY VÀ ĐIỀU CHỈNH SỐ PX TÙY Ý */
@@ -831,20 +839,17 @@
   text-align: center;
 }
 .stat-number {
-  font-family: "Oswald", sans-serif;
+  font-family: "Cinzel", sans-serif;
+  font-weight: 800;
   font-size: 6rem;
-  color: #ffe4a1;
-  display: block;
-  font-weight: 600;
-  margin-bottom: 10px;
-  letter-spacing: 2px;
-  text-shadow: -1px -1px 0 #7a3a1d, 1px -1px 0 #7a3a1d, -1px 1px 0 #7a3a1d,
-    1px 1px 0 #7a3a1d, 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: transparent; /* Chữ rỗng */
+  -webkit-text-stroke: 1px #ffe4a1; /* Viền vàng */
+  text-stroke: 3px #ffe4a1; /* Cho các trình duyệt khác */
 }
 .stat-label {
   color: #ffe4a1;
   font-size: 1.3rem;
-  font-family: "Oswald", sans-serif;
+  font-family: "Cinzel", sans-serif;
   letter-spacing: 1px;
   display: block;
   margin-top: 8px;
@@ -902,5 +907,125 @@
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+/* Why Features Section */
+.why-features {
+  width: 100%;
+  background: transparent;
+  padding: 60px 0 30px 0;
+  margin: 0 auto 0 auto;
+}
+.why-features-container {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 90px !important;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.why-feature-item {
+  background: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 24px 0 18px 0 !important;
+  transition: none !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.why-feature-item:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+.why-feature-icon {
+  margin-bottom: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.why-feature-title {
+  font-family: 'Cinzel', serif;
+  color: #ffe4a1;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+.why-feature-desc {
+  font-family: 'Quicksand', sans-serif;
+  color: #fff;
+  font-size: 1.13rem;
+  line-height: 1.6;
+  max-width: 320px;
+}
+@media (max-width: 900px) {
+  .why-features-container {
+    flex-direction: column !important;
+    gap: 32px !important;
+    align-items: center !important;
+  }
+  .why-feature-item {
+    width: 100% !important;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 24px 0 18px 0 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .why-feature-title {
+    font-size: 1.3rem;
+  }
+  .why-feature-desc {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 600px) {
+  .why-feature-item {
+    max-width: 98vw;
+    padding: 16px 0 10px 0 !important;
+  }
+  .why-features-container {
+    gap: 18px !important;
+  }
+}
+
+.section-title-small-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 2px;
+  margin-top: 40px;
+}
+.section-title-small {
+  font-family: 'Playball', cursive;
+  color: #ffe4a1;
+  font-size: 2rem;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 1px;
+  margin: 0 3px;
+}
+.section-title-diamond {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background: #ffe4a1;
+  transform: rotate(45deg);
+  margin-bottom: 4px;
+}
+@media (max-width: 600px) {
+  .section-title-small {
+    font-size: 1.1rem;
+  }
+  .section-title-diamond {
+    width: 8px;
+    height: 8px;
   }
 }

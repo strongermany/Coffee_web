@@ -350,8 +350,7 @@ header > * {
 .nav-item.dropdown:hover .dropdown-menu {
     display: block;
     animation: fadeIn 0.2s ease;
-}
-
+} 
 /* Style cho dropdown menu của Menu và Danh mục */
 .dropdown-menu {
     background-color: rgba(70, 35, 20, 0.95); /* Màu nâu cafe pha đỏ */

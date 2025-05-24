@@ -12,25 +12,24 @@
                 <span><i class="fas fa-tag"></i></span>
                 <?php echo number_format($item['price_item'], 0, ',', '.'); ?>đ
             </div>
-            <div class="product-detail-desc-dark"><?php echo nl2br(htmlspecialchars($item['desc_item'] ?? '')); ?></div>
-            <div class="product-detail-actions-dark">
+            <div class="product-detail-desc-dark"><?php echo $item['desc_item'] ?? ''; ?></div>            <div class="product-detail-actions-dark">
                 <button class="buy-now-btn-dark animated-btn-dark"><i class="fas fa-bolt"></i> Đặt hàng</button>
                 <button class="add-to-cart-btn-dark animated-btn-dark"><i class="fas fa-cart-plus"></i> Thêm vào giỏ</button>
             </div>
         </div>
         <aside class="product-detail-aside-dark reveal-on-scroll">
             <div class="aside-title">Sản phẩm khác</div>
-            <?php if (!empty($related_products)): ?>
-            <?php foreach ($related_products as $rel): ?>
+            <?php if (!empty($related_items)): ?>
+            <?php foreach ($related_items as $rel): ?>
             <a class="aside-product-link"
-                href="<?php echo Base_URL; ?>ProductController/detail/<?php echo $rel['Id_product']; ?>">
+                href="<?php echo Base_URL; ?>index/detailsItem/<?php echo $rel['id_item']; ?>">
                 <div class="aside-product-item">
-                    <img src="<?php echo Base_URL; ?>public/uploads/product/<?php echo $rel['Images_product']; ?>"
-                        alt="<?php echo $rel['Title_product']; ?>">
+                    <img src="<?php echo Base_URL; ?>public/uploads/items/<?php echo $rel['images_item']; ?>"
+                        alt="<?php echo $rel['title_item']; ?>">
                     <div>
-                        <div class="aside-product-title"><?php echo $rel['Title_product']; ?></div>
+                        <div class="aside-product-title"><?php echo $rel['title_item']; ?></div>
                         <div class="aside-product-price">
-                            <?php echo number_format($rel['Price_product'], 0, ',', '.'); ?>đ</div>
+                            <?php echo number_format($rel['price_item'], 0, ',', '.'); ?>đ</div>
                     </div>
                 </div>
             </a>
